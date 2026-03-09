@@ -226,11 +226,26 @@ function genererSignature(variation) {
     return sig;
 }
 
-function sauvegarderDonnees() { localStorage.setItem("fuseki_data", JSON.stringify(donneesSauvegardees)); }
+function sauvegarderDonnees() {
+    localStorage.setItem("fuseki_data", JSON.stringify(donneesSauvegardees));
+}
 
 function chargerDonnees() {
     const data = localStorage.getItem("fuseki_data");
     donneesSauvegardees = data ? JSON.parse(data) : {};
+}
+
+function sauvegarderVariationServeur(sig) {
+    const data = donneesSauvegardees[sig];
+    if (!data) return;
+    window.dispatchEvent(new CustomEvent('sauvegarder-variation', {
+        detail: {
+            sig,
+            statut: data.statut,
+            nom: data.nom,
+            commentaire: data.commentaire || ''
+        }
+    }));
 }
 
 /* =============================================
@@ -491,6 +506,8 @@ function terminerVariation() {
         infoComment.innerText = data.commentaire ? `« ${data.commentaire} »` : "";
         infoNom.setAttribute('data-sig', sig);
     }
+    // Sync Supabase
+    if (varJouee) sauvegarderVariationServeur(genererSignature(varJouee));
 }
 
 /* =============================================
@@ -653,28 +670,50 @@ fileInput.addEventListener('change', function() {
     if (this.files.length === 0) return;
     fileNameDisplay.innerText = this.files[0].name;
     const reader = new FileReader();
-    reader.onload = (e) => {
-        kifu = WGo.Kifu.fromSgf(e.target.result);
-        toutesLesVariations = [];
-        extraireVariations(kifu.root, []);
-        chargerDonnees();
-        toutesLesVariations.forEach((v, i) => {
-            const sig = genererSignature(v);
-            if (!donneesSauvegardees[sig])
-                donneesSauvegardees[sig] = { nom: "Var " + (i + 1), statut: "Non exploré", commentaire: "" };
-        });
-        sauvegarderDonnees();
-        menuFichier.style.display = 'none';
-        colonneDroite.style.display = 'flex';
-        infoVariation.style.display = 'block';
-        gobanWrapper.style.display = 'flex';
-        redimensionnerGoban(calculerTailleGoban());
-        afficherTableau();
-        mettreAJourStatistiques();
-        relancerSequence();
-    };
+    reader.onload = (e) => chargerContenuSgf(e.target.result, this.files[0].name, null, null);
     reader.readAsText(this.files[0]);
 });
+
+// Chargement SGF depuis Supabase
+window.addEventListener('sgf-charge', (e) => {
+    const { contenu, nom, sgfId, progression } = e.detail;
+    fileNameDisplay.innerText = nom;
+    chargerContenuSgf(contenu, nom, sgfId, progression);
+});
+
+function chargerContenuSgf(contenu, nom, sgfId, progressionServeur) {
+    kifu = WGo.Kifu.fromSgf(contenu);
+    toutesLesVariations = [];
+    extraireVariations(kifu.root, []);
+    chargerDonnees();
+
+    toutesLesVariations.forEach((v, i) => {
+        const sig = genererSignature(v);
+        if (!donneesSauvegardees[sig])
+            donneesSauvegardees[sig] = { nom: "Var " + (i + 1), statut: "Non exploré", commentaire: "" };
+    });
+
+    // Fusionner avec la progression serveur si dispo
+    if (progressionServeur) {
+        for (const [sig, data] of Object.entries(progressionServeur)) {
+            if (donneesSauvegardees[sig]) {
+                donneesSauvegardees[sig].statut = data.statut || donneesSauvegardees[sig].statut;
+                if (data.nom) donneesSauvegardees[sig].nom = data.nom;
+                if (data.commentaire) donneesSauvegardees[sig].commentaire = data.commentaire;
+            }
+        }
+    }
+
+    sauvegarderDonnees();
+    menuFichier.style.display = 'none';
+    colonneDroite.style.display = 'flex';
+    infoVariation.style.display = 'block';
+    gobanWrapper.style.display = 'flex';
+    redimensionnerGoban(calculerTailleGoban());
+    afficherTableau();
+    mettreAJourStatistiques();
+    relancerSequence();
+}
 
 btnModePresentation.addEventListener('click', lancerPresentation);
 btnQuitterPresentation.addEventListener('click', lancerExercice);
