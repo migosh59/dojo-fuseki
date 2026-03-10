@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dojo Fuseki — Nouveau mot de passe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root { --or: #d4a017; --bg-card: #18150f; --border: rgba(212,160,23,0.14); --texte: #e8dfc8; --texte-secondaire: #a09070; }
+        [data-theme="dark"] { --bg: #0c0b08; --bg-input: #22201a; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg, #0c0b08);
+            color: var(--texte, #e8dfc8);
+            font-family: 'Crimson Pro', Georgia, serif;
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .auth-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%; max-width: 400px;
+        }
+
+        .auth-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem; color: var(--or);
+            text-align: center; margin-bottom: 8px;
+        }
+
+        .auth-subtitle {
+            text-align: center; color: var(--texte-secondaire);
+            margin-bottom: 32px; font-size: 0.9rem;
+        }
+
+        .auth-field { margin-bottom: 16px; }
+
+        .auth-field label {
+            display: block; font-size: 0.85rem;
+            color: var(--texte-secondaire); margin-bottom: 6px;
+        }
+
+        .auth-field input {
+            width: 100%; padding: 10px 14px;
+            background: var(--bg-input, #1a1a1a);
+            border: 1px solid var(--border);
+            border-radius: 8px; color: var(--texte);
+            font-size: 0.95rem; transition: border-color 0.2s;
+        }
+        .auth-field input:focus { outline: none; border-color: var(--or); }
+
+        .auth-btn {
+            width: 100%; padding: 12px;
+            background: var(--or); color: #1a1100;
+            border: none; border-radius: 8px;
+            font-size: 1rem; font-weight: bold;
+            cursor: pointer; margin-top: 8px; transition: opacity 0.2s;
+        }
+        .auth-btn:hover { opacity: 0.85; }
+        .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .auth-message {
+            margin-top: 16px; padding: 10px 14px;
+            border-radius: 8px; font-size: 0.9rem; display: none;
+        }
+        .auth-message.error   { background: #3a1010; color: #ff6b6b; display: block; }
+        .auth-message.success { background: #0f2a1a; color: #51cf66; display: block; }
+
+        .back-link {
+            display: block; text-align: center;
+            margin-top: 20px; font-size: 0.9rem;
+            color: var(--texte-secondaire); text-decoration: none;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--or); }
+    </style>
+</head>
+<body>
+    <div class="auth-box">
+        <div class="auth-title">道場 FUSEKI</div>
+        <div class="auth-subtitle">Nouveau mot de passe</div>
+
+        <div id="form-reset">
+            <div class="auth-field">
+                <label>Nouveau mot de passe</label>
+                <input type="password" id="new-password" placeholder="8 caractères minimum">
+            </div>
+            <div class="auth-field">
+                <label>Confirmer le mot de passe</label>
+                <input type="password" id="confirm-password" placeholder="••••••••">
+            </div>
+            <button class="auth-btn" id="btn-reset">Enregistrer</button>
+        </div>
+
+        <div class="auth-message" id="auth-message"></div>
+        <a href="./auth.html" class="back-link">← Retour à la connexion</a>
+    </div>
+
+    <script type="module">
+        import { supabase } from './supabase.js'
+
+        function showMessage(text, type) {
+            const el = document.getElementById('auth-message')
+            el.textContent = text
+            el.className = 'auth-message ' + type
+        }
+
+        // Supabase gère le token depuis l'URL automatiquement via onAuthStateChange
+        // On attend que la session soit établie
+        supabase.auth.onAuthStateChange(async (event, session) => {
+            if (event === 'PASSWORD_RECOVERY') {
+                // Session établie, l'utilisateur peut changer son mot de passe
+                document.getElementById('btn-reset').disabled = false
+            }
+        })
+
+        document.getElementById('btn-reset').addEventListener('click', async () => {
+            const password = document.getElementById('new-password').value
+            const confirm  = document.getElementById('confirm-password').value
+
+            if (!password || !confirm)
+                return showMessage('Remplis tous les champs.', 'error')
+            if (password.length < 8)
+                return showMessage('Mot de passe trop court (8 caractères minimum).', 'error')
+            if (password !== confirm)
+                return showMessage('Les mots de passe ne correspondent pas.', 'error')
+
+            const btn = document.getElementById('btn-reset')
+            btn.disabled = true
+            btn.textContent = 'Enregistrement...'
+
+            const { error } = await supabase.auth.updateUser({ password })
+
+            if (error) {
+                showMessage('Erreur : ' + error.message, 'error')
+                btn.disabled = false
+                btn.textContent = 'Enregistrer'
+            } else {
+                showMessage('Mot de passe mis à jour ! Redirection...', 'success')
+                setTimeout(() => window.location.href = './index.html', 2000)
+            }
+        })
+    </script>
+</body>
+</html>

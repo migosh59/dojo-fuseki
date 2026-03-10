@@ -163,6 +163,15 @@
           </div>
           <button class="auth-btn" id="btn-login">Se connecter</button>
         </div>
+        <div style="text-align: center; margin-top: 14px">
+          <a
+            href="#"
+            id="lien-forgot"
+            style="font-size: 0.85rem; color: #a09070; text-decoration: none"
+          >
+            Mot de passe oublié ?
+          </a>
+        </div>
 
         <div id="form-signup" style="display: none">
           <div class="auth-field">
@@ -302,6 +311,20 @@
               'success'
             );
           }
+        });
+      document
+        .getElementById('lien-forgot')
+        .addEventListener('click', async (e) => {
+          e.preventDefault();
+          const email = document.getElementById('login-email').value.trim();
+          if (!email) return showMessage("Entre ton email d'abord.", 'error');
+
+          const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/reset.html',
+          });
+
+          if (error) showMessage('Erreur : ' + error.message, 'error');
+          else showMessage('Email envoyé ! Vérifie ta boîte mail.', 'success');
         });
     </script>
   </body>
