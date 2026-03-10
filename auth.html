@@ -178,6 +178,14 @@
             />
           </div>
           <div class="auth-field">
+            <input
+              type="password"
+              id="register-password-confirm"
+              placeholder="Confirmer le mot de passe"
+              required
+            />
+          </div>
+          <div class="auth-field">
             <label>Pseudo</label>
             <input type="text" id="signup-pseudo" placeholder="Ton pseudo" />
           </div>
@@ -268,6 +276,16 @@
           const btn = document.getElementById('btn-signup');
           btn.disabled = true;
           btn.textContent = 'Création...';
+
+          const confirm = document.getElementById(
+            'register-password-confirm'
+          ).value;
+          if (password !== confirm) {
+            showMessage('Les mots de passe ne correspondent pas.', 'error');
+            btn.disabled = false;
+            btn.textContent = 'Créer mon compte';
+            return;
+          }
 
           const { error } = await supabase.auth.signUp({
             email,

@@ -513,15 +513,16 @@
         const table = document.createElement('table');
         table.className = 'data-table';
         table.innerHTML = `
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Inscrit le</th>
-                    <th style="text-align:center">SGF</th>
-                    <th style="text-align:center">Séquences jouées</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Inscrit le</th>
+            <th style="text-align:center">SGF</th>
+            <th style="text-align:center">Séquences jouées</th>
+            <th style="text-align:right">Actions</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
         `;
         const tbody = table.querySelector('tbody');
 
@@ -529,18 +530,47 @@
           const tr = document.createElement('tr');
           const date = new Date(user.created_at).toLocaleDateString('fr-FR');
           tr.innerHTML = `
-                <td>
-                    <span class="text-primary">${user.email}</span>
-                    ${user.variation_count > 0 ? '<span class="badge badge-active" style="margin-left:8px;">actif</span>' : ''}
-                </td>
-                <td><span class="text-muted">${date}</span></td>
-                <td style="text-align:center"><span class="badge">${user.sgf_count}</span></td>
-                <td style="text-align:center">
-                    <span class="${user.variation_count > 0 ? 'text-primary' : 'text-muted'}">${user.variation_count}</span>
-                </td>
-            `;
+    <td>
+        <span class="text-primary">${user.email}</span>
+        ${user.variation_count > 0 ? '<span class="badge badge-active" style="margin-left:8px;">actif</span>' : ''}
+    </td>
+    <td><span class="text-muted">${date}</span></td>
+    <td style="text-align:center"><span class="badge">${user.sgf_count}</span></td>
+    <td style="text-align:center">
+        <span class="${user.variation_count > 0 ? 'text-primary' : 'text-muted'}">${user.variation_count}</span>
+    </td>
+    <td>
+        <div class="table-actions">
+            <button class="btn btn-danger btn-del-user"
+                data-id="${user.id}" data-email="${user.email}">
+                Supprimer
+            </button>
+        </div>
+    </td>
+`;
           tbody.appendChild(tr);
         }
+
+        // Boutons suppression utilisateur
+        tbody.querySelectorAll('.btn-del-user').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            if (
+              !confirm(
+                `Supprimer définitivement le compte "${btn.dataset.email}" et toutes ses données ?`
+              )
+            )
+              return;
+            const { error } = await supabase.rpc('delete_user', {
+              target_user_id: btn.dataset.id,
+            });
+            if (error) {
+              toast('Erreur : ' + error.message, 'error');
+              return;
+            }
+            toast('Compte supprimé', 'success');
+            chargerDonnees();
+          });
+        });
 
         container.innerHTML = '';
         container.appendChild(table);
