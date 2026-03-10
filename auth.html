@@ -1,246 +1,290 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr" data-theme="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
-  <title>Dojo Fuseki — Connexion</title>
-  <style>
-    :root {
-    --or: #d4a017;
-    --bg-card: #18150f;
-    --border: rgba(212,160,23,0.14);
-    --texte: #e8dfc8;
-    --texte-secondaire: #a09070;
-    --font-titre: 'Cinzel', serif;
-}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap"
+      rel="stylesheet"
+    />
+    <title>Dojo Fuseki — Connexion</title>
+    <style>
+      :root {
+        --or: #d4a017;
+        --bg-card: #18150f;
+        --border: rgba(212, 160, 23, 0.14);
+        --texte: #e8dfc8;
+        --texte-secondaire: #a09070;
+        --font-titre: 'Cinzel', serif;
+      }
 
-[data-theme="dark"] {
-    --bg: #0c0b08;
-    --bg-input: #22201a;
-}
+      [data-theme='dark'] {
+        --bg: #0c0b08;
+        --bg-input: #22201a;
+      }
 
-body {
-    background: var(--bg, #0c0b08);
-    color: var(--texte, #e8dfc8);
-    font-family: 'Crimson Pro', Georgia, serif;
-    margin: 0;
-}
-    .auth-container {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .auth-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 40px;
-      width: 100%;
-      max-width: 400px;
-    }
-    .auth-title {
-      font-family: var(--font-titre);
-      font-size: 1.8rem;
-      color: var(--or);
-      text-align: center;
-      margin-bottom: 8px;
-    }
-    .auth-subtitle {
-      text-align: center;
-      color: var(--texte-secondaire);
-      margin-bottom: 32px;
-      font-size: 0.9rem;
-    }
-    .auth-tabs {
-      display: flex;
-      margin-bottom: 24px;
-      border-bottom: 1px solid var(--border);
-    }
-    .auth-tab {
-      flex: 1;
-      padding: 10px;
-      background: none;
-      border: none;
-      color: var(--texte-secondaire);
-      cursor: pointer;
-      font-size: 0.95rem;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      transition: all 0.2s;
-    }
-    .auth-tab.active {
-      color: var(--or);
-      border-bottom-color: var(--or);
-    }
-    .auth-field {
-      margin-bottom: 16px;
-    }
-    .auth-field label {
-      display: block;
-      font-size: 0.85rem;
-      color: var(--texte-secondaire);
-      margin-bottom: 6px;
-    }
-    .auth-field input {
-      width: 100%;
-      padding: 10px 14px;
-      background: var(--bg-input, #1a1a1a);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--texte);
-      font-size: 0.95rem;
-      box-sizing: border-box;
-      transition: border-color 0.2s;
-    }
-    .auth-field input:focus {
-      outline: none;
-      border-color: var(--or);
-    }
-    .auth-btn {
-      width: 100%;
-      padding: 12px;
-      background: var(--or);
-      color: #1a1100;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: opacity 0.2s;
-    }
-    .auth-btn:hover { opacity: 0.85; }
-    .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .auth-message {
-      margin-top: 16px;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      display: none;
-    }
-    .auth-message.error { background: #3a1010; color: #ff6b6b; display: block; }
-    .auth-message.success { background: #0f2a1a; color: #51cf66; display: block; }
-  </style>
-</head>
-<body>
-  <div class="auth-container">
-    <div class="auth-box">
-      <div class="auth-title">道場 FUSEKI</div>
-      <div class="auth-subtitle">Entraînement aux ouvertures</div>
+      body {
+        background: var(--bg, #0c0b08);
+        color: var(--texte, #e8dfc8);
+        font-family: 'Crimson Pro', Georgia, serif;
+        margin: 0;
+      }
+      .auth-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .auth-box {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 40px;
+        width: 100%;
+        max-width: 400px;
+      }
+      .auth-title {
+        font-family: var(--font-titre);
+        font-size: 1.8rem;
+        color: var(--or);
+        text-align: center;
+        margin-bottom: 8px;
+      }
+      .auth-subtitle {
+        text-align: center;
+        color: var(--texte-secondaire);
+        margin-bottom: 32px;
+        font-size: 0.9rem;
+      }
+      .auth-tabs {
+        display: flex;
+        margin-bottom: 24px;
+        border-bottom: 1px solid var(--border);
+      }
+      .auth-tab {
+        flex: 1;
+        padding: 10px;
+        background: none;
+        border: none;
+        color: var(--texte-secondaire);
+        cursor: pointer;
+        font-size: 0.95rem;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        transition: all 0.2s;
+      }
+      .auth-tab.active {
+        color: var(--or);
+        border-bottom-color: var(--or);
+      }
+      .auth-field {
+        margin-bottom: 16px;
+      }
+      .auth-field label {
+        display: block;
+        font-size: 0.85rem;
+        color: var(--texte-secondaire);
+        margin-bottom: 6px;
+      }
+      .auth-field input {
+        width: 100%;
+        padding: 10px 14px;
+        background: var(--bg-input, #1a1a1a);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--texte);
+        font-size: 0.95rem;
+        box-sizing: border-box;
+        transition: border-color 0.2s;
+      }
+      .auth-field input:focus {
+        outline: none;
+        border-color: var(--or);
+      }
+      .auth-btn {
+        width: 100%;
+        padding: 12px;
+        background: var(--or);
+        color: #1a1100;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 8px;
+        transition: opacity 0.2s;
+      }
+      .auth-btn:hover {
+        opacity: 0.85;
+      }
+      .auth-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .auth-message {
+        margin-top: 16px;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        display: none;
+      }
+      .auth-message.error {
+        background: #3a1010;
+        color: #ff6b6b;
+        display: block;
+      }
+      .auth-message.success {
+        background: #0f2a1a;
+        color: #51cf66;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="auth-container">
+      <div class="auth-box">
+        <div class="auth-title">道場 FUSEKI</div>
+        <div class="auth-subtitle">Entraînement aux ouvertures</div>
 
-      <div class="auth-tabs">
-        <button class="auth-tab active" id="tab-login">Connexion</button>
-        <button class="auth-tab" id="tab-signup">Inscription</button>
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tab-login">Connexion</button>
+          <button class="auth-tab" id="tab-signup">Inscription</button>
+        </div>
+
+        <div id="form-login">
+          <div class="auth-field">
+            <label>Email</label>
+            <input type="email" id="login-email" placeholder="ton@email.com" />
+          </div>
+          <div class="auth-field">
+            <label>Mot de passe</label>
+            <input type="password" id="login-password" placeholder="••••••••" />
+          </div>
+          <button class="auth-btn" id="btn-login">Se connecter</button>
+        </div>
+
+        <div id="form-signup" style="display: none">
+          <div class="auth-field">
+            <label>Email</label>
+            <input type="email" id="signup-email" placeholder="ton@email.com" />
+          </div>
+          <div class="auth-field">
+            <label>Mot de passe</label>
+            <input
+              type="password"
+              id="signup-password"
+              placeholder="8 caractères minimum"
+            />
+          </div>
+          <div class="auth-field">
+            <label>Pseudo</label>
+            <input type="text" id="signup-pseudo" placeholder="Ton pseudo" />
+          </div>
+          <button class="auth-btn" id="btn-signup">Créer mon compte</button>
+        </div>
+
+        <div class="auth-message" id="auth-message"></div>
       </div>
-
-      <div id="form-login">
-        <div class="auth-field">
-          <label>Email</label>
-          <input type="email" id="login-email" placeholder="ton@email.com">
-        </div>
-        <div class="auth-field">
-          <label>Mot de passe</label>
-          <input type="password" id="login-password" placeholder="••••••••">
-        </div>
-        <button class="auth-btn" id="btn-login">Se connecter</button>
-      </div>
-
-      <div id="form-signup" style="display:none">
-        <div class="auth-field">
-          <label>Email</label>
-          <input type="email" id="signup-email" placeholder="ton@email.com">
-        </div>
-        <div class="auth-field">
-          <label>Mot de passe</label>
-          <input type="password" id="signup-password" placeholder="8 caractères minimum">
-        </div>
-        <div class="auth-field">
-          <label>Pseudo</label>
-          <input type="text" id="signup-pseudo" placeholder="Ton pseudo">
-        </div>
-        <button class="auth-btn" id="btn-signup">Créer mon compte</button>
-      </div>
-
-      <div class="auth-message" id="auth-message"></div>
     </div>
-  </div>
 
-  <script type="module">
-    import { supabase } from './supabase.js'
+    <script type="module">
+      import { supabase } from './supabase.js';
 
-    // Redirect si déjà connecté
-    const { data: { session } } = await supabase.auth.getSession()
-    if (session) window.location.href = './index.html'
+      // Redirect si déjà connecté
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session) window.location.href = './index.html';
 
-    // Tabs
-    const tabLogin  = document.getElementById('tab-login')
-    const tabSignup = document.getElementById('tab-signup')
-    const formLogin  = document.getElementById('form-login')
-    const formSignup = document.getElementById('form-signup')
+      // Tabs
+      const tabLogin = document.getElementById('tab-login');
+      const tabSignup = document.getElementById('tab-signup');
+      const formLogin = document.getElementById('form-login');
+      const formSignup = document.getElementById('form-signup');
 
-    tabLogin.addEventListener('click', () => {
-      tabLogin.classList.add('active'); tabSignup.classList.remove('active')
-      formLogin.style.display = 'block'; formSignup.style.display = 'none'
-      hideMessage()
-    })
-    tabSignup.addEventListener('click', () => {
-      tabSignup.classList.add('active'); tabLogin.classList.remove('active')
-      formSignup.style.display = 'block'; formLogin.style.display = 'none'
-      hideMessage()
-    })
+      tabLogin.addEventListener('click', () => {
+        tabLogin.classList.add('active');
+        tabSignup.classList.remove('active');
+        formLogin.style.display = 'block';
+        formSignup.style.display = 'none';
+        hideMessage();
+      });
+      tabSignup.addEventListener('click', () => {
+        tabSignup.classList.add('active');
+        tabLogin.classList.remove('active');
+        formSignup.style.display = 'block';
+        formLogin.style.display = 'none';
+        hideMessage();
+      });
 
-    function showMessage(text, type) {
-      const el = document.getElementById('auth-message')
-      el.textContent = text
-      el.className = 'auth-message ' + type
-    }
-    function hideMessage() {
-      document.getElementById('auth-message').className = 'auth-message'
-    }
-
-    // Connexion
-    document.getElementById('btn-login').addEventListener('click', async () => {
-      const email    = document.getElementById('login-email').value.trim()
-      const password = document.getElementById('login-password').value
-      if (!email || !password) return showMessage('Remplis tous les champs.', 'error')
-
-      const btn = document.getElementById('btn-login')
-      btn.disabled = true; btn.textContent = 'Connexion...'
-
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
-      if (error) {
-        showMessage('Email ou mot de passe incorrect.', 'error')
-        btn.disabled = false; btn.textContent = 'Se connecter'
-      } else {
-        window.location.href = './index.html'
+      function showMessage(text, type) {
+        const el = document.getElementById('auth-message');
+        el.textContent = text;
+        el.className = 'auth-message ' + type;
       }
-    })
-
-    // Inscription
-    document.getElementById('btn-signup').addEventListener('click', async () => {
-      const email    = document.getElementById('signup-email').value.trim()
-      const password = document.getElementById('signup-password').value
-      const pseudo   = document.getElementById('signup-pseudo').value.trim()
-      if (!email || !password || !pseudo) return showMessage('Remplis tous les champs.', 'error')
-      if (password.length < 8) return showMessage('Mot de passe trop court (8 min).', 'error')
-
-      const btn = document.getElementById('btn-signup')
-      btn.disabled = true; btn.textContent = 'Création...'
-
-      const { error } = await supabase.auth.signUp({
-        email, password,
-        options: { data: { pseudo } }
-      })
-      if (error) {
-        showMessage(error.message, 'error')
-        btn.disabled = false; btn.textContent = 'Créer mon compte'
-      } else {
-        showMessage('Compte créé ! Vérifie ton email pour confirmer.', 'success')
+      function hideMessage() {
+        document.getElementById('auth-message').className = 'auth-message';
       }
-    })
-  </script>
-</body>
+
+      // Connexion
+      document
+        .getElementById('btn-login')
+        .addEventListener('click', async () => {
+          const email = document.getElementById('login-email').value.trim();
+          const password = document.getElementById('login-password').value;
+          if (!email || !password)
+            return showMessage('Remplis tous les champs.', 'error');
+
+          const btn = document.getElementById('btn-login');
+          btn.disabled = true;
+          btn.textContent = 'Connexion...';
+
+          const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+          if (error) {
+            showMessage('Email ou mot de passe incorrect.', 'error');
+            btn.disabled = false;
+            btn.textContent = 'Se connecter';
+          } else {
+            window.location.href = './index.html';
+          }
+        });
+
+      // Inscription
+      document
+        .getElementById('btn-signup')
+        .addEventListener('click', async () => {
+          const email = document.getElementById('signup-email').value.trim();
+          const password = document.getElementById('signup-password').value;
+          const pseudo = document.getElementById('signup-pseudo').value.trim();
+          if (!email || !password || !pseudo)
+            return showMessage('Remplis tous les champs.', 'error');
+          if (password.length < 8)
+            return showMessage('Mot de passe trop court (8 min).', 'error');
+
+          const btn = document.getElementById('btn-signup');
+          btn.disabled = true;
+          btn.textContent = 'Création...';
+
+          const { error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: { data: { pseudo } },
+          });
+          if (error) {
+            showMessage(error.message, 'error');
+            btn.disabled = false;
+            btn.textContent = 'Créer mon compte';
+          } else {
+            showMessage(
+              'Compte créé ! Vérifie ton email pour confirmer.',
+              'success'
+            );
+          }
+        });
+    </script>
+  </body>
 </html>

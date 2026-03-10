@@ -1,327 +1,461 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dojo Fuseki — Admin</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --gold: #d4a017;
-            --gold-bright: #f0c040;
-            --wood: #8b6914;
-            --wood-dark: #5c4409;
-            --ok: #4a8c3f;
-            --danger: #8c3030;
-            --radius: 6px;
-        }
+      :root {
+        --gold: #d4a017;
+        --gold-bright: #f0c040;
+        --wood: #8b6914;
+        --wood-dark: #5c4409;
+        --ok: #4a8c3f;
+        --danger: #8c3030;
+        --radius: 6px;
+      }
 
-        [data-theme="dark"] {
-            --bg: #0c0b08;
-            --surface-1: #18150f;
-            --surface-2: #22201a;
-            --surface-3: #2c2920;
-            --surface-4: #38342a;
-            --text-primary: #e8dfc8;
-            --text-secondary: #a09070;
-            --text-muted: #5a5040;
-            --border: rgba(212,160,23,0.14);
-            --border-strong: rgba(212,160,23,0.30);
-            --shadow: 0 8px 32px rgba(0,0,0,0.7);
-            --panel-bg: rgba(212,160,23,0.04);
-        }
+      [data-theme='dark'] {
+        --bg: #0c0b08;
+        --surface-1: #18150f;
+        --surface-2: #22201a;
+        --surface-3: #2c2920;
+        --surface-4: #38342a;
+        --text-primary: #e8dfc8;
+        --text-secondary: #a09070;
+        --text-muted: #5a5040;
+        --border: rgba(212, 160, 23, 0.14);
+        --border-strong: rgba(212, 160, 23, 0.3);
+        --shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+        --panel-bg: rgba(212, 160, 23, 0.04);
+      }
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-        body {
-            font-family: 'Crimson Pro', Georgia, serif;
-            background: var(--bg);
-            color: var(--text-primary);
-            min-height: 100vh;
-        }
+      body {
+        font-family: 'Crimson Pro', Georgia, serif;
+        background: var(--bg);
+        color: var(--text-primary);
+        min-height: 100vh;
+      }
 
-        header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 18px 32px;
-            border-bottom: 1px solid var(--border-strong);
-            background: var(--panel-bg);
-        }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 32px;
+        border-bottom: 1px solid var(--border-strong);
+        background: var(--panel-bg);
+      }
 
-        header h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 22px; letter-spacing: 0.15em;
-            color: var(--gold-bright);
-        }
+      header h1 {
+        font-family: 'Cinzel', serif;
+        font-size: 22px;
+        letter-spacing: 0.15em;
+        color: var(--gold-bright);
+      }
 
-        header h1 span {
-            font-size: 13px; letter-spacing: 0.1em;
-            color: var(--text-muted); margin-left: 16px;
-            text-transform: uppercase;
-        }
+      header h1 span {
+        font-size: 13px;
+        letter-spacing: 0.1em;
+        color: var(--text-muted);
+        margin-left: 16px;
+        text-transform: uppercase;
+      }
 
-        .header-btns { display: flex; gap: 10px; }
+      .header-btns {
+        display: flex;
+        gap: 10px;
+      }
 
-        .btn {
-            padding: 8px 18px;
-            border-radius: var(--radius); border: 1px solid var(--border-strong);
-            background: var(--surface-2); color: var(--text-secondary);
-            font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 0.06em;
-            cursor: pointer; transition: all 0.22s;
-        }
-        .btn:hover { border-color: var(--gold); color: var(--gold-bright); background: var(--surface-3); }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--wood-dark), var(--wood));
-            border-color: var(--gold); color: var(--gold-bright);
-        }
-        .btn-primary:hover { filter: brightness(1.15); }
-        .btn-danger { border-color: rgba(140,48,48,0.5); color: #b07070; }
-        .btn-danger:hover { background: rgba(140,48,48,0.15); border-color: #c06060; color: #e09090; }
+      .btn {
+        padding: 8px 18px;
+        border-radius: var(--radius);
+        border: 1px solid var(--border-strong);
+        background: var(--surface-2);
+        color: var(--text-secondary);
+        font-family: 'Cinzel', serif;
+        font-size: 12px;
+        letter-spacing: 0.06em;
+        cursor: pointer;
+        transition: all 0.22s;
+      }
+      .btn:hover {
+        border-color: var(--gold);
+        color: var(--gold-bright);
+        background: var(--surface-3);
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--wood-dark), var(--wood));
+        border-color: var(--gold);
+        color: var(--gold-bright);
+      }
+      .btn-primary:hover {
+        filter: brightness(1.15);
+      }
+      .btn-danger {
+        border-color: rgba(140, 48, 48, 0.5);
+        color: #b07070;
+      }
+      .btn-danger:hover {
+        background: rgba(140, 48, 48, 0.15);
+        border-color: #c06060;
+        color: #e09090;
+      }
 
-        main {
-            max-width: 900px; margin: 0 auto;
-            padding: 32px 24px;
-        }
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 32px 24px;
+      }
 
-        .section-title {
-            font-family: 'Cinzel', serif;
-            font-size: 13px; letter-spacing: 0.14em;
-            color: var(--text-muted); text-transform: uppercase;
-            margin-bottom: 16px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
-        }
+      .section-title {
+        font-family: 'Cinzel', serif;
+        font-size: 13px;
+        letter-spacing: 0.14em;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border);
+      }
 
-        /* Upload zone */
-        .upload-zone {
-            background: var(--surface-1);
-            border: 2px dashed var(--border-strong);
-            border-radius: var(--radius);
-            padding: 32px;
-            text-align: center;
-            margin-bottom: 32px;
-            transition: border-color 0.2s;
-            cursor: pointer;
-            position: relative;
-        }
-        .upload-zone:hover { border-color: var(--gold); }
-        .upload-zone input {
-            position: absolute; inset: 0;
-            opacity: 0; cursor: pointer; width: 100%; height: 100%;
-        }
-        .upload-zone-icon { font-size: 36px; margin-bottom: 12px; }
-        .upload-zone-text {
-            font-family: 'Cinzel', serif;
-            font-size: 14px; letter-spacing: 0.08em;
-            color: var(--text-secondary);
-        }
-        .upload-zone-sub {
-            font-size: 13px; color: var(--text-muted);
-            margin-top: 6px; font-style: italic;
-        }
-        .upload-zone.dragover { border-color: var(--gold); background: rgba(212,160,23,0.05); }
+      /* Upload zone */
+      .upload-zone {
+        background: var(--surface-1);
+        border: 2px dashed var(--border-strong);
+        border-radius: var(--radius);
+        padding: 32px;
+        text-align: center;
+        margin-bottom: 32px;
+        transition: border-color 0.2s;
+        cursor: pointer;
+        position: relative;
+      }
+      .upload-zone:hover {
+        border-color: var(--gold);
+      }
+      .upload-zone input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+      }
+      .upload-zone-icon {
+        font-size: 36px;
+        margin-bottom: 12px;
+      }
+      .upload-zone-text {
+        font-family: 'Cinzel', serif;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        color: var(--text-secondary);
+      }
+      .upload-zone-sub {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-top: 6px;
+        font-style: italic;
+      }
+      .upload-zone.dragover {
+        border-color: var(--gold);
+        background: rgba(212, 160, 23, 0.05);
+      }
 
-        /* Progress bar upload */
-        #upload-status {
-            margin-top: 16px; display: none;
-            background: var(--surface-2);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 12px 16px;
-            font-size: 14px;
-        }
-        #upload-status.success { border-color: rgba(74,140,63,0.4); color: #80cc70; display: block; }
-        #upload-status.error { border-color: rgba(140,48,48,0.4); color: #e08080; display: block; }
-        #upload-status.loading { display: block; color: var(--text-secondary); }
+      /* Progress bar upload */
+      #upload-status {
+        margin-top: 16px;
+        display: none;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 12px 16px;
+        font-size: 14px;
+      }
+      #upload-status.success {
+        border-color: rgba(74, 140, 63, 0.4);
+        color: #80cc70;
+        display: block;
+      }
+      #upload-status.error {
+        border-color: rgba(140, 48, 48, 0.4);
+        color: #e08080;
+        display: block;
+      }
+      #upload-status.loading {
+        display: block;
+        color: var(--text-secondary);
+      }
 
-        /* Table SGF partagés */
-        .sgf-table {
-            width: 100%; border-collapse: collapse;
-            background: var(--surface-1);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-        }
+      /* Table SGF partagés */
+      .sgf-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--surface-1);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
 
-        .sgf-table th {
-            padding: 12px 16px;
-            background: var(--surface-2);
-            border-bottom: 1px solid var(--border);
-            font-family: 'Cinzel', serif;
-            font-size: 11px; letter-spacing: 0.13em;
-            color: var(--text-muted); text-transform: uppercase;
-            text-align: left;
-        }
+      .sgf-table th {
+        padding: 12px 16px;
+        background: var(--surface-2);
+        border-bottom: 1px solid var(--border);
+        font-family: 'Cinzel', serif;
+        font-size: 11px;
+        letter-spacing: 0.13em;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        text-align: left;
+      }
 
-        .sgf-table td {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-            font-size: 15px; vertical-align: middle;
-        }
+      .sgf-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 15px;
+        vertical-align: middle;
+      }
 
-        .sgf-table tr:last-child td { border-bottom: none; }
-        .sgf-table tbody tr:hover { background: rgba(212,160,23,0.04); }
+      .sgf-table tr:last-child td {
+        border-bottom: none;
+      }
+      .sgf-table tbody tr:hover {
+        background: rgba(212, 160, 23, 0.04);
+      }
 
-        .sgf-name { color: var(--text-primary); font-weight: 500; }
-        .sgf-date { color: var(--text-muted); font-size: 13px; }
-        .sgf-actions { display: flex; gap: 8px; justify-content: flex-end; }
+      .sgf-name {
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+      .sgf-date {
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+      .sgf-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
 
-        #loading-msg {
-            padding: 24px; text-align: center;
-            color: var(--text-muted); font-style: italic;
-        }
+      #loading-msg {
+        padding: 24px;
+        text-align: center;
+        color: var(--text-muted);
+        font-style: italic;
+      }
 
-        .empty-state {
-            padding: 32px; text-align: center;
-            color: var(--text-muted); font-style: italic;
-        }
+      .empty-state {
+        padding: 32px;
+        text-align: center;
+        color: var(--text-muted);
+        font-style: italic;
+      }
 
-        /* Toast */
-        #toast {
-            position: fixed; bottom: 24px; left: 50%;
-            transform: translateX(-50%);
-            padding: 12px 24px;
-            border-radius: var(--radius);
-            font-family: 'Cinzel', serif; font-size: 13px;
-            letter-spacing: 0.06em;
-            opacity: 0; transition: opacity 0.3s;
-            pointer-events: none; z-index: 9999;
-        }
-        #toast.show { opacity: 1; }
-        #toast.success { background: rgba(74,140,63,0.95); color: #b8ffb8; border: 1px solid rgba(100,200,80,0.4); }
-        #toast.error { background: rgba(140,48,48,0.95); color: #ffb8b8; border: 1px solid rgba(200,80,80,0.4); }
+      /* Toast */
+      #toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 24px;
+        border-radius: var(--radius);
+        font-family: 'Cinzel', serif;
+        font-size: 13px;
+        letter-spacing: 0.06em;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+        z-index: 9999;
+      }
+      #toast.show {
+        opacity: 1;
+      }
+      #toast.success {
+        background: rgba(74, 140, 63, 0.95);
+        color: #b8ffb8;
+        border: 1px solid rgba(100, 200, 80, 0.4);
+      }
+      #toast.error {
+        background: rgba(140, 48, 48, 0.95);
+        color: #ffb8b8;
+        border: 1px solid rgba(200, 80, 80, 0.4);
+      }
     </style>
-</head>
-<body>
-
-<header>
-    <h1>道場 FUSEKI <span>Administration</span></h1>
-    <div class="header-btns">
+  </head>
+  <body>
+    <header>
+      <h1>道場 FUSEKI <span>Administration</span></h1>
+      <div class="header-btns">
         <button class="btn" id="btn-retour">← Retour à l'app</button>
         <button class="btn" id="btn-logout">⏏ Déconnexion</button>
-    </div>
-</header>
+      </div>
+    </header>
 
-<main>
-    <div id="access-denied" style="display:none; text-align:center; padding:60px; color:#e08080;">
-        <div style="font-size:48px; margin-bottom:16px;">🚫</div>
-        <div style="font-family:'Cinzel',serif; font-size:18px;">Accès refusé</div>
-        <div style="color:var(--text-muted); margin-top:8px;">Cette page est réservée aux administrateurs.</div>
-    </div>
+    <main>
+      <div
+        id="access-denied"
+        style="display: none; text-align: center; padding: 60px; color: #e08080"
+      >
+        <div style="font-size: 48px; margin-bottom: 16px">🚫</div>
+        <div style="font-family: 'Cinzel', serif; font-size: 18px">
+          Accès refusé
+        </div>
+        <div style="color: var(--text-muted); margin-top: 8px">
+          Cette page est réservée aux administrateurs.
+        </div>
+      </div>
 
-    <div id="admin-content" style="display:none;">
-
+      <div id="admin-content" style="display: none">
         <p class="section-title">Uploader un SGF partagé</p>
 
         <div class="upload-zone" id="upload-zone">
-            <input type="file" id="sgf-admin-upload" accept=".sgf" multiple>
-            <div class="upload-zone-icon">📂</div>
-            <div class="upload-zone-text">Cliquer ou glisser-déposer des fichiers SGF</div>
-            <div class="upload-zone-sub">Les SGF uploadés ici seront visibles par tous les utilisateurs</div>
+          <input type="file" id="sgf-admin-upload" accept=".sgf" multiple />
+          <div class="upload-zone-icon">📂</div>
+          <div class="upload-zone-text">
+            Cliquer ou glisser-déposer des fichiers SGF
+          </div>
+          <div class="upload-zone-sub">
+            Les SGF uploadés ici seront visibles par tous les utilisateurs
+          </div>
         </div>
 
         <div id="upload-status"></div>
 
-        <p class="section-title" style="margin-top:32px;">SGF partagés (<span id="nb-partages">0</span>)</p>
+        <p class="section-title" style="margin-top: 32px">
+          SGF partagés (<span id="nb-partages">0</span>)
+        </p>
 
         <div id="liste-partages">
-            <div id="loading-msg">Chargement...</div>
+          <div id="loading-msg">Chargement...</div>
         </div>
+      </div>
+    </main>
 
-    </div>
-</main>
+    <div id="toast"></div>
 
-<div id="toast"></div>
+    <script type="module">
+      import {
+        supabase,
+        isAdmin,
+        uploaderSgfPartage,
+        supprimerSgfPartage,
+        listerSgf,
+      } from './supabase.js';
 
-<script type="module">
-    import { supabase, isAdmin, uploaderSgfPartage, supprimerSgfPartage, listerSgf } from './supabase.js'
+      // ── Auth check ──
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        window.location.href = './auth.html';
+      }
 
-    // ── Auth check ──
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) { window.location.href = './auth.html'; }
+      const admin = await isAdmin();
+      if (!admin) {
+        document.getElementById('access-denied').style.display = 'block';
+      } else {
+        document.getElementById('admin-content').style.display = 'block';
+        chargerListePartages();
+      }
 
-    const admin = await isAdmin()
-    if (!admin) {
-        document.getElementById('access-denied').style.display = 'block'
-    } else {
-        document.getElementById('admin-content').style.display = 'block'
-        chargerListePartages()
-    }
+      // ── Navigation ──
+      document.getElementById('btn-retour').addEventListener('click', () => {
+        window.location.href = './index.html';
+      });
+      document
+        .getElementById('btn-logout')
+        .addEventListener('click', async () => {
+          await supabase.auth.signOut();
+          window.location.href = './auth.html';
+        });
 
-    // ── Navigation ──
-    document.getElementById('btn-retour').addEventListener('click', () => {
-        window.location.href = './index.html'
-    })
-    document.getElementById('btn-logout').addEventListener('click', async () => {
-        await supabase.auth.signOut()
-        window.location.href = './auth.html'
-    })
+      // ── Toast ──
+      function toast(msg, type = 'success') {
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.className = `show ${type}`;
+        setTimeout(() => (el.className = ''), 2500);
+      }
 
-    // ── Toast ──
-    function toast(msg, type = 'success') {
-        const el = document.getElementById('toast')
-        el.textContent = msg
-        el.className = `show ${type}`
-        setTimeout(() => el.className = '', 2500)
-    }
+      // ── Upload ──
+      const uploadInput = document.getElementById('sgf-admin-upload');
+      const uploadZone = document.getElementById('upload-zone');
+      const uploadStatus = document.getElementById('upload-status');
 
-    // ── Upload ──
-    const uploadInput = document.getElementById('sgf-admin-upload')
-    const uploadZone  = document.getElementById('upload-zone')
-    const uploadStatus = document.getElementById('upload-status')
+      uploadInput.addEventListener('change', () =>
+        traiterFichiers(uploadInput.files)
+      );
 
-    uploadInput.addEventListener('change', () => traiterFichiers(uploadInput.files))
+      uploadZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+      });
+      uploadZone.addEventListener('dragleave', () =>
+        uploadZone.classList.remove('dragover')
+      );
+      uploadZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        traiterFichiers(e.dataTransfer.files);
+      });
 
-    uploadZone.addEventListener('dragover', (e) => {
-        e.preventDefault(); uploadZone.classList.add('dragover')
-    })
-    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'))
-    uploadZone.addEventListener('drop', (e) => {
-        e.preventDefault(); uploadZone.classList.remove('dragover')
-        traiterFichiers(e.dataTransfer.files)
-    })
+      async function traiterFichiers(files) {
+        if (!files.length) return;
+        uploadStatus.className = 'loading';
+        uploadStatus.textContent = `Upload en cours (0/${files.length})...`;
 
-    async function traiterFichiers(files) {
-        if (!files.length) return
-        uploadStatus.className = 'loading'
-        uploadStatus.textContent = `Upload en cours (0/${files.length})...`
-
-        let ok = 0, err = 0
+        let ok = 0,
+          err = 0;
         for (let i = 0; i < files.length; i++) {
-            const file = files[i]
-            uploadStatus.textContent = `Upload en cours (${i+1}/${files.length}) — ${file.name}`
-            const id = await uploaderSgfPartage(file)
-            if (id) ok++; else err++
+          const file = files[i];
+          uploadStatus.textContent = `Upload en cours (${i + 1}/${files.length}) — ${file.name}`;
+          const id = await uploaderSgfPartage(file);
+          if (id) ok++;
+          else err++;
         }
 
         if (err === 0) {
-            uploadStatus.className = 'success'
-            uploadStatus.textContent = `✓ ${ok} fichier${ok > 1 ? 's' : ''} uploadé${ok > 1 ? 's' : ''} avec succès`
-            toast(`${ok} SGF partagé${ok > 1 ? 's' : ''}`, 'success')
+          uploadStatus.className = 'success';
+          uploadStatus.textContent = `✓ ${ok} fichier${ok > 1 ? 's' : ''} uploadé${ok > 1 ? 's' : ''} avec succès`;
+          toast(`${ok} SGF partagé${ok > 1 ? 's' : ''}`, 'success');
         } else {
-            uploadStatus.className = 'error'
-            uploadStatus.textContent = `${ok} succès, ${err} erreur${err > 1 ? 's' : ''}`
+          uploadStatus.className = 'error';
+          uploadStatus.textContent = `${ok} succès, ${err} erreur${err > 1 ? 's' : ''}`;
         }
 
-        uploadInput.value = ''
-        chargerListePartages()
-    }
+        uploadInput.value = '';
+        chargerListePartages();
+      }
 
-    // ── Liste SGF partagés ──
-    async function chargerListePartages() {
-        const tous = await listerSgf()
-        const partages = tous.filter(s => s.is_shared)
+      // ── Liste SGF partagés ──
+      async function chargerListePartages() {
+        const tous = await listerSgf();
+        const partages = tous.filter((s) => s.is_shared);
 
-        document.getElementById('nb-partages').textContent = partages.length
-        const container = document.getElementById('liste-partages')
+        document.getElementById('nb-partages').textContent = partages.length;
+        const container = document.getElementById('liste-partages');
 
         if (partages.length === 0) {
-            container.innerHTML = '<div class="empty-state">Aucun SGF partagé pour l\'instant.</div>'
-            return
+          container.innerHTML =
+            '<div class="empty-state">Aucun SGF partagé pour l\'instant.</div>';
+          return;
         }
 
-        const table = document.createElement('table')
-        table.className = 'sgf-table'
+        const table = document.createElement('table');
+        table.className = 'sgf-table';
         table.innerHTML = `
             <thead>
                 <tr>
@@ -331,14 +465,14 @@
                 </tr>
             </thead>
             <tbody></tbody>
-        `
-        const tbody = table.querySelector('tbody')
+        `;
+        const tbody = table.querySelector('tbody');
 
         for (const sgf of partages) {
-            const tr = document.createElement('tr')
-            const date = new Date(sgf.created_at).toLocaleDateString('fr-FR')
-            tr.innerHTML = `
-                <td><span class="sgf-name">${sgf.name.replace('.sgf','')}</span></td>
+          const tr = document.createElement('tr');
+          const date = new Date(sgf.created_at).toLocaleDateString('fr-FR');
+          tr.innerHTML = `
+                <td><span class="sgf-name">${sgf.name.replace('.sgf', '')}</span></td>
                 <td><span class="sgf-date">${date}</span></td>
                 <td>
                     <div class="sgf-actions">
@@ -347,24 +481,28 @@
                         </button>
                     </div>
                 </td>
-            `
-            tbody.appendChild(tr)
+            `;
+          tbody.appendChild(tr);
         }
 
-        container.innerHTML = ''
-        container.appendChild(table)
+        container.innerHTML = '';
+        container.appendChild(table);
 
         // Boutons suppression
-        container.querySelectorAll('.btn-del').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                if (!confirm(`Supprimer "${btn.dataset.name}" de la bibliothèque partagée ?`)) return
-                await supprimerSgfPartage(btn.dataset.id, btn.dataset.path)
-                toast('SGF supprimé', 'success')
-                chargerListePartages()
-            })
-        })
-    }
-</script>
-
-</body>
+        container.querySelectorAll('.btn-del').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            if (
+              !confirm(
+                `Supprimer "${btn.dataset.name}" de la bibliothèque partagée ?`
+              )
+            )
+              return;
+            await supprimerSgfPartage(btn.dataset.id, btn.dataset.path);
+            toast('SGF supprimé', 'success');
+            chargerListePartages();
+          });
+        });
+      }
+    </script>
+  </body>
 </html>

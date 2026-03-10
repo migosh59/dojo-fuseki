@@ -1,113 +1,130 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dojo Fuseki — Page introuvable</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-        body {
-            font-family: 'Crimson Pro', Georgia, serif;
-            background: #0c0b08;
-            color: #e8dfc8;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
+      body {
+        font-family: 'Crimson Pro', Georgia, serif;
+        background: #0c0b08;
+        color: #e8dfc8;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
 
-        body::before {
-            content: '';
-            position: fixed; inset: 0;
-            background:
-                radial-gradient(ellipse at 15% 40%, rgba(139,105,20,0.07) 0%, transparent 55%),
-                radial-gradient(ellipse at 85% 15%, rgba(92,68,9,0.05) 0%, transparent 50%);
-            pointer-events: none;
-        }
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse at 15% 40%,
+            rgba(139, 105, 20, 0.07) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse at 85% 15%,
+            rgba(92, 68, 9, 0.05) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+      }
 
-        .container {
-            position: relative;
-            padding: 48px 32px;
-            max-width: 480px;
-        }
+      .container {
+        position: relative;
+        padding: 48px 32px;
+        max-width: 480px;
+      }
 
-        .goban-icon {
-            font-size: 64px;
-            margin-bottom: 24px;
-            display: block;
-            opacity: 0.6;
-        }
+      .goban-icon {
+        font-size: 64px;
+        margin-bottom: 24px;
+        display: block;
+        opacity: 0.6;
+      }
 
-        .code {
-            font-family: 'Cinzel', serif;
-            font-size: 72px;
-            font-weight: 600;
-            color: #d4a017;
-            letter-spacing: 0.1em;
-            text-shadow: 0 0 40px rgba(212,160,23,0.3);
-            line-height: 1;
-            margin-bottom: 8px;
-        }
+      .code {
+        font-family: 'Cinzel', serif;
+        font-size: 72px;
+        font-weight: 600;
+        color: #d4a017;
+        letter-spacing: 0.1em;
+        text-shadow: 0 0 40px rgba(212, 160, 23, 0.3);
+        line-height: 1;
+        margin-bottom: 8px;
+      }
 
-        .titre {
-            font-family: 'Cinzel', serif;
-            font-size: 18px;
-            letter-spacing: 0.15em;
-            color: #a09070;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-        }
+      .titre {
+        font-family: 'Cinzel', serif;
+        font-size: 18px;
+        letter-spacing: 0.15em;
+        color: #a09070;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
 
-        .message {
-            font-style: italic;
-            color: #5a5040;
-            font-size: 17px;
-            line-height: 1.6;
-            margin-bottom: 40px;
-        }
+      .message {
+        font-style: italic;
+        color: #5a5040;
+        font-size: 17px;
+        line-height: 1.6;
+        margin-bottom: 40px;
+      }
 
-        .btn {
-            display: inline-block;
-            padding: 12px 32px;
-            background: linear-gradient(135deg, #5c4409, #8b6914);
-            border: 1px solid #d4a017;
-            border-radius: 6px;
-            color: #f0c040;
-            font-family: 'Cinzel', serif;
-            font-size: 14px;
-            letter-spacing: 0.08em;
-            text-decoration: none;
-            transition: all 0.25s;
-            box-shadow: 0 2px 14px rgba(0,0,0,0.3);
-        }
-        .btn:hover {
-            filter: brightness(1.2);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(212,160,23,0.25);
-        }
+      .btn {
+        display: inline-block;
+        padding: 12px 32px;
+        background: linear-gradient(135deg, #5c4409, #8b6914);
+        border: 1px solid #d4a017;
+        border-radius: 6px;
+        color: #f0c040;
+        font-family: 'Cinzel', serif;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        transition: all 0.25s;
+        box-shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
+      }
+      .btn:hover {
+        filter: brightness(1.2);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 20px rgba(212, 160, 23, 0.25);
+      }
 
-        .divider {
-            width: 60px; height: 1px;
-            background: linear-gradient(90deg, transparent, #d4a017, transparent);
-            margin: 32px auto;
-        }
+      .divider {
+        width: 60px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #d4a017, transparent);
+        margin: 32px auto;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <span class="goban-icon">⬡</span>
-        <div class="code">404</div>
-        <div class="titre">Pierre hors du goban</div>
-        <div class="divider"></div>
-        <p class="message">
-            Cette intersection n'existe pas.<br>
-            Revenez au centre du goban.
-        </p>
-        <a href="/index.html" class="btn">← Retour au Dojo</a>
+      <span class="goban-icon">⬡</span>
+      <div class="code">404</div>
+      <div class="titre">Pierre hors du goban</div>
+      <div class="divider"></div>
+      <p class="message">
+        Cette intersection n'existe pas.<br />
+        Revenez au centre du goban.
+      </p>
+      <a href="/index.html" class="btn">← Retour au Dojo</a>
     </div>
-</body>
+  </body>
 </html>
