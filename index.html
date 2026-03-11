@@ -1706,7 +1706,7 @@
           .getElementById('btn-logout')
           .addEventListener('click', async () => {
             await supabase.auth.signOut();
-            window.location.href = './auth.html';
+            window.location.href = './index.html';
           });
       } else {
         document.getElementById('btn-logout').textContent =
