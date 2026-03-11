@@ -191,6 +191,21 @@
         color: var(--text-muted);
         letter-spacing: 0.1em;
         margin-top: 4px;
+        /* Ajout de l'animation */
+        opacity: 0;
+        animation: fadeRise 1.5s ease-out 0.5s forwards;
+      }
+
+      /* Définition de l'animation */
+      @keyframes fadeRise {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       #app-header::after {
