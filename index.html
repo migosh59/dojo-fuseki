@@ -486,23 +486,25 @@
 
       #compteur-vies {
         display: flex;
-        gap: 7px;
+        gap: 6px;
         align-items: center;
         margin-left: auto;
       }
 
       .vie {
-        width: 17px;
-        height: 17px;
-        border-radius: 50%;
-        background: var(--danger);
-        box-shadow: 0 0 8px rgba(140, 48, 48, 0.6);
+        font-size: 22px; /* Taille du coeur */
+        color: var(--danger); /* Couleur de base (rouge foncé) */
+        text-shadow: 0 0 8px rgba(140, 48, 48, 0.6); /* Effet de lueur */
         transition: all 0.3s;
+        line-height: 1;
+        user-select: none; /* Empêche de le surligner par erreur au clic */
       }
+
       .vie.perdue {
-        background: var(--surface-4);
-        box-shadow: none;
+        color: var(--surface-4); /* Gris foncé/marron quand la vie est perdue */
+        text-shadow: none;
       }
+
       .vie.flash {
         animation: vieFlash 0.4s ease;
       }
@@ -513,9 +515,9 @@
           transform: scale(1);
         }
         50% {
-          transform: scale(1.55);
-          background: #ff5555;
-          box-shadow: 0 0 18px rgba(255, 80, 80, 0.9);
+          transform: scale(1.4);
+          color: #ff5555; /* Rouge vif pendant le clignotement */
+          text-shadow: 0 0 18px rgba(255, 80, 80, 0.9);
         }
       }
 
@@ -1482,9 +1484,9 @@
               </div>
             </div>
             <div id="compteur-vies">
-              <div class="vie" id="vie-1"></div>
-              <div class="vie" id="vie-2"></div>
-              <div class="vie" id="vie-3"></div>
+              <div class="vie" id="vie-1">♥</div>
+              <div class="vie" id="vie-2">♥</div>
+              <div class="vie" id="vie-3">♥</div>
             </div>
             <button id="btn-son">🔊</button>
             <button id="btn-solution"></button>
