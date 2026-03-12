@@ -132,5 +132,13 @@
   "deconnexion_title": "Se déconnecter",
   "connexion_title": "Se connecter",
   "supprimer": "Supprimer",
-  "erreur_upload": "Erreur lors de l'upload."
+  "erreur_upload": "Erreur lors de l'upload.",
+
+  "toast_erreur_compteur": "Erreur {count}/3",
+  "toast_erreur_singulier": "1 erreur",
+  "toast_erreur_pluriel": "{count} erreurs",
+  "visualisation_label": "Visualisation",
+  "visualisation_titre": "Visualisation terminée",
+  "confirm_reset": "Réinitialiser tous les statuts ?",
+  "btn_visualiser_title": "Visualiser"
 }

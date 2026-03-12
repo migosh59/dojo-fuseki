@@ -342,7 +342,7 @@ function afficherTableau() {
     tdVisu.className = 'td-visu';
     const btnVisu = document.createElement('button');
     btnVisu.innerText = '👁';
-    btnVisu.title = 'Visualiser';
+    btnVisu.title = window.t ? window.t('btn_visualiser_title') : 'Visualiser';
     btnVisu.className = 'btn-visu';
     btnVisu.addEventListener('click', () => visualiserVariation(variation));
     tdVisu.appendChild(btnVisu);
@@ -475,8 +475,13 @@ function relancerSequence() {
   infoVariation.style.display = 'block';
   commentaireSgf.style.display = 'none';
   gobanWrapper.classList.remove('ordi-pense');
-  infoNom.innerText = 'Séquence en cours...';
-  infoComment.innerText = 'Joue pour découvrir la suite !';
+  // On utilise window.t() pour aller chercher la traduction
+  infoNom.innerText = window.t
+    ? window.t('sequence_en_cours')
+    : 'Séquence en cours...';
+  infoComment.innerText = window.t
+    ? window.t('joue_pour_decouvrir')
+    : 'Joue pour découvrir la suite !';
   infoNom.setAttribute('data-sig', '');
   variationCourante = choisirVariation();
   reinitialiserMoteur();
@@ -531,27 +536,54 @@ function terminerVariation() {
   if (abandonSequence) {
     messageFin.className = 'fin-echec';
     finIcone.innerText = '🚨';
-    titreFin.innerText = 'Séquence ratée';
-    sousTitreFin.innerText = 'Mieux la prochaine fois';
-    afficherToast('Séquence ratée', 'erreur');
+    titreFin.innerText = window.t
+      ? window.t('fin_echec_titre')
+      : 'Séquence ratée';
+    sousTitreFin.innerText = window.t
+      ? window.t('fin_echec_sous')
+      : 'Mieux la prochaine fois';
+    afficherToast(
+      window.t ? window.t('fin_echec_titre') : 'Séquence ratée',
+      'erreur'
+    );
   } else if (compteurErreurs > 0) {
     messageFin.className = 'fin-erreurs';
     finIcone.innerText = '😅';
-    titreFin.innerText = 'Terminée avec erreurs';
+    titreFin.innerText = window.t
+      ? window.t('fin_erreurs_titre')
+      : 'Terminée avec erreurs';
+
+    /* Gestion du pluriel pour les erreurs */
     sousTitreFin.innerText =
       compteurErreurs === 1
-        ? '1 erreur commise'
-        : `${compteurErreurs} erreurs commises`;
+        ? window.t
+          ? window.t('toast_erreur_singulier')
+          : '1 erreur commise'
+        : window.t
+          ? window.t('toast_erreur_pluriel', { count: compteurErreurs })
+          : `${compteurErreurs} erreurs commises`;
+
     afficherToast(
-      compteurErreurs === 1 ? '1 erreur' : `${compteurErreurs} erreurs`,
+      compteurErreurs === 1
+        ? window.t
+          ? window.t('toast_erreur_singulier')
+          : '1 erreur'
+        : window.t
+          ? window.t('toast_erreur_pluriel', { count: compteurErreurs })
+          : `${compteurErreurs} erreurs`,
       'warn'
     );
   } else {
     messageFin.className = 'fin-parfaite';
     finIcone.innerText = '🎉';
-    titreFin.innerText = 'Perfect !';
-    sousTitreFin.innerText = 'Aucune erreur — bien joué';
-    afficherToast('Perfect !', 'correct');
+    titreFin.innerText = window.t ? window.t('fin_parfait_titre') : 'Perfect !';
+    sousTitreFin.innerText = window.t
+      ? window.t('fin_parfait_sous')
+      : 'Aucune erreur — bien joué';
+    afficherToast(
+      window.t ? window.t('fin_parfait_titre') : 'Perfect !',
+      'correct'
+    );
   }
   messageFin.style.display = 'block';
 
@@ -613,7 +645,13 @@ goban.addEventListener('click', function (x, y) {
     compteurErreurs++;
     animerPerteVie();
     mettreAJourVies();
-    afficherToast(`Erreur ${compteurErreurs}/3`, 'erreur');
+    /* Toast du compteur d'erreurs */
+    afficherToast(
+      window.t
+        ? window.t('toast_erreur_compteur', { count: compteurErreurs })
+        : `Erreur ${compteurErreurs}/3`,
+      'erreur'
+    );
     const m = { x, y, type: 'MA' };
     goban.addObject(m);
     setTimeout(() => {
@@ -680,7 +718,9 @@ function visualiserVariation(variation) {
   infoNom.innerText = '👁  ' + data.nom;
   infoComment.innerText = data.commentaire
     ? `« ${data.commentaire} »`
-    : 'Visualisation';
+    : window.t
+      ? window.t('visualisation_label')
+      : 'Visualisation';
   infoNom.setAttribute('data-sig', sig);
   actionsExercice.style.display = 'none';
   messageFin.style.display = 'none';
@@ -704,7 +744,9 @@ function visualiserVariation(variation) {
       timerPresentation = setTimeout(animer, 550);
     } else {
       finIcone.innerText = '👁';
-      titreFin.innerText = 'Visualisation terminée';
+      titreFin.innerText = window.t
+        ? window.t('visualisation_titre')
+        : 'Visualisation terminée';
       sousTitreFin.innerText = data.nom;
       messageFin.className = 'fin-visu';
       messageFin.style.display = 'block';
@@ -840,7 +882,10 @@ btnSuivante.addEventListener('click', relancerSequence);
 btnSolution.addEventListener('click', montrerSolution);
 
 btnReset.addEventListener('click', () => {
-  if (confirm('Réinitialiser tous les statuts ?')) {
+  const messageConfirm = window.t
+    ? window.t('confirm_reset')
+    : 'Réinitialiser tous les statuts ?';
+  if (confirm(messageConfirm)) {
     toutesLesVariations.forEach((v) => {
       donneesSauvegardees[genererSignature(v)].statut = 'Non exploré';
     });

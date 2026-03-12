@@ -1615,6 +1615,7 @@
       // ── i18n ──
       await initI18n();
       const lang = getLang();
+      window.t = t;
 
       // ── Traductions statiques ──
       document.getElementById('header-subtitle').textContent = t('sous_titre');

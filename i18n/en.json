@@ -132,5 +132,13 @@
   "deconnexion_title": "Sign out",
   "connexion_title": "Sign in",
   "supprimer": "Delete",
-  "erreur_upload": "Upload error."
+  "erreur_upload": "Upload error.",
+
+  "toast_erreur_compteur": "Mistake {count}/3",
+  "toast_erreur_singulier": "1 mistake",
+  "toast_erreur_pluriel": "{count} mistakes",
+  "visualisation_label": "Viewing",
+  "visualisation_titre": "Viewing complete",
+  "confirm_reset": "Reset all statuses?",
+  "btn_visualiser_title": "View"
 }
