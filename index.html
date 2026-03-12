@@ -1770,6 +1770,16 @@
             item.appendChild(tag);
           }
 
+          if (sgf.is_club) {
+            const tagClub = document.createElement('span');
+            tagClub.className = 'sgf-item-shared';
+            tagClub.style.background = 'rgba(212, 160, 23, 0.2)';
+            tagClub.style.color = 'var(--gold)';
+            tagClub.style.border = '1px solid rgba(212, 160, 23, 0.4)';
+            tagClub.textContent = '🛡️ Club';
+            item.appendChild(tagClub);
+          }
+
           if (estConnecte && !sgf.is_shared) {
             const btnDel = document.createElement('button');
             btnDel.className = 'sgf-item-delete';

@@ -431,6 +431,8 @@
         uploaderSgfPartage,
         supprimerSgfPartage,
         listerSgf,
+        setClubRole,
+        toggleSgfClubStatus,
       } from './supabase.js';
 
       // ── Initialisation i18n et Traduction Statique ──
@@ -595,6 +597,7 @@
     <td>
         <span class="text-primary">${user.email}</span>
         ${user.variation_count > 0 ? `<span class="badge badge-active" style="margin-left:8px;">${t('admin_users_actif')}</span>` : ''}
+        ${user.is_club ? `<span class="badge" style="background: rgba(212, 160, 23, 0.2); color: var(--gold); border: 1px solid rgba(212, 160, 23, 0.4); margin-left:8px;">🛡️ Club</span>` : ''}
     </td>
     <td><span class="text-muted">${date}</span></td>
     <td style="text-align:center"><span class="badge">${user.sgf_count}</span></td>
@@ -603,6 +606,9 @@
     </td>
     <td>
         <div class="table-actions">
+            <button class="btn btn-role" data-id="${user.id}" data-club="${user.is_club ? 'true' : 'false'}">
+                ${user.is_club ? 'Retirer Club' : 'Promouvoir Club'}
+            </button>
             <button class="btn btn-danger btn-del-user"
                 data-id="${user.id}" data-email="${user.email}">
                 ${t('admin_users_supprimer')}
@@ -612,6 +618,20 @@
 `;
           tbody.appendChild(tr);
         }
+
+        // Boutons rôle club
+        tbody.querySelectorAll('.btn-role').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const willBeClub = btn.dataset.club === 'false';
+            const ok = await setClubRole(btn.dataset.id, willBeClub);
+            if (ok) {
+              toast('Rôle mis à jour', 'success');
+              chargerDonnees();
+            } else {
+              toast('Erreur de mise à jour', 'error');
+            }
+          });
+        });
 
         // Boutons suppression utilisateur
         tbody.querySelectorAll('.btn-del-user').forEach((btn) => {
@@ -660,6 +680,8 @@
 
       async function traiterFichiers(files) {
         if (!files.length) return;
+        /* Plus besoin de lire la case à cocher ici */
+
         uploadStatus.className = 'loading';
         uploadStatus.textContent = t('admin_upload_en_cours', {
           current: 0,
@@ -675,6 +697,8 @@
               current: i + 1,
               total: files.length,
             }) + ` — ${file.name}`;
+
+          /* On passe juste le fichier */
           const id = await uploaderSgfPartage(file);
           if (id) ok++;
           else err++;
@@ -726,11 +750,19 @@
           const date = new Date(sgf.created_at).toLocaleDateString(
             lang === 'fr' ? 'fr-FR' : 'en-US'
           );
+
+          /* Ajout du badge et du bouton de rôle */
           tr.innerHTML = `
-                <td><span class="text-primary">${sgf.name.replace('.sgf', '')}</span></td>
+                <td>
+                    <span class="text-primary">${sgf.name.replace('.sgf', '')}</span>
+                    ${sgf.is_club ? `<span class="badge" style="background: rgba(212, 160, 23, 0.2); color: var(--gold); border: 1px solid rgba(212, 160, 23, 0.4); margin-left:8px;">🛡️ Club</span>` : ''}
+                </td>
                 <td><span class="text-muted">${date}</span></td>
                 <td>
                     <div class="table-actions">
+                        <button class="btn btn-role-sgf" data-id="${sgf.id}" data-club="${sgf.is_club ? 'true' : 'false'}">
+                            ${sgf.is_club ? t('admin_sgf_rendre_public') : t('admin_sgf_reserver_club')}
+                        </button>
                         <button class="btn btn-danger btn-del"
                             data-id="${sgf.id}" data-path="${sgf.storage_path}" data-name="${sgf.name}">
                             ${t('admin_sgf_supprimer')}
@@ -740,6 +772,37 @@
             `;
           tbody.appendChild(tr);
         }
+
+        container.innerHTML = '';
+        container.appendChild(table);
+
+        /* Écouteur pour le changement de rôle SGF */
+        container.querySelectorAll('.btn-role-sgf').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const willBeClub = btn.dataset.club === 'false';
+            const ok = await toggleSgfClubStatus(btn.dataset.id, willBeClub);
+            if (ok) {
+              chargerListePartages();
+            } else {
+              toast('Erreur', 'error');
+            }
+          });
+        });
+
+        /* Écouteur pour la suppression existant */
+        container.querySelectorAll('.btn-del').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const confirmMsg = t('admin_sgf_supprimer_confirm', {
+              nom: btn.dataset.name,
+            });
+            if (!confirm(confirmMsg)) return;
+
+            await supprimerSgfPartage(btn.dataset.id, btn.dataset.path);
+            toast(t('admin_toast_sgf_deleted'), 'success');
+            chargerListePartages();
+            chargerStats();
+          });
+        });
 
         container.innerHTML = '';
         container.appendChild(table);

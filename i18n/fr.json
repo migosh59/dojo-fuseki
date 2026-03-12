@@ -140,5 +140,8 @@
   "visualisation_label": "Visualisation",
   "visualisation_titre": "Visualisation terminée",
   "confirm_reset": "Réinitialiser tous les statuts ?",
-  "btn_visualiser_title": "Visualiser"
+  "btn_visualiser_title": "Visualiser",
+
+  "admin_sgf_reserver_club": "Réserver Club",
+  "admin_sgf_rendre_public": "Rendre Public"
 }

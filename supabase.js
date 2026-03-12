@@ -21,13 +21,15 @@ export async function getUser() {
 /* ─── SGF Files ─────────────────────────────── */
 export async function listerSgf() {
   const user = await getUser();
+  const isClub = user?.user_metadata?.is_club === true;
 
   if (!user) {
-    // Invité : uniquement les SGF partagés
+    // Invité : SGF partagés, MAIS NON réservés au club
     const { data, error } = await supabase
       .from('sgf_files')
       .select('*')
       .eq('is_shared', true)
+      .eq('is_club', false)
       .order('name', { ascending: true });
     if (error) {
       console.error(error);
@@ -36,11 +38,25 @@ export async function listerSgf() {
     return data || [];
   }
 
-  // Connecté : SGF personnels + partagés
-  const { data, error } = await supabase
-    .from('sgf_files')
-    .select('*')
-    .order('updated_at', { ascending: false });
+  // NOUVEAU : On vérifie si l'utilisateur est un administrateur
+  const admin = await isAdmin();
+
+  // Connecté : La requête s'adapte
+  let query = supabase.from('sgf_files').select('*');
+
+  if (admin || isClub) {
+    // L'Admin OU le membre club voit ses SGF et TOUS les partagés
+    query = query.or(`owner_id.eq.${user.id},is_shared.eq.true`);
+  } else {
+    // L'utilisateur normal voit ses SGF et les partagés NON club
+    query = query.or(
+      `owner_id.eq.${user.id},and(is_shared.eq.true,is_club.eq.false)`
+    );
+  }
+
+  query = query.order('updated_at', { ascending: false });
+
+  const { data, error } = await query;
   if (error) {
     console.error(error);
     return [];
@@ -215,6 +231,7 @@ export async function uploaderSgfPartage(file) {
         name: file.name,
         storage_path: path,
         is_shared: true,
+        is_club: false /* On force à false par défaut à l'upload */,
       })
       .select()
       .single();
@@ -229,4 +246,20 @@ export async function uploaderSgfPartage(file) {
 export async function supprimerSgfPartage(sgfId, storagePath) {
   await supabase.storage.from('sgf-files').remove([storagePath]);
   await supabase.from('sgf_files').delete().eq('id', sgfId);
+}
+
+export async function setClubRole(userId, isClub) {
+  const { error } = await supabase.rpc('set_club_role', {
+    target_user_id: userId,
+    club_status: isClub,
+  });
+  return !error;
+}
+
+export async function toggleSgfClubStatus(sgfId, isClub) {
+  const { error } = await supabase
+    .from('sgf_files')
+    .update({ is_club: isClub })
+    .eq('id', sgfId);
+  return !error;
 }
