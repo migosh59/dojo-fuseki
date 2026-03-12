@@ -140,5 +140,8 @@
   "visualisation_label": "Viewing",
   "visualisation_titre": "Viewing complete",
   "confirm_reset": "Reset all statuses?",
-  "btn_visualiser_title": "View"
+  "btn_visualiser_title": "View",
+
+  "admin_sgf_reserver_club": "Make Club Only",
+  "admin_sgf_rendre_public": "Make Public"
 }
