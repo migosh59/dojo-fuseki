@@ -1612,6 +1612,10 @@
 
         <div id="commentaire-sgf"></div>
         <div class="footer-legales">
+          <a href="./aide.html" id="lien-aide">Guide du Dojo</a>
+          <span style="color: var(--text-muted); opacity: 0.5; margin: 0 8px"
+            >|</span
+          >
           <a href="./legales.html" id="lien-legales"
             >Mentions Légales & Confidentialité</a
           >
@@ -1693,6 +1697,7 @@
       document.getElementById('btn-admin').textContent = t('header_admin');
       document.getElementById('lien-legales').textContent =
         t('mentions_legales');
+      document.getElementById('lien-aide').textContent = t('lien_aide');
 
       // ── Bouton langue ──
       const btnLang = document.getElementById('btn-lang');

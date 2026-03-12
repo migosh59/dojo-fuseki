@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>磨き Migaki — Guide du Dojo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --gold: #d4a017;
+        --gold-bright: #f0c040;
+        --surface-1: #18150f;
+        --surface-2: #22201a;
+        --text-primary: #e8dfc8;
+        --text-secondary: #a09070;
+        --text-muted: #5a5040;
+        --border: rgba(212, 160, 23, 0.14);
+        --border-strong: rgba(212, 160, 23, 0.3);
+        --radius: 6px;
+      }
+
+      body {
+        font-family: 'Crimson Pro', Georgia, serif;
+        background: #0c0b08;
+        color: var(--text-primary);
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse at 15% 40%,
+            rgba(139, 105, 20, 0.05) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse at 85% 15%,
+            rgba(92, 68, 9, 0.03) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      header {
+        text-align: center;
+        padding: 40px 20px;
+        border-bottom: 1px solid var(--border-strong);
+        background: rgba(212, 160, 23, 0.04);
+        position: relative;
+        z-index: 1;
+      }
+
+      header h1 {
+        font-family: 'Cinzel', serif;
+        font-size: 32px;
+        letter-spacing: 0.15em;
+        color: var(--gold-bright);
+        margin: 0 0 8px 0;
+      }
+
+      header p {
+        font-style: italic;
+        color: var(--text-muted);
+        letter-spacing: 0.1em;
+        margin: 0;
+      }
+
+      main {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 24px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .guide-section {
+        background: var(--surface-1);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 32px;
+        margin-bottom: 32px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      }
+
+      h2 {
+        font-family: 'Cinzel', serif;
+        font-size: 18px;
+        letter-spacing: 0.1em;
+        color: var(--gold);
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 12px;
+        margin-top: 0;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+      }
+
+      h3 {
+        font-family: 'Cinzel', serif;
+        font-size: 15px;
+        color: var(--gold-bright);
+        margin-top: 24px;
+        margin-bottom: 8px;
+        letter-spacing: 0.05em;
+      }
+
+      p,
+      ul {
+        color: var(--text-primary);
+        font-size: 16px;
+        margin-bottom: 16px;
+      }
+
+      ul {
+        padding-left: 20px;
+      }
+
+      li {
+        margin-bottom: 10px;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 13px;
+        background: var(--surface-3);
+        color: var(--text-primary);
+        margin-right: 6px;
+      }
+
+      .btn-retour {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 24px;
+        background: var(--surface-2);
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius);
+        color: var(--text-secondary);
+        font-family: 'Cinzel', serif;
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        transition: all 0.22s;
+        margin-bottom: 40px;
+      }
+
+      .btn-retour:hover {
+        border-color: var(--gold);
+        color: var(--gold-bright);
+        background: var(--surface-1);
+      }
+
+      #btn-lang {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: rgba(212, 160, 23, 0.08);
+        border: 1px solid rgba(212, 160, 23, 0.2);
+        border-radius: 20px;
+        padding: 4px 10px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.2s;
+        line-height: 1;
+      }
+      #btn-lang:hover {
+        background: rgba(212, 160, 23, 0.18);
+        border-color: var(--gold);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <button id="btn-lang"></button>
+      <h1>磨き MIGAKI</h1>
+      <p id="header-desc"></p>
+    </header>
+
+    <main>
+      <div id="content-fr" style="display: none">
+        <div class="guide-section">
+          <h2>Le Concept</h2>
+          <p>
+            <strong>Migaki (磨き)</strong> signifie "polir" ou "raffiner" en
+            japonais. C'est un outil d'entraînement conçu pour les joueurs de
+            Go, basé sur le principe de la <strong>répétition espacée</strong>.
+          </p>
+          <p>
+            Plutôt que d'apprendre passivement des ouvertures (Fuseki) ou des
+            pièges (Joseki), Migaki vous force à retrouver les bons coups sur le
+            goban. L'algorithme analyse vos erreurs et vous repropose plus
+            fréquemment les séquences qui vous posent problème jusqu'à ce que
+            vous les maîtrisiez parfaitement.
+          </p>
+        </div>
+
+        <div class="guide-section">
+          <h2>Comment s'entraîner ?</h2>
+
+          <h3>1. La Bibliothèque de SGF</h3>
+          <p>
+            Commencez par créer un compte pour uploader vos propres fichiers
+            SGF. Migaki lit automatiquement toutes les variations contenues dans
+            votre fichier et les transforme en exercices interactifs. Vous
+            pouvez également vous entraîner sur les SGF partagés par la
+            communauté.
+          </p>
+
+          <h3>2. Les Vies et les Erreurs</h3>
+          <p>
+            Lorsque vous lancez une séquence, vous devez jouer le bon coup. Vous
+            avez droit à <strong>3 erreurs (3 vies)</strong>. Si vous perdez
+            toutes vos vies, la solution vous est révélée.
+          </p>
+
+          <h3>3. Le Code Couleur</h3>
+          <p>L'algorithme de Migaki classe vos séquences selon 4 statuts :</p>
+          <ul>
+            <li>
+              <span class="badge">⚪ Gris</span>
+              <strong>Non exploré :</strong> Vous n'avez pas encore joué cette
+              variation.
+            </li>
+            <li>
+              <span class="badge">🔴 Rouge</span> <strong>Échec :</strong> Vous
+              avez perdu vos 3 vies ou abandonné. Ces séquences reviendront très
+              souvent.
+            </li>
+            <li>
+              <span class="badge">🟠 Orange</span>
+              <strong>Erreurs :</strong> Vous avez trouvé la solution, mais en
+              faisant 1 ou 2 erreurs.
+            </li>
+            <li>
+              <span class="badge">🟢 Vert</span> <strong>Parfait :</strong> Vous
+              avez joué la séquence entière sans la moindre erreur. L'algorithme
+              vous laissera tranquille avec celle-ci !
+            </li>
+          </ul>
+
+          <h3>4. Visualiser une séquence spécifique</h3>
+          <p>
+            Dans le tableau des variations situé dans la colonne de droite, vous
+            remarquerez une petite icône en forme d'œil (👁). Cliquez dessus
+            pour revoir le déroulement exact de cette séquence sur le goban,
+            sans risquer de perdre des vies ou de dégrader vos statistiques.
+          </p>
+
+          <h3>5. Le Mode Présentation</h3>
+          <p>
+            Avant de vous tester, vous pouvez cliquer sur
+            <strong>Présentation</strong>. Migaki jouera alors automatiquement
+            toutes les variations de votre fichier SGF comme un film, pour vous
+            aider à les mémoriser.
+          </p>
+        </div>
+      </div>
+
+      <div id="content-en" style="display: none">
+        <div class="guide-section">
+          <h2>The Concept</h2>
+          <p>
+            <strong>Migaki (磨き)</strong> means "to polish" or "to refine" in
+            Japanese. It is a training tool designed for Go players, based on
+            the principle of <strong>spaced repetition</strong>.
+          </p>
+          <p>
+            Rather than passively learning openings (Fuseki) or traps (Joseki),
+            Migaki forces you to find the right moves on the board. The
+            algorithm analyzes your mistakes and tests you more frequently on
+            the sequences you struggle with until you master them perfectly.
+          </p>
+        </div>
+
+        <div class="guide-section">
+          <h2>How to train?</h2>
+
+          <h3>1. The SGF Library</h3>
+          <p>
+            Start by creating an account to upload your own SGF files. Migaki
+            automatically reads all the variations contained in your file and
+            turns them into interactive exercises. You can also practice on SGFs
+            shared by the community.
+          </p>
+
+          <h3>2. Lives and Mistakes</h3>
+          <p>
+            When a sequence starts, you must play the correct move. You are
+            allowed <strong>3 mistakes (3 lives)</strong>. If you lose all your
+            lives, the solution is revealed to you.
+          </p>
+
+          <h3>3. The Color Code</h3>
+          <p>Migaki's algorithm classifies your sequences into 4 statuses:</p>
+          <ul>
+            <li>
+              <span class="badge">⚪ Gray</span>
+              <strong>Unexplored:</strong> You haven't played this variation
+              yet.
+            </li>
+            <li>
+              <span class="badge">🔴 Red</span> <strong>Failed:</strong> You
+              lost all 3 lives or gave up. These sequences will appear very
+              often.
+            </li>
+            <li>
+              <span class="badge">🟠 Orange</span> <strong>Errors:</strong> You
+              found the solution, but made 1 or 2 mistakes along the way.
+            </li>
+            <li>
+              <span class="badge">🟢 Green</span> <strong>Perfect:</strong> You
+              played the entire sequence without a single mistake. The algorithm
+              will let you rest on this one!
+            </li>
+          </ul>
+
+          <h3>4. View a Specific Sequence</h3>
+          <p>
+            In the variations table on the right column, you will notice a small
+            eye icon (👁). Click on it to review the exact flow of a specific
+            sequence on the board without risking any lives or damaging your
+            stats.
+          </p>
+
+          <h3>5. Presentation Mode</h3>
+          <p>
+            Before testing yourself, you can click on
+            <strong>Presentation</strong>. Migaki will then automatically play
+            all the variations of your SGF file like a movie, to help you
+            memorize them.
+          </p>
+        </div>
+      </div>
+
+      <div style="text-align: center">
+        <a href="./index.html" class="btn-retour" id="btn-retour"></a>
+      </div>
+    </main>
+
+    <script type="module">
+      import { initI18n, getLang, setLang } from './i18n.js';
+
+      /* Initialisation i18n */
+      await initI18n();
+      const lang = getLang();
+
+      /* Gestion du bouton de langue */
+      const btnLang = document.getElementById('btn-lang');
+      btnLang.textContent = lang === 'fr' ? '🇬🇧' : '🇫🇷';
+      btnLang.title =
+        lang === 'fr' ? 'Switch to English' : 'Passer en français';
+      btnLang.addEventListener('click', () =>
+        setLang(lang === 'fr' ? 'en' : 'fr')
+      );
+
+      /* Affichage des textes selon la langue */
+      if (lang === 'en') {
+        document.getElementById('header-desc').textContent =
+          'How to use the Dojo';
+        document.getElementById('content-en').style.display = 'block';
+        document.getElementById('btn-retour').textContent =
+          '← Back to the Dojo';
+      } else {
+        document.getElementById('header-desc').textContent =
+          'Comment utiliser le Dojo';
+        document.getElementById('content-fr').style.display = 'block';
+        document.getElementById('btn-retour').textContent = '← Retour au Dojo';
+      }
+    </script>
+  </body>
+</html>
