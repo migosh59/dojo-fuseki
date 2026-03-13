@@ -359,6 +359,7 @@ function afficherTableau() {
     });
 
     tdNom.appendChild(inputNom);
+    tr.appendChild(tdNom);
 
     const tdVisu = document.createElement('td');
     tdVisu.className = 'td-visu';
