@@ -314,7 +314,11 @@ function afficherTableau() {
     const sig = genererSignature(variation);
     const data = donneesSauvegardees[sig];
     const tr = document.createElement('tr');
-    if (sig === sigCourante) tr.classList.add('active-row');
+
+    /* On ne révèle la variation en cours que si l'exercice est terminé ou en mode visu */
+    if (sig === sigCourante && !modeExerciceActif) {
+      tr.classList.add('active-row');
+    }
 
     const tdStatut = document.createElement('td');
     tdStatut.className = 'td-statut';
