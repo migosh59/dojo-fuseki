@@ -333,15 +333,31 @@ function afficherTableau() {
     inputNom.type = 'text';
     inputNom.className = 'nom-edit';
     inputNom.value = data.nom;
-    inputNom.addEventListener('change', function () {
-      donneesSauvegardees[sig].nom = this.value;
-      sauvegarderDonnees();
-      if (infoNom.getAttribute('data-sig') === sig)
-        infoNom.innerText = this.value;
-      sauvegarderVariationServeur(sig);
+
+    /* Fonction de sauvegarde centralisée pour le champ texte */
+    const validerNouveauNom = function () {
+      if (donneesSauvegardees[sig].nom !== inputNom.value) {
+        donneesSauvegardees[sig].nom = inputNom.value;
+        sauvegarderDonnees();
+        if (infoNom.getAttribute('data-sig') === sig) {
+          infoNom.innerText = inputNom.value;
+        }
+        /* On envoie au serveur ! */
+        sauvegarderVariationServeur(sig);
+      }
+    };
+
+    /* Se déclenche quand on clique en dehors du champ ou qu'on fait Entrée */
+    inputNom.addEventListener('change', validerNouveauNom);
+
+    /* On force la validation si on appuie spécifiquement sur la touche Entrée */
+    inputNom.addEventListener('keyup', function (e) {
+      if (e.key === 'Enter') {
+        inputNom.blur(); /* Retire le focus, ce qui déclenche l'animation visuelle et la sauvegarde */
+      }
     });
+
     tdNom.appendChild(inputNom);
-    tr.appendChild(tdNom);
 
     const tdVisu = document.createElement('td');
     tdVisu.className = 'td-visu';
@@ -610,10 +626,7 @@ function terminerVariation() {
     const sig = genererSignature(varJouee);
     if (abandonSequence) {
       donneesSauvegardees[sig].statut = 'Echec';
-    } else if (
-      compteurErreurs > 0 &&
-      donneesSauvegardees[sig].statut !== 'Parfait'
-    ) {
+    } else if (compteurErreurs > 0) {
       donneesSauvegardees[sig].statut = 'Erreurs';
     } else if (compteurErreurs === 0) {
       donneesSauvegardees[sig].statut = 'Parfait';
