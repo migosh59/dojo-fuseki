@@ -649,7 +649,7 @@ function terminerVariation() {
         '#table-variations tbody tr.active-row'
       );
       if (activeRow)
-        activeRow.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        activeRow.scrollIntoView({ block: 'center', behavior: 'smooth' });
     });
     mettreAJourStatistiques();
     const data = donneesSauvegardees[sig];
