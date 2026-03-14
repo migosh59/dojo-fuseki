@@ -1417,6 +1417,17 @@
         color: var(--gold-bright);
         text-shadow: 0 0 12px rgba(212, 160, 23, 0.4);
       }
+
+      .stat-card {
+        cursor: pointer; /* Indique qu'on peut cliquer dessus */
+      }
+
+      /* La classe pour mettre en retrait les catégories non filtrées */
+      .stat-card.dimmed {
+        opacity: 0.3;
+        filter: grayscale(80%);
+        border-color: transparent !important;
+      }
     </style>
 
     <script type="text/javascript" src="wgo.min.js"></script>

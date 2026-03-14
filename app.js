@@ -144,6 +144,7 @@ let timerPresentation = null;
 let indexVariationActuelle = 0;
 let indexCoupActuel = 0;
 let timerOrdi = null;
+let filtreStatutActif = null;
 
 /* =============================================
    MOTEUR DE JEU + MARQUEUR CR
@@ -416,6 +417,30 @@ function extraireVariations(noeud, chemin) {
    ALGORITHME 80 / 15 / 5
 ============================================= */
 function choisirVariation() {
+  /* --- 1. GESTION DU FILTRE MANUEL --- */
+  if (filtreStatutActif) {
+    const poolFiltre = [];
+    for (let i = 0; i < toutesLesVariations.length; i++) {
+      const s =
+        donneesSauvegardees[genererSignature(toutesLesVariations[i])].statut;
+      if (s === filtreStatutActif) poolFiltre.push(i);
+    }
+
+    if (poolFiltre.length > 0) {
+      /* Si on a des séquences, on pioche aléatoirement dans ce filtre uniquement */
+      return toutesLesVariations[
+        poolFiltre[Math.floor(Math.random() * poolFiltre.length)]
+      ];
+    } else {
+      /* Sécurité : si la catégorie s'est vidée entre temps, on annule le filtre */
+      filtreStatutActif = null;
+      document
+        .querySelectorAll('.stat-card')
+        .forEach((c) => c.classList.remove('dimmed'));
+    }
+  }
+
+  /* --- 2. COMPORTEMENT NORMAL (Si pas de filtre) --- */
   const poolGris = [],
     poolOrangeRouge = [],
     poolVert = [];
@@ -426,6 +451,7 @@ function choisirVariation() {
     else if (s === 'Erreurs' || s === 'Echec') poolOrangeRouge.push(i);
     else if (s === 'Parfait') poolVert.push(i);
   }
+
   const j = Math.random();
   let pool;
   if (j < 0.8 && poolGris.length > 0) pool = poolGris;
@@ -433,6 +459,7 @@ function choisirVariation() {
   else if (poolVert.length > 0) pool = poolVert;
   else if (poolGris.length > 0) pool = poolGris;
   else pool = poolOrangeRouge;
+
   return toutesLesVariations[pool[Math.floor(Math.random() * pool.length)]];
 }
 
@@ -953,6 +980,50 @@ btnReset.addEventListener('click', () => {
     afficherTableau();
     mettreAJourStatistiques();
   }
+});
+
+/* =============================================
+   CLICS SUR LES CARTES DE STATISTIQUES (FILTRES)
+  ============================================= */
+document.querySelectorAll('.stat-card').forEach((card) => {
+  card.addEventListener('click', () => {
+    /* On détermine sur quel statut on a cliqué */
+    let statusCible = null;
+    if (card.classList.contains('s-gris')) statusCible = 'Non exploré';
+    else if (card.classList.contains('s-rouge')) statusCible = 'Echec';
+    else if (card.classList.contains('s-orange')) statusCible = 'Erreurs';
+    else if (card.classList.contains('s-vert')) statusCible = 'Parfait';
+
+    if (filtreStatutActif === statusCible) {
+      /* Si on clique sur le filtre déjà actif, on le désactive */
+      filtreStatutActif = null;
+      document
+        .querySelectorAll('.stat-card')
+        .forEach((c) => c.classList.remove('dimmed'));
+      afficherToast('Filtre désactivé', 'correct');
+    } else {
+      /* On vérifie d'abord que la catégorie n'est pas vide ! */
+      const hasSequences = toutesLesVariations.some(
+        (v) => donneesSauvegardees[genererSignature(v)].statut === statusCible
+      );
+
+      if (!hasSequences) {
+        afficherToast('Aucune séquence dans cette catégorie !', 'warn');
+        return;
+      }
+
+      /* On active le filtre et on grise les autres cartes */
+      filtreStatutActif = statusCible;
+      document.querySelectorAll('.stat-card').forEach((c) => {
+        if (c === card) c.classList.remove('dimmed');
+        else c.classList.add('dimmed');
+      });
+      afficherToast(`Filtre activé : ${statusCible}`, 'correct');
+
+      /* Le petit effet "Waouh" : on relance la séquence immédiatement avec le nouveau filtre ! */
+      if (modeExerciceActif) relancerSequence();
+    }
+  });
 
   /* =============================================
    MIGRATION LOCALSTORAGE → SUPABASE
