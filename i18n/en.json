@@ -146,5 +146,7 @@
   "admin_sgf_rendre_public": "Make Public",
   "mentions_legales": "Legal Notice & Privacy Policy",
   "lien_aide": "Dojo Guide",
-  "lien_creer_sgf": "Where to find sequences?"
+  "lien_creer_sgf": "Where to find sequences?",
+  "exploration_titre": "Exploration Mode",
+  "exploration_desc": "Explore freely the SGF file"
 }

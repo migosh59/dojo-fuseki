@@ -552,6 +552,9 @@ function lancerExploration() {
   /* On adapte l'interface : on cache les vies et le bouton d'abandon, on affiche le bouton Retour */
   actionsExercice.style.display = 'block';
   document.getElementById('compteur-vies').style.display = 'none';
+  /* On cache le label et le sélecteur de couleur */
+  document.getElementById('camp-label').style.display = 'none';
+  document.getElementById('select-couleur-joueur').style.display = 'none';
 
   /* Affichage des boutons d'exploration au-dessus du goban */
   btnExplorationRetour.style.display = 'inline-block';
@@ -694,8 +697,10 @@ function relancerSequence(variationForcee = null) {
 
   document.getElementById('compteur-vies').style.display = 'flex';
   btnSolution.style.display = 'inline-block';
+  /* On retire le display:none pour qu'ils retrouvent leur place */
+  document.getElementById('camp-label').style.display = '';
+  document.getElementById('select-couleur-joueur').style.display = '';
 
-  /* --- L'ASTUCE EST ICI --- */
   /* Si la variable est un tableau (notre séquence), on l'utilise.
      Sinon (si c'est vide ou un événement de clic aléatoire), on pioche ! */
   if (Array.isArray(variationForcee)) {
