@@ -394,17 +394,18 @@
         display: none;
         width: 100%;
         max-width: 620px;
+        margin-top: 15px; /* Un peu d'air sous le goban */
       }
 
       #barre-controles {
         background: var(--surface-2);
         border: 1px solid var(--border);
         border-radius: var(--radius);
-        padding: 10px 14px;
+        padding: 12px 16px; /* Légèrement plus de rembourrage */
         display: flex;
         align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
+        gap: 12px;
+        flex-wrap: nowrap; /* On évite le retour à la ligne sur desktop */
         box-shadow: var(--shadow);
       }
 
@@ -1001,6 +1002,12 @@
         background: var(--surface-3) !important;
         border-color: var(--gold) !important;
         color: var(--gold-bright) !important;
+      }
+
+      /* On centre les boutons d'exploration s'ils sont seuls */
+      #btn-exploration-retour,
+      #btn-exploration-quitter {
+        min-height: 38px;
       }
 
       #bloc-statistiques {
@@ -1832,6 +1839,18 @@
           ></div>
         </div>
 
+        <div id="info-variation">
+          <div id="info-nom"></div>
+          <div id="info-comment"></div>
+        </div>
+
+        <div id="goban-wrapper" style="display: none">
+          <div id="toast-container"></div>
+          <div id="goban"></div>
+
+          <div id="commentaire-sgf"></div>
+        </div>
+
         <div id="actions-exercice">
           <div id="barre-controles">
             <span id="camp-label"></span>
@@ -1899,18 +1918,6 @@
             <button id="btn-son">🔊</button>
             <button id="btn-solution"></button>
           </div>
-        </div>
-
-        <div id="info-variation">
-          <div id="info-nom"></div>
-          <div id="info-comment"></div>
-        </div>
-
-        <div id="goban-wrapper" style="display: none">
-          <div id="toast-container"></div>
-          <div id="goban"></div>
-
-          <div id="commentaire-sgf"></div>
         </div>
 
         <div id="message-fin">

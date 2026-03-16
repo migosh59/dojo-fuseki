@@ -559,6 +559,9 @@ function lancerExploration() {
   /* Affichage des boutons d'exploration au-dessus du goban */
   btnExplorationRetour.style.display = 'inline-block';
   btnExplorationQuitter.style.display = 'inline-block';
+  /* Dans app.js, fonction lancerExploration */
+  btnExplorationQuitter.style.marginLeft = 'auto';
+  btnExplorationRetour.style.display = 'inline-block';
 
   /* On transforme le bouton d'action principal en mode "S'entraîner" */
   btnModeExploration.innerHTML = "⚔️ &nbsp;S'entraîner";
