@@ -164,5 +164,8 @@
   "profil_label_vues": "Séquences visionnées",
   "profil_label_parfaites": "Séquences Parfaites",
   "profil_label_oranges": "Séquences avec Erreurs",
-  "profil_label_rouges": "Séquences Échouées"
+  "profil_label_rouges": "Séquences Échouées",
+
+  "modal_info_placeholder": "Ajoutez une description, vos sources, le créateur...",
+  "modal_info_sauvegarder": "Enregistrer"
 }

@@ -164,5 +164,8 @@
   "profil_label_vues": "Sequences watched",
   "profil_label_parfaites": "Perfect Sequences",
   "profil_label_oranges": "Sequences with Errors",
-  "profil_label_rouges": "Failed Sequences"
+  "profil_label_rouges": "Failed Sequences",
+
+  "modal_info_placeholder": "Add a description, your sources, the creator...",
+  "modal_info_sauvegarder": "Save"
 }

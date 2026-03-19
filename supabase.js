@@ -317,3 +317,14 @@ export async function chargerStatsGlobales() {
   }
   return data;
 }
+
+export async function mettreAJourDescriptionSgf(sgfId, description) {
+  const { error } = await supabase
+    .from('sgf_files')
+    .update({ description })
+    .eq('id', sgfId);
+  if (error) {
+    console.error('Erreur update description:', error);
+    throw error;
+  }
+}

@@ -939,23 +939,63 @@
         padding: 2px 6px;
         border-radius: 10px;
       }
-      .sgf-item-delete {
-        background: none;
-        border: none;
-        color: var(--text-muted);
-        cursor: pointer;
-        font-size: 14px;
-        padding: 2px 5px;
-        border-radius: 4px;
+      .sgf-actions {
+        display: flex;
+        gap: 6px;
         opacity: 0;
-        transition: all 0.15s;
+        transition: opacity 0.15s;
+        flex-shrink: 0; /* NOUVEAU : Empêche l'écrasement des boutons */
       }
-      .sgf-item:hover .sgf-item-delete {
+      .sgf-item:hover .sgf-actions {
         opacity: 1;
+      }
+
+      /* Le nouveau bouton Info, élégant et dans le thème */
+      .sgf-item-info {
+        background: transparent;
+        border: 1px solid var(--text-muted);
+        color: var(--text-muted);
+        font-family: 'Cinzel', serif;
+        font-size: 14px;
+        font-style: italic;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        padding: 0;
+      }
+      .sgf-item-info:hover {
+        color: var(--gold-bright);
+        border-color: var(--gold);
+        background: rgba(212, 160, 23, 0.1);
+        box-shadow: 0 0 8px rgba(212, 160, 23, 0.2);
+      }
+
+      /* On met à jour le bouton Delete pour qu'il soit parfaitement assorti */
+      .sgf-item-delete {
+        background: transparent;
+        border: 1px solid var(--text-muted);
+        color: var(--text-muted);
+        font-size: 11px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        padding: 0;
       }
       .sgf-item-delete:hover {
         color: #e08080;
-        background: rgba(140, 48, 48, 0.15);
+        border-color: #e08080;
+        background: rgba(140, 48, 48, 0.1);
+        box-shadow: 0 0 8px rgba(140, 48, 48, 0.2);
       }
 
       #liste-sgf-vide {
@@ -2038,6 +2078,53 @@
       </div>
     </div>
 
+    <div id="modal-info-sgf" class="modal-overlay">
+      <div
+        class="modal-content"
+        style="max-width: 500px; height: auto; min-height: 250px; padding: 30px"
+      >
+        <button id="btn-close-info" class="modal-close">✕</button>
+        <h2
+          id="info-modal-titre"
+          style="
+            font-family: 'Cinzel', serif;
+            color: var(--gold-bright);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 20px;
+          "
+        ></h2>
+        <textarea
+          id="info-modal-texte"
+          style="
+            width: 100%;
+            height: 120px;
+            background: var(--surface-2);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'Crimson Pro', serif;
+            font-size: 16px;
+            resize: vertical;
+          "
+        ></textarea>
+        <div style="text-align: right; margin-top: 16px">
+          <button
+            id="btn-save-info"
+            class="btn-action"
+            style="
+              display: inline-flex;
+              width: auto;
+              padding: 8px 20px;
+              background: rgba(74, 140, 63, 0.1);
+              border-color: rgba(74, 140, 63, 0.5);
+              color: #80cc70;
+            "
+          ></button>
+        </div>
+      </div>
+    </div>
     <div id="modal-profil" class="modal-overlay">
       <div class="modal-content">
         <button id="btn-close-profil" class="modal-close">✕</button>
@@ -2397,6 +2484,7 @@
         ajouterActivite,
         chargerActiviteMois,
         chargerStatsGlobales,
+        mettreAJourDescriptionSgf,
       } from './supabase.js';
       import { initI18n, t, getLang, setLang } from './i18n.js';
 
@@ -2512,6 +2600,13 @@
         'profil_label_rouges'
       );
 
+      document.getElementById('info-modal-texte').placeholder = t(
+        'modal_info_placeholder'
+      );
+      document.getElementById('btn-save-info').textContent = t(
+        'modal_info_sauvegarder'
+      );
+
       // ── Bouton langue ──
       const btnLang = document.getElementById('btn-lang');
       btnLang.textContent = lang === 'fr' ? '🇬🇧' : '🇫🇷';
@@ -2524,9 +2619,13 @@
       // ── État session ──
       const user = await getUser();
       const estConnecte = !!user;
+      let isUserAdmin = false;
 
       // ── Header selon session ──
       if (estConnecte) {
+        /* On attend la réponse de la base de données pour savoir si tu es Admin */
+        isUserAdmin = await isAdmin();
+
         const pseudo = user.user_metadata?.pseudo || user.email.split('@')[0];
         const headerTitles = document.querySelector('.header-titles');
         const span = document.createElement('div');
@@ -2535,16 +2634,15 @@
         span.textContent = '⛩ ' + pseudo;
         headerTitles.appendChild(span);
 
-        isAdmin().then((admin) => {
-          if (admin) {
-            const btn = document.getElementById('btn-admin');
-            btn.style.display = 'block';
-            btn.addEventListener(
-              'click',
-              () => (window.location.href = './admin.html')
-            );
-          }
-        });
+        /* On utilise notre nouvelle variable ici aussi ! */
+        if (isUserAdmin) {
+          const btn = document.getElementById('btn-admin');
+          btn.style.display = 'block';
+          btn.addEventListener(
+            'click',
+            () => (window.location.href = './admin.html')
+          );
+        }
 
         document.getElementById('btn-logout').textContent = t('header_quitter');
         document.getElementById('btn-logout').title = t('deconnexion_title');
@@ -2578,6 +2676,53 @@
       let sgfActifPath = null;
 
       document.getElementById('colonne-droite').style.display = 'flex';
+
+      // ── Gestion de la Modale Info SGF ──
+      const modalInfoSgf = document.getElementById('modal-info-sgf');
+      const txtInfo = document.getElementById('info-modal-texte');
+      const btnSaveInfo = document.getElementById('btn-save-info');
+      let sgfInfoEnCours = null;
+
+      document
+        .getElementById('btn-close-info')
+        .addEventListener('click', () => modalInfoSgf.classList.remove('open'));
+      modalInfoSgf.addEventListener('click', (e) => {
+        if (e.target === modalInfoSgf) modalInfoSgf.classList.remove('open');
+      });
+
+      function ouvrirModalInfo(sgf) {
+        sgfInfoEnCours = sgf;
+        document.getElementById('info-modal-titre').textContent =
+          sgf.name.replace('.sgf', '');
+        txtInfo.value = sgf.description || '';
+
+        // MODIFICATION ICI : On autorise si c'est un fichier privé OU si tu es l'Admin !
+        if (estConnecte && (!sgf.is_shared || isUserAdmin)) {
+          txtInfo.readOnly = false;
+          btnSaveInfo.style.display = 'inline-flex';
+        } else {
+          txtInfo.readOnly = true;
+          btnSaveInfo.style.display = 'none';
+        }
+        modalInfoSgf.classList.add('open');
+      }
+
+      btnSaveInfo.addEventListener('click', async () => {
+        if (!sgfInfoEnCours) return;
+        const nvDesc = txtInfo.value.trim();
+        const oldText = btnSaveInfo.textContent;
+        btnSaveInfo.textContent = '...';
+        try {
+          await mettreAJourDescriptionSgf(sgfInfoEnCours.id, nvDesc);
+          sgfInfoEnCours.description = nvDesc; // Met à jour l'objet en mémoire
+          btnSaveInfo.textContent = '✓';
+          setTimeout(() => modalInfoSgf.classList.remove('open'), 600);
+        } catch (e) {
+          afficherToast('Erreur lors de la sauvegarde.', 'erreur');
+        } finally {
+          setTimeout(() => (btnSaveInfo.textContent = oldText), 1000);
+        }
+      });
 
       // ── Charger et afficher la liste des SGF ──
       async function rafraichirListeSgf() {
@@ -2625,6 +2770,21 @@
             item.appendChild(tagClub);
           }
 
+          const actionsBox = document.createElement('div');
+          actionsBox.className = 'sgf-actions';
+
+          // Le bouton Info (toujours présent)
+          const btnInfo = document.createElement('button');
+          btnInfo.className = 'sgf-item-info';
+          btnInfo.title = 'Info / Description';
+          btnInfo.textContent = 'i';
+          btnInfo.addEventListener('click', (e) => {
+            e.stopPropagation();
+            ouvrirModalInfo(sgf);
+          });
+          actionsBox.appendChild(btnInfo);
+
+          // Le bouton Delete (si conditions remplies)
           if (estConnecte && !sgf.is_shared) {
             const btnDel = document.createElement('button');
             btnDel.className = 'sgf-item-delete';
@@ -2637,11 +2797,10 @@
               )
                 return;
               await supprimerSgf(sgf.id, sgf.storage_path);
+              // ... (Garde ton code existant qui gère le sgfActifId et le rafraîchissement) ...
               if (sgfActifId === sgf.id) {
                 sgfActifId = null;
                 sgfActifPath = null;
-
-                /* On regrise les boutons et on cache le goban */
                 document.getElementById('btn-mode-presentation').disabled =
                   true;
                 document.getElementById('btn-reset').disabled = true;
@@ -2651,8 +2810,10 @@
               }
               rafraichirListeSgf();
             });
-            item.appendChild(btnDel);
+            actionsBox.appendChild(btnDel);
           }
+
+          item.appendChild(actionsBox);
 
           item.addEventListener('click', () => chargerSgfDepuisServeur(sgf));
           container.appendChild(item);
