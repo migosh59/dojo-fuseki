@@ -2177,38 +2177,25 @@
             Couleur
           </div>
           <div style="position: relative; flex: 1">
-            <select
-              id="bot-player-color-select"
-              style="
-                width: 100%;
-                appearance: none;
-                background: var(--surface-2);
-                border: 1px solid var(--border);
-                color: var(--text-primary);
-                padding: 10px 14px;
-                border-radius: var(--radius);
-                font-family: 'Crimson Pro', serif;
-                font-size: 16px;
-                cursor: pointer;
-                outline: none;
-              "
-            >
-              <option value="B" id="opt-bot-noir">Noir</option>
-              <option value="W" id="opt-bot-blanc">Blanc</option>
-            </select>
-            <span
-              style="
-                position: absolute;
-                right: 14px;
-                top: 50%;
-                transform: translateY(-50%);
-                pointer-events: none;
-                color: var(--text-muted);
-                font-size: 11px;
-              "
-            >
-              ▾
-            </span>
+            <div id="bot-color-select" class="custom-select" data-value="B" style="width: 100%">
+              <div class="custom-select-trigger" style="background: var(--surface-2); justify-content: space-between">
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <span class="stone-icon stone-noir"></span>
+                  <span class="stone-label" id="bot-stone-label">Noir</span>
+                </div>
+                <span class="select-arrow">▾</span>
+              </div>
+              <div class="custom-select-dropdown">
+                <div class="custom-option selected" data-value="B">
+                  <span class="stone-icon stone-noir"></span>
+                  <span id="bot-opt-noir">Noir</span>
+                </div>
+                <div class="custom-option" data-value="W">
+                  <span class="stone-icon stone-blanc"></span>
+                  <span id="bot-opt-blanc">Blanc</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -2556,8 +2543,9 @@
       document.getElementById('lbl-bot-config-handicap').textContent = t('bot_config_handicap');
       document.getElementById('lbl-bot-config-komi').textContent = t('bot_config_komi');
       document.getElementById('btn-start-bot-game-label').textContent = t('bot_config_lancer');
-      document.getElementById('opt-bot-noir').textContent = t('couleur_noir');
-      document.getElementById('opt-bot-blanc').textContent = t('couleur_blanc');
+      document.getElementById('lbl-bot-config-taille').textContent = t('bot_config_taille');
+      document.getElementById('bot-opt-noir').textContent = t('couleur_noir');
+      document.getElementById('bot-opt-blanc').textContent = t('couleur_blanc');
 
       // Ciblage des labels de stats (Jouées, Vues, etc.)
       const labels = document.querySelectorAll('.global-stats-container div[style*="font-size: 10px"]');
@@ -3003,6 +2991,30 @@
 
       // ── Init ──
       rafraichirListeSgf();
+
+      // ── Animation du select customisé de l'IA ──
+      const botSel = document.getElementById('bot-color-select');
+      if (botSel) {
+        botSel.querySelector('.custom-select-trigger').addEventListener('click', (e) => {
+          e.stopPropagation();
+          botSel.classList.toggle('open');
+        });
+
+        botSel.querySelectorAll('.custom-option').forEach((opt) => {
+          opt.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const val = opt.dataset.value;
+            botSel.querySelectorAll('.custom-option').forEach((o) => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            botSel.dataset.value = val;
+
+            const isNoir = val === 'B';
+            botSel.querySelector('.stone-icon').className = 'stone-icon ' + (isNoir ? 'stone-noir' : 'stone-blanc');
+            botSel.querySelector('.stone-label').textContent = isNoir ? t('couleur_noir') : t('couleur_blanc');
+            botSel.classList.remove('open');
+          });
+        });
+      }
     </script>
   </body>
 </html>

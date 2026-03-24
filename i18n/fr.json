@@ -191,5 +191,7 @@
   "btn_bot_pass": "Passer",
   "btn_bot_resign": "Abandonner",
   "btn_bot_quitter": "Quitter l'IA",
-  "bot_config_taille": "Taille du goban"
+  "bot_config_taille": "Taille du goban",
+  "bot-opt-noir": "Noir",
+  "bot-opt-blanc": "Blanc"
 }

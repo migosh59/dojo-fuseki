@@ -191,5 +191,7 @@
   "btn_bot_pass": "Pass",
   "btn_bot_resign": "Resign",
   "btn_bot_quitter": "Quit AI",
-  "bot_config_taille": "Board Size"
+  "bot_config_taille": "Board Size",
+  "bot-opt-noir": "Black",
+  "bot-opt-blanc": "White"
 }

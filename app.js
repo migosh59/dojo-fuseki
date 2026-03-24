@@ -513,7 +513,8 @@ if (btnCloseSetupBot) btnCloseSetupBot.addEventListener('click', () => modalSetu
 
 if (btnStartBotGame)
   btnStartBotGame.addEventListener('click', async () => {
-    const userColor = document.getElementById('bot-player-color-select').value;
+    const userColor = document.getElementById('bot-color-select').dataset.value;
+
     const handicap = document.getElementById('bot-handicap').value;
     const komi = document.getElementById('bot-komi').value;
     const size = document.getElementById('bot-board-size').value; /* NOUVEAU */
