@@ -156,6 +156,7 @@ let prisonniersBlanc = 0;
 /* =============================================
    ÉTAT GLOBAL
 ============================================= */
+let currentBotSessionId = null;
 let goban = new WGo.Board(boardContainer, {
   width: 500,
   size: 19,
@@ -533,6 +534,7 @@ if (btnStartBotGame)
   });
 /* --- LANCEMENT DE LA PARTIE --- */
 async function lancerPartieBot(userColor, handicap, komi, size, rules, level) {
+  currentBotSessionId = 'sess_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
   arreterTout();
   document.body.classList.remove('mode-presentation');
 
@@ -592,6 +594,7 @@ async function lancerPartieBot(userColor, handicap, komi, size, rules, level) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        sessionId: currentBotSessionId /* LA CLÉ ! */,
         handicap: parseInt(handicap, 10) || 0,
         komi: parseFloat(komi) || 6.5,
         size: tailleGrille,
@@ -636,6 +639,7 @@ function executerCoupContreIA(moveGtp) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
+      sessionId: currentBotSessionId /* LA CLÉ ! */,
       couleurJoueur: couleurJoueur === 1 ? 'B' : 'W',
       coupJoueur: moveGtp,
     }),
@@ -728,8 +732,11 @@ async function terminerEtCompterPoints() {
   infoComment.innerText = window.t('bot_calcul_score');
 
   try {
-    const response = await fetch('https://bot.migaki.fr/api/score', { method: 'POST' });
-
+    const response = await fetch('https://bot.migaki.fr/api/score', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId: currentBotSessionId }) /* LA CLÉ ! */,
+    });
     /* SÉCURITÉ 1 : On vérifie si la route existe bien sur le NAS (Code 200) */
     if (!response.ok) {
       throw new Error(`Le serveur a répondu avec une erreur ${response.status} (As-tu mis à jour le NAS ?)`);
