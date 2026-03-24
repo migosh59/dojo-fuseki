@@ -686,13 +686,25 @@
       }
 
       @keyframes ordiPulse {
-        0%,
-        100% {
+        0% {
           opacity: 0;
+          box-shadow: 0 0 0 0 rgba(212, 160, 23, 0);
         }
         50% {
-          opacity: 0.35;
+          opacity: 0.5;
+          box-shadow: 0 0 20px 5px rgba(212, 160, 23, 0.3);
         }
+        100% {
+          opacity: 0;
+          box-shadow: 0 0 0 0 rgba(212, 160, 23, 0);
+        }
+      }
+
+      #goban-wrapper.ordi-pense {
+        cursor: wait;
+      }
+      #goban-wrapper.ordi-pense #goban {
+        pointer-events: none; /* Sécurité supplémentaire contre les clics fantômes */
       }
 
       #message-fin {
@@ -1832,6 +1844,28 @@
                 </div>
               </div>
             </div>
+            <div
+              id="compteur-prisonniers"
+              style="
+                display: none;
+                align-items: center;
+                gap: 12px;
+                margin-left: 15px;
+                font-family: 'Cinzel', serif;
+                font-size: 16px;
+                color: var(--text-primary);
+              "
+            >
+              <div style="display: flex; align-items: center; gap: 5px" title="Prisonniers capturés par Noir">
+                <span class="stone-icon stone-noir" style="width: 12px; height: 12px"></span>
+                <span id="score-prisonniers-noir">0</span>
+              </div>
+              <span style="color: var(--border-strong); opacity: 0.5">|</span>
+              <div style="display: flex; align-items: center; gap: 5px" title="Prisonniers capturés par Blanc">
+                <span class="stone-icon stone-blanc" style="width: 12px; height: 12px"></span>
+                <span id="score-prisonniers-blanc">0</span>
+              </div>
+            </div>
             <button
               id="btn-exploration-retour"
               style="
@@ -1937,6 +1971,25 @@
               <p id="sous-titre-fin"></p>
             </div>
             <button id="btn-suivante"></button>
+            <button
+              id="btn-rejouer-bot"
+              style="
+                display: none;
+                margin-left: auto;
+                flex-shrink: 0;
+                padding: 10px 20px;
+                border-radius: var(--radius);
+                border: none;
+                font-family: 'Cinzel', serif;
+                font-size: 14px;
+                background: var(--info);
+                color: white;
+                cursor: pointer;
+                transition: all 0.22s;
+              "
+            >
+              Rejouer l'IA
+            </button>
           </div>
         </div>
       </div>
@@ -2097,6 +2150,7 @@
         <button id="btn-close-setup-bot" class="modal-close">✕</button>
 
         <h2
+          id="lbl-bot-config-titre"
           style="
             font-family: 'Cinzel', serif;
             color: var(--gold-bright);
@@ -2119,7 +2173,9 @@
             margin-bottom: 20px;
           "
         >
-          <div class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">Couleur</div>
+          <div id="lbl-bot-config-couleur" class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">
+            Couleur
+          </div>
           <div style="position: relative; flex: 1">
             <select
               id="bot-player-color-select"
@@ -2137,8 +2193,8 @@
                 outline: none;
               "
             >
-              <option value="B">Noir</option>
-              <option value="W">Blanc</option>
+              <option value="B" id="opt-bot-noir">Noir</option>
+              <option value="W" id="opt-bot-blanc">Blanc</option>
             </select>
             <span
               style="
@@ -2166,7 +2222,58 @@
             margin-bottom: 20px;
           "
         >
-          <div class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">Handicap</div>
+          <div id="lbl-bot-config-taille" class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">
+            Taille
+          </div>
+          <div style="position: relative; flex: 1">
+            <select
+              id="bot-board-size"
+              style="
+                width: 100%;
+                appearance: none;
+                background: var(--surface-2);
+                border: 1px solid var(--border);
+                color: var(--text-primary);
+                padding: 10px 14px;
+                border-radius: var(--radius);
+                font-family: 'Crimson Pro', serif;
+                font-size: 16px;
+                cursor: pointer;
+                outline: none;
+              "
+            >
+              <option value="19">19x19</option>
+              <option value="13">13x13</option>
+              <option value="9">9x9</option>
+            </select>
+            <span
+              style="
+                position: absolute;
+                right: 14px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+                color: var(--text-muted);
+                font-size: 11px;
+              "
+            >
+              ▾
+            </span>
+          </div>
+        </div>
+        <div
+          class="modal-section"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+          "
+        >
+          <div id="lbl-bot-config-handicap" class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">
+            Handicap
+          </div>
           <div style="position: relative; flex: 1">
             <select
               id="bot-handicap"
@@ -2220,7 +2327,9 @@
             margin-bottom: 20px;
           "
         >
-          <div class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">Komi</div>
+          <div id="lbl-bot-config-komi" class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">
+            Komi
+          </div>
           <div style="position: relative; flex: 1">
             <input
               type="number"
@@ -2244,7 +2353,7 @@
 
         <div style="text-align: center; margin-top: 35px">
           <button
-            id="btn-start-bot-game"
+            id="btn-start-bot-game-label"
             class="file-btn"
             style="width: 100%; justify-content: center; font-family: 'Cinzel', serif"
           >
@@ -2441,6 +2550,15 @@
       document.querySelector('.global-stats-container h3').textContent = t('profil_stats_globales');
       document.getElementById('detail-date-title').textContent = t('profil_aujourdhui');
 
+      // ── Traductions de la modale IA ──
+      document.getElementById('lbl-bot-config-titre').textContent = t('bot_config_titre');
+      document.getElementById('lbl-bot-config-couleur').textContent = t('bot_config_couleur');
+      document.getElementById('lbl-bot-config-handicap').textContent = t('bot_config_handicap');
+      document.getElementById('lbl-bot-config-komi').textContent = t('bot_config_komi');
+      document.getElementById('btn-start-bot-game-label').textContent = t('bot_config_lancer');
+      document.getElementById('opt-bot-noir').textContent = t('couleur_noir');
+      document.getElementById('opt-bot-blanc').textContent = t('couleur_blanc');
+
       // Ciblage des labels de stats (Jouées, Vues, etc.)
       const labels = document.querySelectorAll('.global-stats-container div[style*="font-size: 10px"]');
       if (labels.length >= 5) {
@@ -2465,6 +2583,12 @@
 
       document.getElementById('info-modal-texte').placeholder = t('modal_info_placeholder');
       document.getElementById('btn-save-info').textContent = t('modal_info_sauvegarder');
+
+      /* --- TRADUCTION DES BOUTONS DU MODE BOT --- */
+      document.getElementById('btn-mode-bot').innerHTML = '🤖 &nbsp;' + t('btn_defier_bot');
+      document.getElementById('btn-bot-pass').textContent = t('btn_bot_pass');
+      document.getElementById('btn-bot-resign').textContent = t('btn_bot_resign');
+      document.getElementById('btn-bot-quitter').textContent = t('btn_bot_quitter');
 
       // ── Bouton langue ──
       const btnLang = document.getElementById('btn-lang');

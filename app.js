@@ -122,7 +122,7 @@ const btnBotQuitter = document.getElementById('btn-bot-quitter');
 
 const modalSetupBot = document.getElementById('modal-setup-bot');
 const btnCloseSetupBot = document.getElementById('btn-close-setup-bot');
-const btnStartBotGame = document.getElementById('btn-start-bot-game');
+const btnStartBotGame = document.getElementById('btn-start-bot-game-label');
 /* --- CHANGEMENT DYNAMIQUE DU KOMI SELON LE HANDICAP --- */
 const botHandicapSelect = document.getElementById('bot-handicap');
 const botKomiInput = document.getElementById('bot-komi');
@@ -139,6 +139,12 @@ if (botHandicapSelect && botKomiInput) {
     }
   });
 }
+
+const blocPrisonniers = document.getElementById('compteur-prisonniers');
+const affichagePrisonniersNoir = document.getElementById('score-prisonniers-noir');
+const affichagePrisonniersBlanc = document.getElementById('score-prisonniers-blanc');
+let prisonniersNoir = 0;
+let prisonniersBlanc = 0;
 
 /* =============================================
    ÉTAT GLOBAL
@@ -176,8 +182,8 @@ let moteurJeu = null;
 let dernierMarqueurCR = null;
 let enModeSolution = false;
 
-function reinitialiserMoteur() {
-  moteurJeu = new WGo.Game(19, 'KO');
+function reinitialiserMoteur(taille = 19) {
+  moteurJeu = new WGo.Game(taille, 'KO');
   dernierMarqueurCR = null;
   enModeSolution = false;
 }
@@ -189,12 +195,26 @@ function jouerCoupAvecCaptures(x, y, couleur) {
     dernierMarqueurCR = null;
   }
   const resultat = moteurJeu.play(x, y, couleur);
+
   if (typeof resultat === 'number') {
     goban.addObject({ x, y, c: couleur });
   } else {
     goban.addObject({ x, y, c: couleur });
-    if (resultat && resultat.length > 0) for (const cap of resultat) goban.removeObjectsAt(cap.x, cap.y);
+
+    /* C'est ici qu'on gère les captures ! */
+    if (resultat && resultat.length > 0) {
+      for (const cap of resultat) goban.removeObjectsAt(cap.x, cap.y);
+
+      /* --- MISE À JOUR DU COMPTEUR DE PRISONNIERS --- */
+      if (couleur === 1) prisonniersNoir += resultat.length;
+      if (couleur === -1) prisonniersBlanc += resultat.length;
+
+      if (affichagePrisonniersNoir) affichagePrisonniersNoir.innerText = prisonniersNoir;
+      if (affichagePrisonniersBlanc) affichagePrisonniersBlanc.innerText = prisonniersBlanc;
+      /* ---------------------------------------------- */
+    }
   }
+
   if (!enModeSolution) {
     dernierMarqueurCR = { type: 'CR', x, y };
     goban.addObject(dernierMarqueurCR);
@@ -206,6 +226,14 @@ function placerPierreSetup(x, y, couleur) {
   moteurJeu.addStone(x, y, couleur);
   goban.addObject({ x, y, c: couleur });
 }
+
+let passesConsecutifs = 0; /* Compteur pour détecter la fin de partie */
+
+const btnRejouerBot = document.getElementById('btn-rejouer-bot');
+if (btnRejouerBot)
+  btnRejouerBot.addEventListener('click', () => {
+    btnStartBotGame.click(); /* Simule un clic sur "Lancer le combat" avec les mêmes réglages ! */
+  });
 
 /* =============================================
    TOAST NOTIFICATIONS
@@ -418,6 +446,7 @@ function arreterTout() {
     clearTimeout(timerOrdi);
     timerOrdi = null;
   }
+  if (blocPrisonniers) blocPrisonniers.style.display = 'none';
   modePresentationActif = false;
   modeExerciceActif = false;
   goban.removeAllObjects();
@@ -457,7 +486,8 @@ function extraireVariations(noeud, chemin) {
 
 function wgoToGtp(x, y) {
   const letters = 'ABCDEFGHJKLMNOPQRST';
-  const num = 19 - y;
+  /* La taille dynamique remplace le 19 codé en dur */
+  const num = moteurJeu.size - y;
   return letters[x] + num;
 }
 
@@ -467,7 +497,8 @@ function gtpToWgo(gtpMove) {
   const letter = gtpMove.charAt(0).toUpperCase();
   const num = parseInt(gtpMove.substring(1));
   const x = letters.indexOf(letter);
-  const y = 19 - num;
+  /* Idem ici pour l'affichage du coup de l'IA */
+  const y = moteurJeu.size - num;
   return { x, y };
 }
 
@@ -485,13 +516,13 @@ if (btnStartBotGame)
     const userColor = document.getElementById('bot-player-color-select').value;
     const handicap = document.getElementById('bot-handicap').value;
     const komi = document.getElementById('bot-komi').value;
+    const size = document.getElementById('bot-board-size').value; /* NOUVEAU */
 
     modalSetupBot.classList.remove('open');
-    await lancerPartieBot(userColor, handicap, komi);
+    await lancerPartieBot(userColor, handicap, komi, size); /* NOUVEAU */
   });
-
 /* --- LANCEMENT DE LA PARTIE --- */
-async function lancerPartieBot(userColor, handicap, komi) {
+async function lancerPartieBot(userColor, handicap, komi, size) {
   arreterTout();
   document.body.classList.remove('mode-presentation');
 
@@ -500,14 +531,30 @@ async function lancerPartieBot(userColor, handicap, komi) {
   document.getElementById('colonne-droite').style.display = 'none';
   document.getElementById('goban-wrapper').style.display = 'flex';
 
-  redimensionnerGoban(calculerTailleGoban());
-  reinitialiserMoteur();
+  /* --- NOUVEAU : RECONSTRUCTION DU GOBAN --- */
+  const tailleGrille = parseInt(size, 10) || 19;
+  boardContainer.innerHTML = ''; /* On vide le HTML */
+  goban = new WGo.Board(boardContainer, {
+    width: calculerTailleGoban(),
+    size: tailleGrille,
+    background: '',
+  });
+  goban.addEventListener('click', gererClicGoban); /* On n'oublie pas de rebrancher le cerveau ! */
+
+  reinitialiserMoteur(tailleGrille);
   goban.removeAllObjects();
+  /* ------------------------------------------ */
 
   modeBotActif = true;
+  prisonniersNoir = 0;
+  prisonniersBlanc = 0;
+  if (affichagePrisonniersNoir) affichagePrisonniersNoir.innerText = '0';
+  if (affichagePrisonniersBlanc) affichagePrisonniersBlanc.innerText = '0';
+  if (blocPrisonniers) blocPrisonniers.style.display = 'flex';
+
   infoVariation.style.display = 'block';
-  infoNom.innerText = '🤖 Défier GNU Go';
-  infoComment.innerText = 'Configuration du plateau en cours...';
+  infoNom.innerText = window.t('bot_label_nom');
+  infoComment.innerText = window.t('bot_attente_config');
 
   actionsExercice.style.display = 'block';
   document.getElementById('compteur-vies').style.display = 'none';
@@ -523,11 +570,11 @@ async function lancerPartieBot(userColor, handicap, komi) {
 
   /* Attribution des couleurs */
   if (userColor === 'W') {
-    couleurJoueur = -1; // Blanc
-    couleurOrdi = 1; // Noir
+    couleurJoueur = -1;
+    couleurOrdi = 1;
   } else {
-    couleurJoueur = 1; // Noir
-    couleurOrdi = -1; // Blanc
+    couleurJoueur = 1;
+    couleurOrdi = -1;
   }
 
   try {
@@ -537,13 +584,13 @@ async function lancerPartieBot(userColor, handicap, komi) {
       body: JSON.stringify({
         handicap: parseInt(handicap, 10) || 0,
         komi: parseFloat(komi) || 6.5,
+        size: tailleGrille /* On envoie la taille au serveur ! */,
       }),
     });
 
     const dataReset = await reponseServeur.json();
-    afficherToast("L'IA est prête !", 'correct');
+    afficherToast(window.t('bot_toast_pret'), 'correct');
 
-    /* S'il y a du handicap, on place les pierres Noires sur le Goban */
     if (dataReset.handicapStones && dataReset.handicapStones.length > 0) {
       dataReset.handicapStones.forEach((coupGtp) => {
         const coords = gtpToWgo(coupGtp);
@@ -551,18 +598,17 @@ async function lancerPartieBot(userColor, handicap, komi) {
       });
     }
 
-    /* Gestion du premier tour */
     const valHandicap = parseInt(handicap, 10) || 0;
     const botJoueEnPremier = (userColor === 'W' && valHandicap < 2) || (userColor === 'B' && valHandicap >= 2);
 
     if (botJoueEnPremier) {
-      infoComment.innerText = 'GNU Go réfléchit à son premier coup...';
+      infoComment.innerText = window.t('bot_ordi_pense');
       executerCoupContreIA('pass');
     } else {
-      infoComment.innerText = `Le bot est prêt. Tu as les ${userColor === 'B' ? 'Noirs' : 'Blancs'}, à toi de jouer !`;
+      const colName = userColor === 'B' ? window.t('couleur_noir') : window.t('couleur_blanc');
+      infoComment.innerText = window.t('bot_pret_joueur').replace('{color}', colName);
     }
   } catch (e) {
-    /* Le fameux console.error qui nous a manqué ! */
     console.error('Erreur critique IA (lancement) :', e);
     infoComment.innerText = 'Erreur de communication avec le NAS.';
     afficherToast('Le serveur NAS est inaccessible', 'erreur');
@@ -583,21 +629,34 @@ function executerCoupContreIA(moveGtp) {
   })
     .then((reponse) => reponse.json())
     .then((data) => {
-      if (data.coup && data.coup.toLowerCase() !== 'pass' && data.coup.toLowerCase() !== 'resign') {
+      if (data.coup && data.coup.toLowerCase() === 'pass') {
+        passesConsecutifs++;
+        afficherToast(window.t('bot_passe'), 'warn');
+
+        if (passesConsecutifs >= 2) {
+          terminerEtCompterPoints();
+          return;
+        }
+        infoComment.innerText = window.t('bot_tour_joueur');
+      } else if (data.coup && data.coup.toLowerCase() === 'resign') {
+        afficherToast(window.t('bot_abandonne'), 'correct');
+        infoComment.innerText = window.t('bot_abandonne');
+        /* On arrête la partie si le bot abandonne */
+        modeBotActif = false;
+        document.getElementById('colonne-droite').style.display = 'flex';
+      } else {
+        passesConsecutifs = 0; /* Reset si un coup est joué */
+
+        /* --- LE BRAS MÉCANIQUE EST DE RETOUR --- */
         const botCoords = gtpToWgo(data.coup);
         if (botCoords) jouerCoupAvecCaptures(botCoords.x, botCoords.y, couleurOrdi);
-      } else if (data.coup && data.coup.toLowerCase() === 'resign') {
-        afficherToast("L'ordinateur abandonne ! Tu as gagné !", 'correct');
-      } else {
-        afficherToast("L'ordinateur passe son tour.", 'correct');
+        infoComment.innerText = window.t('bot_tour_joueur');
+        /* ---------------------------------------- */
       }
-
-      /* On remet le texte d'attente pour le joueur */
-      infoComment.innerText = 'À toi de jouer !';
     })
     .catch((err) => {
       console.error('Erreur Fetch IA (en cours de jeu) :', err);
-      afficherToast("L'IA ne répond plus...", 'erreur');
+      afficherToast(window.t('erreur_nas_inaccessible') || "L'IA ne répond plus...", 'erreur');
     })
     .finally(() => gobanWrapper.classList.remove('ordi-pense'));
 }
@@ -606,9 +665,13 @@ function executerCoupContreIA(moveGtp) {
 if (btnBotPass)
   btnBotPass.addEventListener('click', () => {
     if (!modeBotActif) return;
-    afficherToast('Tu as passé ton tour.', 'warn');
-    infoComment.innerText = 'Tu as passé. GNU Go réfléchit...';
-    executerCoupContreIA('pass');
+    passesConsecutifs++;
+    if (passesConsecutifs >= 2) {
+      terminerEtCompterPoints();
+    } else {
+      /* On informe l'IA que tu as passé */
+      executerCoupContreIA('pass');
+    }
   });
 
 if (btnBotResign)
@@ -627,7 +690,17 @@ if (btnBotQuitter)
     arreterTout();
     document.getElementById('colonne-droite').style.display = 'flex'; /* On restaure la liste SGF */
 
-    if (window._sgfActifId) {
+    if (window._sgfActifId && kifu) {
+      /* --- NOUVEAU : Restauration de la taille d'origine --- */
+      boardContainer.innerHTML = '';
+      goban = new WGo.Board(boardContainer, {
+        width: calculerTailleGoban(),
+        size: kifu.info.size || 19,
+        background: '',
+      });
+      goban.addEventListener('click', gererClicGoban);
+      /* ----------------------------------------------------- */
+
       lancerExercice();
     } else {
       document.getElementById('goban-wrapper').style.display = 'none';
@@ -635,6 +708,55 @@ if (btnBotQuitter)
       document.getElementById('message-accueil').style.display = 'block';
     }
   });
+
+async function terminerEtCompterPoints() {
+  modeBotActif = false;
+  gobanWrapper.classList.add('ordi-pense');
+  infoComment.innerText = window.t('bot_calcul_score');
+
+  try {
+    const response = await fetch('https://bot.migaki.fr/api/score', { method: 'POST' });
+
+    /* SÉCURITÉ 1 : On vérifie si la route existe bien sur le NAS (Code 200) */
+    if (!response.ok) {
+      throw new Error(`Le serveur a répondu avec une erreur ${response.status} (As-tu mis à jour le NAS ?)`);
+    }
+
+    const data = await response.json();
+
+    messageFin.className = 'fin-visu';
+    finIcone.innerText = '🏁';
+    titreFin.innerText = window.t('bot_partie_terminee');
+
+    let res = data.score || '';
+
+    /* SÉCURITÉ 2 : Si GNU Go n'a pas réussi à compter */
+    if (res.includes('?')) {
+      res = 'Score indéterminé';
+    } else {
+      if (res.startsWith('W+')) res = window.t('couleur_blanc') + ' + ' + res.substring(2);
+      if (res.startsWith('B+')) res = window.t('couleur_noir') + ' + ' + res.substring(2);
+    }
+
+    const detail = ` (${window.t('couleur_noir')}: ${data.capturesBlack || 0} | ${window.t('couleur_blanc')}: ${data.capturesWhite || 0})`;
+
+    sousTitreFin.innerText = res + detail;
+    messageFin.style.display = 'block';
+    infoComment.innerText = window.t('bot_fin_rencontre');
+
+    /* On cache le bouton "Suivant" classique et on affiche "Rejouer" */
+    if (btnSuivante) btnSuivante.style.display = 'none';
+    if (btnRejouerBot) btnRejouerBot.style.display = 'block';
+
+    sousTitreFin.innerText = res + detail;
+    messageFin.style.display = 'block';
+  } catch (e) {
+    console.error('Erreur score détaillée :', e.message || e);
+    afficherToast('Erreur NAS (Voir console F12)', 'erreur');
+  } finally {
+    gobanWrapper.classList.remove('ordi-pense');
+  }
+}
 
 /* =============================================
    ALGORITHME 80 / 15 / 5
@@ -887,6 +1009,9 @@ function relancerSequence(variationForcee = null) {
   }
   /* ------------------------ */
 
+  if (btnSuivante) btnSuivante.style.display = 'block';
+  if (btnRejouerBot) btnRejouerBot.style.display = 'none';
+
   reinitialiserMoteur();
   if (kifu.root.setup) for (const s of kifu.root.setup) placerPierreSetup(s.x, s.y, s.c);
 
@@ -1043,9 +1168,8 @@ function terminerVariation() {
 /* =============================================
    GESTION DES CLICS JOUEUR
 ============================================= */
-goban.addEventListener('click', function (x, y) {
+function gererClicGoban(x, y) {
   if (modeExplorationActif) {
-    /* On cherche si le clic correspond à un enfant possible (une lettre) */
     const enfantChoisi = noeudCourant.children.find((e) => e.move && e.move.x === x && e.move.y === y);
     if (enfantChoisi) {
       jouerCoupAvecCaptures(x, y, enfantChoisi.move.c);
@@ -1053,26 +1177,21 @@ goban.addEventListener('click', function (x, y) {
       afficherCoupsPossibles();
       afficherCommentaire(noeudCourant);
     }
-    return; /* On s'arrête là pour ce clic ! */
+    return;
   }
+
   /* --- INTERCEPTION DU MODE BOT --- */
   if (modeBotActif) {
     if (gobanWrapper.classList.contains('ordi-pense')) return;
-
     if (moteurJeu && moteurJeu.position.get(x, y) !== 0) return;
     jouerCoupAvecCaptures(x, y, couleurJoueur);
     executerCoupContreIA(wgoToGtp(x, y));
     return;
   }
-  /* ------------------------------------------ */
-  /* ------------------------------------------ */
+
   if (!modeExerciceActif || !noeudCourant) return;
   if (noeudCourant.children.length > 0 && noeudCourant.children[0].move.c !== couleurJoueur) return;
-
-  /* Si la case est déjà occupée par une pierre (état différent de 0), on ignore le clic ! */
-  if (moteurJeu && moteurJeu.position.get(x, y) !== 0) {
-    return;
-  }
+  if (moteurJeu && moteurJeu.position.get(x, y) !== 0) return;
 
   const coupValide = noeudCourant.children.find(
     (e) => e.move && e.move.x === x && e.move.y === y && e.move.c === couleurJoueur
@@ -1082,17 +1201,12 @@ goban.addEventListener('click', function (x, y) {
     jouerCoupAvecCaptures(x, y, couleurJoueur);
     noeudCourant = coupValide;
 
-    /* --- CORRECTION DU BUG DE BIFURCATION --- */
-    /* Si le coup joué ne fait pas partie de la variation prévue, 
-       on met à jour la variation courante pour suivre le choix du joueur ! */
     if (!variationCourante || !variationCourante.includes(noeudCourant)) {
       const variationsPossibles = toutesLesVariations.filter((v) => v.includes(noeudCourant));
       if (variationsPossibles.length > 0) {
-        // On recible l'exercice sur l'une des variations qui passe par ce nouveau chemin
         variationCourante = variationsPossibles[Math.floor(Math.random() * variationsPossibles.length)];
       }
     }
-    /* ---------------------------------------- */
 
     afficherCommentaire(noeudCourant);
     if (noeudCourant.children.length > 0) verifierTourOrdi();
@@ -1101,7 +1215,6 @@ goban.addEventListener('click', function (x, y) {
     compteurErreurs++;
     animerPerteVie();
     mettreAJourVies();
-    /* Toast du compteur d'erreurs */
     afficherToast(
       window.t ? window.t('toast_erreur_compteur', { count: compteurErreurs }) : `Erreur ${compteurErreurs}/3`,
       'erreur'
@@ -1113,7 +1226,10 @@ goban.addEventListener('click', function (x, y) {
       if (compteurErreurs >= 3 && modeExerciceActif) montrerSolution();
     }, 600);
   }
-});
+}
+
+/* Attachement initial */
+goban.addEventListener('click', gererClicGoban);
 
 /* =============================================
    SOLUTION ANIMÉE
@@ -1285,6 +1401,18 @@ window.addEventListener('sgf-charge', (e) => {
 
 function chargerContenuSgf(contenu, nom, sgfId, progressionServeur) {
   kifu = WGo.Kifu.fromSgf(contenu);
+
+  /* --- NOUVEAU : On reconstruit le goban à la taille du kifu --- */
+  const container = document.getElementById('goban');
+  container.innerHTML = '';
+  goban = new WGo.Board(container, {
+    width: calculerTailleGoban(),
+    size: kifu.info.size || 19,
+    background: '',
+  });
+  goban.addEventListener('click', gererClicGoban);
+  /* ------------------------------------------------------------- */
+
   toutesLesVariations = [];
   extraireVariations(kifu.root, []);
   chargerDonnees();

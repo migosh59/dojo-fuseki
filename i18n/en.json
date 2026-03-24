@@ -167,5 +167,29 @@
   "profil_label_rouges": "Failed Sequences",
 
   "modal_info_placeholder": "Add a description, your sources, the creator...",
-  "modal_info_sauvegarder": "Save"
+  "modal_info_sauvegarder": "Save",
+
+  "bot_config_titre": "AI Configuration",
+  "bot_config_couleur": "Color",
+  "bot_config_handicap": "Handicap",
+  "bot_config_komi": "Komi",
+  "bot_config_lancer": "Start Battle",
+  "bot_label_nom": "🤖 Challenge GNU Go",
+  "bot_attente_config": "Board configuration...",
+  "bot_attente_IA": "GNU Go is thinking...",
+  "bot_pret_joueur": "Bot is ready. You are {color}, your move!",
+  "bot_ordi_pense": "GNU Go is thinking about its first move...",
+  "bot_tour_joueur": "Your move!",
+  "bot_toast_pret": "AI is ready!",
+  "bot_abandonne": "Computer resigns! You win!",
+  "bot_passe": "Computer passes its turn.",
+  "bot_confirm_resign": "Are you sure you want to resign against the machine?",
+  "bot_calcul_score": "Calculating final score...",
+  "bot_partie_terminee": "Game Over!",
+  "bot_fin_rencontre": "End of the match.",
+  "btn_defier_bot": "Challenge GNU Go",
+  "btn_bot_pass": "Pass",
+  "btn_bot_resign": "Resign",
+  "btn_bot_quitter": "Quit AI",
+  "bot_config_taille": "Board Size"
 }

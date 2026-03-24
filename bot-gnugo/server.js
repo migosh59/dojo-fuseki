@@ -28,12 +28,12 @@ function envoyerCommandeGTP(commande) {
 /* --- ROUTES API --- */
 
 app.post('/api/reset', async (req, res) => {
-  /* On récupère tes paramètres (avec des valeurs par défaut au cas où) */
   const handicap = parseInt(req.body.handicap) || 0;
   const komi = parseFloat(req.body.komi) || 6.5;
+  const size = parseInt(req.body.size) || 19; /* NOUVEAU : Récupération de la taille */
 
-  /* 1. On nettoie le plateau */
-  await envoyerCommandeGTP('boardsize 19');
+  /* 1. On nettoie le plateau ET on applique la taille */
+  await envoyerCommandeGTP(`boardsize ${size}`);
   await envoyerCommandeGTP('clear_board');
 
   /* 2. On applique le Komi */
@@ -43,14 +43,12 @@ app.post('/api/reset', async (req, res) => {
   let pierresHandicap = [];
   if (handicap >= 2 && handicap <= 9) {
     const rep = await envoyerCommandeGTP(`fixed_handicap ${handicap}`);
-    /* La réponse ressemble à "= D4 Q16 D16", on nettoie pour avoir un tableau ['D4', 'Q16', 'D16'] */
     const points = rep.replace('=', '').trim().split(/\s+/);
     if (points.length > 0 && points[0] !== '') {
       pierresHandicap = points;
     }
   }
 
-  /* On renvoie le feu vert à Migaki avec la liste des pierres placées ! */
   res.json({ status: 'ok', handicapStones: pierresHandicap });
 });
 
@@ -70,4 +68,22 @@ app.post('/api/play', async (req, res) => {
 
 app.listen(3000, '0.0.0.0', () => {
   console.log('Serveur GNU Go prêt et en écoute sur le port 3000 !');
+});
+
+/* --- NOUVELLE ROUTE : CALCUL DU SCORE ET CAPTURES --- */
+app.post('/api/score', async (req, res) => {
+  /* 1. Score final (ex: B+10.5) */
+  const score = await envoyerCommandeGTP('final_score');
+
+  /* 2. Pierres capturées par Noir (prisonniers blancs) */
+  const capB = await envoyerCommandeGTP('captures black');
+
+  /* 3. Pierres capturées par Blanc (prisonniers noirs) */
+  const capW = await envoyerCommandeGTP('captures white');
+
+  res.json({
+    score: score.replace('=', '').trim(),
+    capturesBlack: capB.replace('=', '').trim(),
+    capturesWhite: capW.replace('=', '').trim(),
+  });
 });
