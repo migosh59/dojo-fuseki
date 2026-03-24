@@ -2169,16 +2169,19 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start;
             margin-bottom: 20px;
           "
         >
           <div id="lbl-bot-config-couleur" class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">
             Couleur
           </div>
-          <div style="position: relative; flex: 1">
+          <div style="position: relative; width: 140px">
             <div id="bot-color-select" class="custom-select" data-value="B" style="width: 100%">
-              <div class="custom-select-trigger" style="background: var(--surface-2); justify-content: space-between">
+              <div
+                class="custom-select-trigger"
+                style="background: var(--surface-2); justify-content: space-between; width: 100%"
+              >
                 <div style="display: flex; align-items: center; gap: 8px">
                   <span class="stone-icon stone-noir"></span>
                   <span class="stone-label" id="bot-stone-label">Noir</span>
@@ -2205,14 +2208,14 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start;
             margin-bottom: 20px;
           "
         >
           <div id="lbl-bot-config-taille" class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">
             Taille
           </div>
-          <div style="position: relative; flex: 1">
+          <div style="position: relative; width: 140px">
             <select
               id="bot-board-size"
               style="
@@ -2248,20 +2251,21 @@
             </span>
           </div>
         </div>
+
         <div
           class="modal-section"
           style="
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start;
             margin-bottom: 20px;
           "
         >
           <div id="lbl-bot-config-handicap" class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">
             Handicap
           </div>
-          <div style="position: relative; flex: 1">
+          <div style="position: relative; width: 140px">
             <select
               id="bot-handicap"
               style="
@@ -2310,14 +2314,14 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start;
             margin-bottom: 20px;
           "
         >
           <div id="lbl-bot-config-komi" class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">
             Komi
           </div>
-          <div style="position: relative; flex: 1">
+          <div style="position: relative; width: 140px">
             <input
               type="number"
               id="bot-komi"
