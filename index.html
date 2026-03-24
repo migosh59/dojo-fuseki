@@ -14,10 +14,7 @@
     />
     <meta name="author" content="Mickaël" />
 
-    <meta
-      property="og:title"
-      content="磨き Migaki — Entraînement au jeu de Go"
-    />
+    <meta property="og:title" content="磨き Migaki — Entraînement au jeu de Go" />
     <meta
       property="og:description"
       content="Améliorez vos ouvertures au jeu de Go grâce à la répétition espacée sur vos propres fichiers SGF."
@@ -122,16 +119,8 @@
         position: fixed;
         inset: 0;
         background:
-          radial-gradient(
-            ellipse at 15% 40%,
-            rgba(139, 105, 20, 0.07) 0%,
-            transparent 55%
-          ),
-          radial-gradient(
-            ellipse at 85% 15%,
-            rgba(92, 68, 9, 0.05) 0%,
-            transparent 50%
-          ),
+          radial-gradient(ellipse at 15% 40%, rgba(139, 105, 20, 0.07) 0%, transparent 55%),
+          radial-gradient(ellipse at 85% 15%, rgba(92, 68, 9, 0.05) 0%, transparent 50%),
           repeating-linear-gradient(
             0deg,
             transparent,
@@ -313,12 +302,7 @@
         transform: translateX(-50%);
         width: 80px;
         height: 2px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--gold),
-          transparent
-        );
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
       }
 
       /* =============================================
@@ -770,11 +754,7 @@
       }
 
       .fin-parfaite {
-        background: linear-gradient(
-          135deg,
-          rgba(74, 140, 63, 0.22),
-          rgba(74, 140, 63, 0.08)
-        );
+        background: linear-gradient(135deg, rgba(74, 140, 63, 0.22), rgba(74, 140, 63, 0.08));
         border: 1px solid rgba(74, 140, 63, 0.42);
       }
       .fin-parfaite h2 {
@@ -786,11 +766,7 @@
       }
 
       .fin-erreurs {
-        background: linear-gradient(
-          135deg,
-          rgba(184, 115, 51, 0.22),
-          rgba(184, 115, 51, 0.08)
-        );
+        background: linear-gradient(135deg, rgba(184, 115, 51, 0.22), rgba(184, 115, 51, 0.08));
         border: 1px solid rgba(184, 115, 51, 0.42);
       }
       .fin-erreurs h2 {
@@ -802,11 +778,7 @@
       }
 
       .fin-echec {
-        background: linear-gradient(
-          135deg,
-          rgba(140, 48, 48, 0.22),
-          rgba(140, 48, 48, 0.08)
-        );
+        background: linear-gradient(135deg, rgba(140, 48, 48, 0.22), rgba(140, 48, 48, 0.08));
         border: 1px solid rgba(140, 48, 48, 0.42);
       }
       .fin-echec h2 {
@@ -818,11 +790,7 @@
       }
 
       .fin-visu {
-        background: linear-gradient(
-          135deg,
-          rgba(44, 96, 128, 0.22),
-          rgba(44, 96, 128, 0.08)
-        );
+        background: linear-gradient(135deg, rgba(44, 96, 128, 0.22), rgba(44, 96, 128, 0.08));
         border: 1px solid rgba(44, 96, 128, 0.42);
       }
       .fin-visu h2 {
@@ -1794,29 +1762,12 @@
       </div>
 
       <div class="header-actions">
-        <button
-          id="btn-profil"
-          class="btn-header"
-          title="Mon Profil"
-          aria-label="Mon Profil"
-          style="display: none"
-        >
+        <button id="btn-profil" class="btn-header" title="Mon Profil" aria-label="Mon Profil" style="display: none">
           📊
         </button>
         <button id="btn-logout" class="btn-header"></button>
-        <button
-          id="btn-lang"
-          class="btn-header"
-          aria-label="Changer de langue"
-        ></button>
-        <button
-          id="btn-theme"
-          class="btn-header"
-          title="Changer de thème"
-          aria-label="Changer de thème"
-        >
-          ☀️
-        </button>
+        <button id="btn-lang" class="btn-header" aria-label="Changer de langue"></button>
+        <button id="btn-theme" class="btn-header" title="Changer de thème" aria-label="Changer de thème">☀️</button>
       </div>
     </header>
 
@@ -1831,13 +1782,8 @@
           <div id="file-name-display"></div>
         </div>
 
-        <div
-          id="message-accueil"
-          style="text-align: center; padding: 60px 32px; max-width: 480px"
-        >
-          <div style="font-size: 56px; margin-bottom: 20px; opacity: 0.4">
-            ⬡
-          </div>
+        <div id="message-accueil" style="text-align: center; padding: 60px 32px; max-width: 480px">
+          <div style="font-size: 56px; margin-bottom: 20px; opacity: 0.4">⬡</div>
           <div
             id="accueil-titre"
             style="
@@ -1850,12 +1796,7 @@
           ></div>
           <div
             id="accueil-sous-titre"
-            style="
-              font-style: italic;
-              color: var(--text-muted);
-              font-size: 16px;
-              line-height: 1.7;
-            "
+            style="font-style: italic; color: var(--text-muted); font-size: 16px; line-height: 1.7"
           ></div>
         </div>
 
@@ -1874,11 +1815,7 @@
         <div id="actions-exercice">
           <div id="barre-controles">
             <span id="camp-label"></span>
-            <div
-              id="select-couleur-joueur"
-              class="custom-select"
-              data-value="1"
-            >
+            <div id="select-couleur-joueur" class="custom-select" data-value="1">
               <div class="custom-select-trigger">
                 <span class="stone-icon stone-noir"></span>
                 <span class="stone-label" id="stone-label-noir"></span>
@@ -1935,6 +1872,58 @@
               <div class="vie" id="vie-2">♥</div>
               <div class="vie" id="vie-3">♥</div>
             </div>
+            <button
+              id="btn-bot-pass"
+              style="
+                display: none;
+                padding: 7px 12px;
+                font-family: 'Cinzel', serif;
+                font-size: 13px;
+                background: transparent;
+                border: 1px solid var(--border-strong);
+                border-radius: var(--radius);
+                color: var(--text-secondary);
+                cursor: pointer;
+                transition: all 0.2s;
+              "
+            >
+              Passer
+            </button>
+            <button
+              id="btn-bot-resign"
+              style="
+                display: none;
+                padding: 7px 12px;
+                font-family: 'Cinzel', serif;
+                font-size: 13px;
+                background: rgba(140, 48, 48, 0.1);
+                border: 1px solid rgba(140, 48, 48, 0.4);
+                border-radius: var(--radius);
+                color: #e08080;
+                cursor: pointer;
+                transition: all 0.2s;
+              "
+            >
+              Abandonner
+            </button>
+            <button
+              id="btn-bot-quitter"
+              style="
+                display: none;
+                padding: 7px 12px;
+                font-family: 'Cinzel', serif;
+                font-size: 13px;
+                background: rgba(212, 160, 23, 0.1);
+                border: 1px solid rgba(212, 160, 23, 0.4);
+                border-radius: var(--radius);
+                color: var(--gold);
+                cursor: pointer;
+                transition: all 0.2s;
+                margin-left: auto;
+              "
+            >
+              Quitter l'IA
+            </button>
             <button id="btn-son">🔊</button>
             <button id="btn-solution"></button>
           </div>
@@ -1958,12 +1947,7 @@
             <span class="panel-title" id="panel-sgf-titre"></span>
             <label class="btn-upload" id="label-upload">
               ＋
-              <input
-                type="file"
-                id="sgf-upload"
-                accept=".sgf"
-                style="display: none"
-              />
+              <input type="file" id="sgf-upload" accept=".sgf" style="display: none" />
             </label>
           </div>
           <div id="liste-sgf">
@@ -1971,47 +1955,31 @@
           </div>
         </div>
 
-        <div id="boutons-action">
-          <button
-            id="btn-mode-presentation"
-            class="btn-action"
-            disabled
-          ></button>
-
-          <button id="btn-mode-exploration" class="btn-action" disabled>
+        <div id="boutons-action" style="flex-wrap: wrap; gap: 10px">
+          <button id="btn-mode-presentation" class="btn-action" style="flex: 1 1 40%" disabled></button>
+          <button id="btn-mode-exploration" class="btn-action" style="flex: 1 1 40%" disabled>
             🧭 &nbsp;Exploration
+          </button>
+
+          <button
+            id="btn-mode-bot"
+            class="file-btn"
+            style="flex: 1 1 100%; justify-content: center; padding: 12px; font-family: 'Cinzel', serif"
+          >
+            🤖 &nbsp;Défier GNU Go
           </button>
         </div>
 
         <div class="panel">
           <div class="panel-header">
             <span class="panel-title" id="panel-progression-titre"></span>
-            <button
-              id="btn-reset"
-              class="btn-reset-stats"
-              title="Réinitialiser les statistiques"
-              disabled
-            >
-              ↺
-            </button>
+            <button id="btn-reset" class="btn-reset-stats" title="Réinitialiser les statistiques" disabled>↺</button>
           </div>
           <div id="bloc-statistiques">
             <div id="barre-progression-globale">
-              <div
-                class="prog-segment prog-vert"
-                id="prog-vert"
-                style="width: 0%"
-              ></div>
-              <div
-                class="prog-segment prog-orange"
-                id="prog-orange"
-                style="width: 0%"
-              ></div>
-              <div
-                class="prog-segment prog-rouge"
-                id="prog-rouge"
-                style="width: 0%"
-              ></div>
+              <div class="prog-segment prog-vert" id="prog-vert" style="width: 0%"></div>
+              <div class="prog-segment prog-orange" id="prog-orange" style="width: 0%"></div>
+              <div class="prog-segment prog-rouge" id="prog-rouge" style="width: 0%"></div>
             </div>
             <div id="stats-grid">
               <div class="stat-card s-gris">
@@ -2041,10 +2009,7 @@
         <div class="panel" id="panel-variations">
           <div class="panel-header">
             <span class="panel-title" id="panel-variations-titre"></span>
-            <span
-              id="nb-variations"
-              style="font-size: 11px; color: var(--text-muted)"
-            ></span>
+            <span id="nb-variations" style="font-size: 11px; color: var(--text-muted)"></span>
           </div>
           <div class="table-container">
             <table id="table-variations">
@@ -2062,27 +2027,16 @@
 
         <div class="footer-legales">
           <a href="./aide.html" id="lien-aide">Guide du Dojo</a>
-          <span style="color: var(--text-muted); opacity: 0.5; margin: 0 8px"
-            >|</span
-          >
-          <a href="./creer-sgf.html" id="lien-creer-sgf"
-            >Où trouver des séquences ?</a
-          >
-          <span style="color: var(--text-muted); opacity: 0.5; margin: 0 8px"
-            >|</span
-          >
-          <a href="./legales.html" id="lien-legales"
-            >Mentions Légales & Confidentialité</a
-          >
+          <span style="color: var(--text-muted); opacity: 0.5; margin: 0 8px">|</span>
+          <a href="./creer-sgf.html" id="lien-creer-sgf">Où trouver des séquences ?</a>
+          <span style="color: var(--text-muted); opacity: 0.5; margin: 0 8px">|</span>
+          <a href="./legales.html" id="lien-legales">Mentions Légales & Confidentialité</a>
         </div>
       </div>
     </div>
 
     <div id="modal-info-sgf" class="modal-overlay">
-      <div
-        class="modal-content"
-        style="max-width: 500px; height: auto; min-height: 250px; padding: 30px"
-      >
+      <div class="modal-content" style="max-width: 500px; height: auto; min-height: 250px; padding: 30px">
         <button id="btn-close-info" class="modal-close">✕</button>
         <h2
           id="info-modal-titre"
@@ -2125,67 +2079,214 @@
         </div>
       </div>
     </div>
+
+    <div id="modal-setup-bot" class="modal-overlay">
+      <div
+        class="modal-content"
+        style="
+          position: relative;
+          max-width: 380px;
+          height: auto;
+          padding: 30px;
+          border: 1px solid var(--border);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow);
+          background: var(--surface-1);
+        "
+      >
+        <button id="btn-close-setup-bot" class="modal-close">✕</button>
+
+        <h2
+          style="
+            font-family: 'Cinzel', serif;
+            color: var(--gold-bright);
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 20px;
+            text-align: center;
+          "
+        >
+          Configuration
+        </h2>
+
+        <div
+          class="modal-section"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+          "
+        >
+          <div class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">Couleur</div>
+          <div style="position: relative; flex: 1">
+            <select
+              id="bot-player-color-select"
+              style="
+                width: 100%;
+                appearance: none;
+                background: var(--surface-2);
+                border: 1px solid var(--border);
+                color: var(--text-primary);
+                padding: 10px 14px;
+                border-radius: var(--radius);
+                font-family: 'Crimson Pro', serif;
+                font-size: 16px;
+                cursor: pointer;
+                outline: none;
+              "
+            >
+              <option value="B">Noir</option>
+              <option value="W">Blanc</option>
+            </select>
+            <span
+              style="
+                position: absolute;
+                right: 14px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+                color: var(--text-muted);
+                font-size: 11px;
+              "
+            >
+              ▾
+            </span>
+          </div>
+        </div>
+
+        <div
+          class="modal-section"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+          "
+        >
+          <div class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">Handicap</div>
+          <div style="position: relative; flex: 1">
+            <select
+              id="bot-handicap"
+              style="
+                width: 100%;
+                appearance: none;
+                background: var(--surface-2);
+                border: 1px solid var(--border);
+                color: var(--text-primary);
+                padding: 10px 14px;
+                border-radius: var(--radius);
+                font-family: 'Crimson Pro', serif;
+                font-size: 16px;
+                cursor: pointer;
+                outline: none;
+              "
+            >
+              <option value="0">0</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+            </select>
+            <span
+              style="
+                position: absolute;
+                right: 14px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+                color: var(--text-muted);
+                font-size: 11px;
+              "
+            >
+              ▾
+            </span>
+          </div>
+        </div>
+
+        <div
+          class="modal-section"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+          "
+        >
+          <div class="modal-section-title" style="flex-basis: 130px; margin-bottom: 0">Komi</div>
+          <div style="position: relative; flex: 1">
+            <input
+              type="number"
+              id="bot-komi"
+              step="0.5"
+              value="6.5"
+              style="
+                width: 100%;
+                background: var(--surface-2);
+                border: 1px solid var(--border);
+                color: var(--text-primary);
+                padding: 10px 14px;
+                border-radius: var(--radius);
+                font-family: 'Crimson Pro', serif;
+                font-size: 16px;
+                outline: none;
+              "
+            />
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 35px">
+          <button
+            id="btn-start-bot-game"
+            class="file-btn"
+            style="width: 100%; justify-content: center; font-family: 'Cinzel', serif"
+          >
+            Lancer le combat
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div id="modal-profil" class="modal-overlay">
       <div class="modal-content">
         <button id="btn-close-profil" class="modal-close">✕</button>
         <div class="profil-layout">
           <div class="profil-calendar-section">
             <div class="calendar-header">
-              <button class="btn-cal-nav" id="cal-prev">◀</button>
-              <h2 id="cal-month-title">Mois Année</h2>
-              <button class="btn-cal-nav" id="cal-next">▶</button>
+              <button id="cal-prev" class="btn-cal-nav">◀</button>
+              <h2 id="cal-month-title">Mois</h2>
+              <button id="cal-next" class="btn-cal-nav">▶</button>
             </div>
             <div class="calendar-days-header">
-              <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span
-              ><span>Ven</span><span>Sam</span><span>Dim</span>
+              <div>Lun</div>
+              <div>Mar</div>
+              <div>Mer</div>
+              <div>Jeu</div>
+              <div>Ven</div>
+              <div>Sam</div>
+              <div>Dim</div>
             </div>
-            <div class="calendar-grid" id="calendar-grid"></div>
+            <div id="calendar-grid" class="calendar-grid"></div>
             <div class="calendar-legend">
-              <span style="display: flex; align-items: center; gap: 8px">
-                <div
-                  style="
-                    width: 34px;
-                    height: 34px;
-                    border-radius: 4px;
-                    position: relative;
-                    overflow: hidden;
-                    border: 1px solid var(--border-strong);
-                  "
-                >
-                  <div class="kiloute-bg stamp-1" style="opacity: 1"></div>
-                </div>
+              <div>
+                <span class="stone-icon stone-noir" style="width: 12px; height: 12px"></span>
                 <span id="legende-bronze">Échauffement</span>
-              </span>
-              <span style="display: flex; align-items: center; gap: 8px">
-                <div
-                  style="
-                    width: 34px;
-                    height: 34px;
-                    border-radius: 4px;
-                    position: relative;
-                    overflow: hidden;
-                    border: 1px solid var(--border-strong);
-                  "
-                >
-                  <div class="kiloute-bg stamp-2" style="opacity: 1"></div>
-                </div>
-                <span id="legende-argent">Bon entraînement</span>
-              </span>
-              <span style="display: flex; align-items: center; gap: 8px">
-                <div
-                  style="
-                    width: 34px;
-                    height: 34px;
-                    border-radius: 4px;
-                    position: relative;
-                    overflow: hidden;
-                    border: 1px solid var(--border-strong);
-                  "
-                >
-                  <div class="kiloute-bg stamp-3" style="opacity: 1"></div>
-                </div>
-                <span id="legende-or">Try Hard</span>
-              </span>
+              </div>
+              <div>
+                <span class="stone-icon stone-blanc" style="width: 12px; height: 12px"></span>
+                <span id="legende-argent">Entraînement</span>
+              </div>
+              <div>
+                <span style="color: var(--gold)">🏆</span>
+                <span id="legende-or">Tryhard</span>
+              </div>
             </div>
           </div>
 
@@ -2193,273 +2294,72 @@
             <div
               class="global-stats-container"
               style="
-                margin-bottom: 24px;
-                padding-bottom: 24px;
-                border-bottom: 1px dashed var(--border-strong);
+                margin-bottom: 30px;
+                padding: 20px;
+                background: var(--surface-2);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
               "
             >
               <h3
                 style="
                   font-family: 'Cinzel', serif;
-                  font-size: 16px;
-                  color: var(--gold-bright);
+                  color: var(--gold);
                   margin-top: 0;
-                  margin-bottom: 16px;
-                  text-transform: uppercase;
-                  letter-spacing: 0.1em;
+                  margin-bottom: 15px;
+                  font-size: 16px;
                   text-align: center;
                 "
               >
                 Statistiques Globales
               </h3>
-
-              <div
-                style="
-                  display: grid;
-                  grid-template-columns: repeat(2, 1fr);
-                  gap: 8px;
-                  margin-bottom: 8px;
-                "
-              >
-                <div
-                  style="
-                    background: var(--surface-2);
-                    border: 1px solid var(--border);
-                    padding: 12px 4px;
-                    border-radius: var(--radius);
-                    text-align: center;
-                  "
-                >
-                  <div
-                    style="
-                      font-size: 20px;
-                      font-weight: bold;
-                      color: var(--text-primary);
-                      font-family: 'Cinzel', serif;
-                    "
-                    id="global-jouees"
-                  >
-                    0
-                  </div>
-                  <div
-                    style="
-                      font-size: 10px;
-                      color: var(--text-muted);
-                      text-transform: uppercase;
-                      margin-top: 4px;
-                    "
-                  >
-                    Jouées
-                  </div>
+              <div style="display: flex; justify-content: space-around; text-align: center">
+                <div>
+                  <div id="global-jouees" style="font-size: 24px; font-weight: bold; color: var(--text-primary)">0</div>
+                  <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase">Jouées</div>
                 </div>
-                <div
-                  style="
-                    background: var(--surface-2);
-                    border: 1px solid var(--border);
-                    padding: 12px 4px;
-                    border-radius: var(--radius);
-                    text-align: center;
-                  "
-                >
-                  <div
-                    style="
-                      font-size: 20px;
-                      font-weight: bold;
-                      color: var(--text-muted);
-                      font-family: 'Cinzel', serif;
-                    "
-                    id="global-vues"
-                  >
-                    0
-                  </div>
-                  <div
-                    style="
-                      font-size: 10px;
-                      color: var(--text-muted);
-                      text-transform: uppercase;
-                      margin-top: 4px;
-                    "
-                  >
-                    Vues
-                  </div>
+                <div>
+                  <div id="global-vues" style="font-size: 24px; font-weight: bold; color: var(--text-primary)">0</div>
+                  <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase">Vues</div>
                 </div>
-              </div>
-
-              <div
-                style="
-                  display: grid;
-                  grid-template-columns: repeat(3, 1fr);
-                  gap: 8px;
-                "
-              >
-                <div
-                  style="
-                    background: var(--surface-2);
-                    border: 1px solid rgba(128, 204, 112, 0.2);
-                    padding: 12px 4px;
-                    border-radius: var(--radius);
-                    text-align: center;
-                  "
-                >
-                  <div
-                    style="
-                      font-size: 20px;
-                      font-weight: bold;
-                      color: #80cc70;
-                      font-family: 'Cinzel', serif;
-                    "
-                    id="global-parfaits"
-                  >
-                    0
-                  </div>
-                  <div
-                    style="
-                      font-size: 10px;
-                      color: #80cc70;
-                      text-transform: uppercase;
-                      margin-top: 4px;
-                    "
-                  >
-                    Parfaites
-                  </div>
+                <div>
+                  <div id="global-parfaits" style="font-size: 24px; font-weight: bold; color: #80cc70">0</div>
+                  <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase">Parfaites</div>
                 </div>
-                <div
-                  style="
-                    background: var(--surface-2);
-                    border: 1px solid rgba(232, 160, 96, 0.2);
-                    padding: 12px 4px;
-                    border-radius: var(--radius);
-                    text-align: center;
-                  "
-                >
-                  <div
-                    style="
-                      font-size: 20px;
-                      font-weight: bold;
-                      color: #e8a060;
-                      font-family: 'Cinzel', serif;
-                    "
-                    id="global-oranges"
-                  >
-                    0
-                  </div>
-                  <div
-                    style="
-                      font-size: 10px;
-                      color: #e8a060;
-                      text-transform: uppercase;
-                      margin-top: 4px;
-                    "
-                  >
-                    Erreurs
-                  </div>
+                <div>
+                  <div id="global-oranges" style="font-size: 24px; font-weight: bold; color: #e8a060">0</div>
+                  <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase">Erreurs</div>
                 </div>
-                <div
-                  style="
-                    background: var(--surface-2);
-                    border: 1px solid rgba(224, 128, 128, 0.2);
-                    padding: 12px 4px;
-                    border-radius: var(--radius);
-                    text-align: center;
-                  "
-                >
-                  <div
-                    style="
-                      font-size: 20px;
-                      font-weight: bold;
-                      color: #e08080;
-                      font-family: 'Cinzel', serif;
-                    "
-                    id="global-rouges"
-                  >
-                    0
-                  </div>
-                  <div
-                    style="
-                      font-size: 10px;
-                      color: #e08080;
-                      text-transform: uppercase;
-                      margin-top: 4px;
-                    "
-                  >
-                    Échecs
-                  </div>
+                <div>
+                  <div id="global-rouges" style="font-size: 24px; font-weight: bold; color: #e08080">0</div>
+                  <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase">Échecs</div>
                 </div>
               </div>
             </div>
-            <h3
-              id="detail-date-title"
-              style="
-                font-family: 'Cinzel', serif;
-                font-size: 14px;
-                color: var(--text-secondary);
-                margin-top: 0;
-                margin-bottom: 16px;
-                text-transform: uppercase;
-              "
-            >
-              Aujourd'hui
-            </h3>
 
+            <h3 id="detail-date-title">Aujourd'hui</h3>
             <div class="detail-stats-box">
               <div class="stat-row">
-                <span class="stat-label" id="lbl-detail-jouees"
-                  >Séquences jouées</span
-                >
-                <span class="stat-val text-primary" id="detail-jouees">0</span>
+                <span style="color: var(--text-secondary)" id="lbl-detail-jouees">Séquences jouées</span>
+                <span class="stat-val" id="detail-jouees" style="color: var(--text-primary)">0</span>
               </div>
               <div class="stat-row">
-                <span class="stat-label" id="lbl-detail-vues"
-                  >Séquences visionnées</span
-                >
-                <span class="stat-val text-muted" id="detail-vues">0</span>
+                <span style="color: var(--text-secondary)" id="lbl-detail-vues">Séquences visionnées</span>
+                <span class="stat-val" id="detail-vues" style="color: var(--text-primary)">0</span>
               </div>
               <hr class="stat-divider" />
               <div class="stat-row">
-                <span class="stat-label"
-                  ><span id="lbl-detail-parfaites">Séquences Parfaites</span>
-                  🟢</span
-                >
-                <span
-                  class="stat-val"
-                  style="color: #80cc70"
-                  id="detail-parfaits"
-                  >0</span
-                >
+                <span style="color: var(--text-secondary)" id="lbl-detail-parfaites">Parfaites</span>
+                <span class="stat-val" id="detail-parfaits" style="color: #80cc70">0</span>
               </div>
               <div class="stat-row">
-                <span class="stat-label"
-                  ><span id="lbl-detail-oranges">Séquences avec Erreurs</span>
-                  🟠</span
-                >
-                <span
-                  class="stat-val"
-                  style="color: #e8a060"
-                  id="detail-oranges"
-                  >0</span
-                >
+                <span style="color: var(--text-secondary)" id="lbl-detail-oranges">Avec erreurs</span>
+                <span class="stat-val" id="detail-oranges" style="color: #e8a060">0</span>
               </div>
               <div class="stat-row">
-                <span class="stat-label"
-                  ><span id="lbl-detail-rouges">Séquences Échouées</span>
-                  🔴</span
-                >
-                <span class="stat-val" style="color: #e08080" id="detail-rouges"
-                  >0</span
-                >
+                <span style="color: var(--text-secondary)" id="lbl-detail-rouges">Échecs / Abandons</span>
+                <span class="stat-val" id="detail-rouges" style="color: #e08080">0</span>
               </div>
-            </div>
-
-            <div
-              id="detail-kiloute-placeholder"
-              style="
-                text-align: center;
-                margin-top: 30px;
-                font-size: 60px;
-                opacity: 0.2;
-              "
-            >
-              🐈‍⬛
             </div>
           </div>
         </div>
@@ -2502,73 +2402,47 @@
 
       // ── Traductions statiques ──
       document.getElementById('header-subtitle').textContent = t('sous_titre');
-      document.getElementById('menu-fichier-titre').textContent = t(
-        'bibliotheque_mes_sgf'
-      );
-      document.getElementById('btn-ouvrir-sgf').innerHTML =
-        '⊕ &nbsp;' + t('ouvrir_sgf');
-      document.getElementById('accueil-titre').textContent =
-        t('bienvenue_titre');
-      document.getElementById('accueil-sous-titre').textContent =
-        t('bienvenue_texte');
+      document.getElementById('menu-fichier-titre').textContent = t('bibliotheque_mes_sgf');
+      document.getElementById('btn-ouvrir-sgf').innerHTML = '⊕ &nbsp;' + t('ouvrir_sgf');
+      document.getElementById('accueil-titre').textContent = t('bienvenue_titre');
+      document.getElementById('accueil-sous-titre').textContent = t('bienvenue_texte');
       document.getElementById('camp-label').textContent = t('joueur_label');
-      document.getElementById('stone-label-noir').textContent =
-        t('couleur_noir');
+      document.getElementById('stone-label-noir').textContent = t('couleur_noir');
       document.getElementById('option-noir').textContent = t('couleur_noir');
       document.getElementById('option-blanc').textContent = t('couleur_blanc');
       document.getElementById('btn-solution').textContent = t('btn_abandonner');
       document.getElementById('info-nom').textContent = t('sequence_en_cours');
-      document.getElementById('info-comment').textContent = t(
-        'joue_pour_decouvrir'
-      );
+      document.getElementById('info-comment').textContent = t('joue_pour_decouvrir');
       document.getElementById('btn-suivante').textContent = t('btn_suivant');
-      document.getElementById('panel-sgf-titre').textContent = t(
-        'bibliotheque_mes_sgf'
-      );
+      document.getElementById('panel-sgf-titre').textContent = t('bibliotheque_mes_sgf');
       const msgVide = document.getElementById('liste-sgf-vide');
       if (msgVide) msgVide.textContent = t('admin_chargement');
-      document.getElementById('btn-mode-presentation').innerHTML =
-        '▶ &nbsp;' + t('btn_presentation');
-      document.getElementById('btn-reset').innerHTML =
-        '↺ &nbsp;' + t('btn_reinitialiser');
-      document.getElementById('panel-progression-titre').textContent =
-        t('progression_titre');
-      document.getElementById('stat-label-gris').textContent =
-        t('stat_non_explore');
+      document.getElementById('btn-mode-presentation').innerHTML = '▶ &nbsp;' + t('btn_presentation');
+      document.getElementById('btn-reset').innerHTML = '↺ &nbsp;' + t('btn_reinitialiser');
+      document.getElementById('panel-progression-titre').textContent = t('progression_titre');
+      document.getElementById('stat-label-gris').textContent = t('stat_non_explore');
       document.getElementById('stat-label-rouge').textContent = t('stat_echec');
-      document.getElementById('stat-label-orange').textContent =
-        t('stat_erreurs');
-      document.getElementById('stat-label-vert').textContent =
-        t('stat_parfait');
-      document.getElementById('panel-variations-titre').textContent =
-        t('variations_titre');
+      document.getElementById('stat-label-orange').textContent = t('stat_erreurs');
+      document.getElementById('stat-label-vert').textContent = t('stat_parfait');
+      document.getElementById('panel-variations-titre').textContent = t('variations_titre');
       document.getElementById('th-etat').textContent = t('variations_etat');
       document.getElementById('th-nom').textContent = t('variations_nom');
       document.getElementById('th-voir').textContent = t('variations_voir');
-      document.getElementById('btn-quitter-presentation').textContent =
-        '✕ ' + t('btn_quitter_presentation');
+      document.getElementById('btn-quitter-presentation').textContent = '✕ ' + t('btn_quitter_presentation');
       document.getElementById('btn-son').title = t('son_titre');
       document.getElementById('btn-admin').textContent = t('header_admin');
-      document.getElementById('lien-legales').textContent =
-        t('mentions_legales');
+      document.getElementById('lien-legales').textContent = t('mentions_legales');
       document.getElementById('lien-aide').textContent = t('lien_aide');
-      document.getElementById('lien-legales').textContent =
-        t('mentions_legales');
+      document.getElementById('lien-legales').textContent = t('mentions_legales');
       document.getElementById('lien-aide').textContent = t('lien_aide');
-      document.getElementById('lien-creer-sgf').textContent =
-        t('lien_creer_sgf');
+      document.getElementById('lien-creer-sgf').textContent = t('lien_creer_sgf');
 
       // --- Traductions de la modale Profil ---
-      document.querySelector('.global-stats-container h3').textContent = t(
-        'profil_stats_globales'
-      );
-      document.getElementById('detail-date-title').textContent =
-        t('profil_aujourdhui');
+      document.querySelector('.global-stats-container h3').textContent = t('profil_stats_globales');
+      document.getElementById('detail-date-title').textContent = t('profil_aujourdhui');
 
       // Ciblage des labels de stats (Jouées, Vues, etc.)
-      const labels = document.querySelectorAll(
-        '.global-stats-container div[style*="font-size: 10px"]'
-      );
+      const labels = document.querySelectorAll('.global-stats-container div[style*="font-size: 10px"]');
       if (labels.length >= 5) {
         labels[0].textContent = t('profil_jouees');
         labels[1].textContent = t('profil_vues');
@@ -2578,43 +2452,25 @@
       }
 
       // Légende du calendrier
-      document.getElementById('legende-bronze').textContent =
-        t('cal_echauffement');
-      document.getElementById('legende-argent').textContent =
-        t('cal_entrainement');
+      document.getElementById('legende-bronze').textContent = t('cal_echauffement');
+      document.getElementById('legende-argent').textContent = t('cal_entrainement');
       document.getElementById('legende-or').textContent = t('cal_tryhard');
 
       /* Dans la partie init i18n de index.html */
-      document.getElementById('lbl-detail-jouees').textContent = t(
-        'profil_label_jouees'
-      );
-      document.getElementById('lbl-detail-vues').textContent =
-        t('profil_label_vues');
-      document.getElementById('lbl-detail-parfaites').textContent = t(
-        'profil_label_parfaites'
-      );
-      document.getElementById('lbl-detail-oranges').textContent = t(
-        'profil_label_oranges'
-      );
-      document.getElementById('lbl-detail-rouges').textContent = t(
-        'profil_label_rouges'
-      );
+      document.getElementById('lbl-detail-jouees').textContent = t('profil_label_jouees');
+      document.getElementById('lbl-detail-vues').textContent = t('profil_label_vues');
+      document.getElementById('lbl-detail-parfaites').textContent = t('profil_label_parfaites');
+      document.getElementById('lbl-detail-oranges').textContent = t('profil_label_oranges');
+      document.getElementById('lbl-detail-rouges').textContent = t('profil_label_rouges');
 
-      document.getElementById('info-modal-texte').placeholder = t(
-        'modal_info_placeholder'
-      );
-      document.getElementById('btn-save-info').textContent = t(
-        'modal_info_sauvegarder'
-      );
+      document.getElementById('info-modal-texte').placeholder = t('modal_info_placeholder');
+      document.getElementById('btn-save-info').textContent = t('modal_info_sauvegarder');
 
       // ── Bouton langue ──
       const btnLang = document.getElementById('btn-lang');
       btnLang.textContent = lang === 'fr' ? '🇬🇧' : '🇫🇷';
-      btnLang.title =
-        lang === 'fr' ? 'Switch to English' : 'Passer en français';
-      btnLang.addEventListener('click', () =>
-        setLang(lang === 'fr' ? 'en' : 'fr')
-      );
+      btnLang.title = lang === 'fr' ? 'Switch to English' : 'Passer en français';
+      btnLang.addEventListener('click', () => setLang(lang === 'fr' ? 'en' : 'fr'));
 
       // ── État session ──
       const user = await getUser();
@@ -2638,30 +2494,23 @@
         if (isUserAdmin) {
           const btn = document.getElementById('btn-admin');
           btn.style.display = 'block';
-          btn.addEventListener(
-            'click',
-            () => (window.location.href = './admin.html')
-          );
+          btn.addEventListener('click', () => (window.location.href = './admin.html'));
         }
 
         document.getElementById('btn-logout').textContent = t('header_quitter');
         document.getElementById('btn-logout').title = t('deconnexion_title');
-        document
-          .getElementById('btn-logout')
-          .addEventListener('click', async () => {
-            await supabase.auth.signOut();
-            window.location.href = './index.html';
-          });
+        document.getElementById('btn-logout').addEventListener('click', async () => {
+          await supabase.auth.signOut();
+          window.location.href = './index.html';
+        });
       } else {
-        document.getElementById('btn-logout').textContent =
-          t('header_connexion');
+        document.getElementById('btn-logout').textContent = t('header_connexion');
         document.getElementById('btn-logout').title = t('connexion_title');
         document.getElementById('btn-logout').addEventListener('click', () => {
           window.location.href = './auth.html';
         });
 
-        document.getElementById('panel-sgf-titre').textContent =
-          t('bibliotheque_titre');
+        document.getElementById('panel-sgf-titre').textContent = t('bibliotheque_titre');
         document.getElementById('label-upload').style.display = 'none';
 
         const bandeau = document.createElement('div');
@@ -2683,17 +2532,14 @@
       const btnSaveInfo = document.getElementById('btn-save-info');
       let sgfInfoEnCours = null;
 
-      document
-        .getElementById('btn-close-info')
-        .addEventListener('click', () => modalInfoSgf.classList.remove('open'));
+      document.getElementById('btn-close-info').addEventListener('click', () => modalInfoSgf.classList.remove('open'));
       modalInfoSgf.addEventListener('click', (e) => {
         if (e.target === modalInfoSgf) modalInfoSgf.classList.remove('open');
       });
 
       function ouvrirModalInfo(sgf) {
         sgfInfoEnCours = sgf;
-        document.getElementById('info-modal-titre').textContent =
-          sgf.name.replace('.sgf', '');
+        document.getElementById('info-modal-titre').textContent = sgf.name.replace('.sgf', '');
         txtInfo.value = sgf.description || '';
 
         // MODIFICATION ICI : On autorise si c'est un fichier privé OU si tu es l'Admin !
@@ -2739,8 +2585,7 @@
 
         for (const sgf of liste) {
           const item = document.createElement('div');
-          item.className =
-            'sgf-item' + (sgf.id === sgfActifId ? ' active' : '');
+          item.className = 'sgf-item' + (sgf.id === sgfActifId ? ' active' : '');
           item.dataset.id = sgf.id;
           item.dataset.path = sgf.storage_path;
 
@@ -2792,21 +2637,16 @@
             btnDel.textContent = '✕';
             btnDel.addEventListener('click', async (e) => {
               e.stopPropagation();
-              if (
-                !confirm(t('bibliotheque_supprimer_confirm', { nom: sgf.name }))
-              )
-                return;
+              if (!confirm(t('bibliotheque_supprimer_confirm', { nom: sgf.name }))) return;
               await supprimerSgf(sgf.id, sgf.storage_path);
               // ... (Garde ton code existant qui gère le sgfActifId et le rafraîchissement) ...
               if (sgfActifId === sgf.id) {
                 sgfActifId = null;
                 sgfActifPath = null;
-                document.getElementById('btn-mode-presentation').disabled =
-                  true;
+                document.getElementById('btn-mode-presentation').disabled = true;
                 document.getElementById('btn-reset').disabled = true;
                 document.getElementById('goban-wrapper').style.display = 'none';
-                document.getElementById('info-variation').style.display =
-                  'none';
+                document.getElementById('info-variation').style.display = 'none';
               }
               rafraichirListeSgf();
             });
@@ -2830,9 +2670,7 @@
         window._sgfActifId = sgf.id;
         sgfActifPath = sgf.storage_path;
 
-        document
-          .querySelectorAll('.sgf-item')
-          .forEach((el) => el.classList.remove('active'));
+        document.querySelectorAll('.sgf-item').forEach((el) => el.classList.remove('active'));
         const item = document.querySelector(`.sgf-item[data-id="${sgf.id}"]`);
         if (item) item.classList.add('active');
 
@@ -2856,22 +2694,20 @@
 
       // ── Upload (connectés seulement) ──
       if (estConnecte) {
-        document
-          .getElementById('sgf-upload')
-          .addEventListener('change', async function () {
-            if (!this.files.length) return;
-            const file = this.files[0];
-            this.value = '';
-            const id = await uploaderSgf(file);
-            if (!id) {
-              alert(t('erreur_upload'));
-              return;
-            }
-            await rafraichirListeSgf();
-            const liste = await listerSgf();
-            const sgf = liste.find((s) => s.id === id);
-            if (sgf) chargerSgfDepuisServeur(sgf);
-          });
+        document.getElementById('sgf-upload').addEventListener('change', async function () {
+          if (!this.files.length) return;
+          const file = this.files[0];
+          this.value = '';
+          const id = await uploaderSgf(file);
+          if (!id) {
+            alert(t('erreur_upload'));
+            return;
+          }
+          await rafraichirListeSgf();
+          const liste = await listerSgf();
+          const sgf = liste.find((s) => s.id === id);
+          if (sgf) chargerSgfDepuisServeur(sgf);
+        });
       }
 
       // ── Sauvegarder la progression ──
@@ -2925,18 +2761,14 @@
         if (e.target === modalProfil) modalProfil.classList.remove('open');
       });
 
-      document
-        .getElementById('cal-prev')
-        .addEventListener('click', async () => {
-          dateAffichee.setMonth(dateAffichee.getMonth() - 1);
-          await genererCalendrier(dateAffichee);
-        });
-      document
-        .getElementById('cal-next')
-        .addEventListener('click', async () => {
-          dateAffichee.setMonth(dateAffichee.getMonth() + 1);
-          await genererCalendrier(dateAffichee);
-        });
+      document.getElementById('cal-prev').addEventListener('click', async () => {
+        dateAffichee.setMonth(dateAffichee.getMonth() - 1);
+        await genererCalendrier(dateAffichee);
+      });
+      document.getElementById('cal-next').addEventListener('click', async () => {
+        dateAffichee.setMonth(dateAffichee.getMonth() + 1);
+        await genererCalendrier(dateAffichee);
+      });
 
       /* Génération de la grille avec les vraies données */
       async function genererCalendrier(date) {
@@ -2947,10 +2779,7 @@
         const mois = date.getMonth();
 
         const optionsMois = { month: 'long', year: 'numeric' };
-        calMonthTitle.innerText = date.toLocaleDateString(
-          lang === 'fr' ? 'fr-FR' : 'en-US',
-          optionsMois
-        );
+        calMonthTitle.innerText = date.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-US', optionsMois);
 
         /* On charge les données réelles du mois depuis Supabase */
         let activitesMois = [];
@@ -2960,16 +2789,11 @@
           /* --- Récupération des stats All-Time --- */
           const globalStats = await chargerStatsGlobales();
           if (globalStats) {
-            document.getElementById('global-jouees').innerText =
-              globalStats.played;
-            document.getElementById('global-vues').innerText =
-              globalStats.watched;
-            document.getElementById('global-parfaits').innerText =
-              globalStats.perfect;
-            document.getElementById('global-oranges').innerText =
-              globalStats.orange; /* 👈 NOUVEAU */
-            document.getElementById('global-rouges').innerText =
-              globalStats.red; /* 👈 NOUVEAU */
+            document.getElementById('global-jouees').innerText = globalStats.played;
+            document.getElementById('global-vues').innerText = globalStats.watched;
+            document.getElementById('global-parfaits').innerText = globalStats.perfect;
+            document.getElementById('global-oranges').innerText = globalStats.orange; /* 👈 NOUVEAU */
+            document.getElementById('global-rouges').innerText = globalStats.red; /* 👈 NOUVEAU */
           }
           /* ------------------------------------------------- */
         }
@@ -3000,9 +2824,7 @@
           const dateRecherche = `${anneeStr}-${moisStr}-${jourStr}`;
 
           /* On cherche si Kiloute a travaillé ce jour-là */
-          const statsJour = activitesMois.find(
-            (a) => a.activity_date === dateRecherche
-          ) || {
+          const statsJour = activitesMois.find((a) => a.activity_date === dateRecherche) || {
             sequences_played: 0,
             sequences_watched: 0,
             perfect_count: 0,
@@ -3010,8 +2832,7 @@
             red_count: 0,
           };
 
-          const totalAction =
-            statsJour.sequences_played + statsJour.sequences_watched;
+          const totalAction = statsJour.sequences_played + statsJour.sequences_watched;
 
           const dayDiv = document.createElement('div');
           dayDiv.className = `cal-day ${isToday ? 'today active' : ''}`;
@@ -3029,9 +2850,7 @@
 
           /* Clic sur une case pour mettre à jour la colonne de droite */
           dayDiv.addEventListener('click', () => {
-            document
-              .querySelectorAll('.cal-day')
-              .forEach((d) => d.classList.remove('active'));
+            document.querySelectorAll('.cal-day').forEach((d) => d.classList.remove('active'));
             dayDiv.classList.add('active');
 
             const optionsJour = {
@@ -3039,22 +2858,16 @@
               day: 'numeric',
               month: 'long',
             };
-            document.getElementById('detail-date-title').innerText =
-              dateCase.toLocaleDateString(
-                lang === 'fr' ? 'fr-FR' : 'en-US',
-                optionsJour
-              );
+            document.getElementById('detail-date-title').innerText = dateCase.toLocaleDateString(
+              lang === 'fr' ? 'fr-FR' : 'en-US',
+              optionsJour
+            );
 
-            document.getElementById('detail-jouees').innerText =
-              statsJour.sequences_played;
-            document.getElementById('detail-vues').innerText =
-              statsJour.sequences_watched;
-            document.getElementById('detail-parfaits').innerText =
-              statsJour.perfect_count;
-            document.getElementById('detail-oranges').innerText =
-              statsJour.orange_count;
-            document.getElementById('detail-rouges').innerText =
-              statsJour.red_count;
+            document.getElementById('detail-jouees').innerText = statsJour.sequences_played;
+            document.getElementById('detail-vues').innerText = statsJour.sequences_watched;
+            document.getElementById('detail-parfaits').innerText = statsJour.perfect_count;
+            document.getElementById('detail-oranges').innerText = statsJour.orange_count;
+            document.getElementById('detail-rouges').innerText = statsJour.red_count;
           });
 
           calendarGrid.appendChild(dayDiv);

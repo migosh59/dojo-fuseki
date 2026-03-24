@@ -357,7 +357,10 @@
   </head>
   <body>
     <header>
-      <h1>磨き &nbsp;MIGAKI <span id="lbl-admin-titre"></span></h1>
+      <h1>
+        磨き &nbsp;MIGAKI
+        <span id="lbl-admin-titre"></span>
+      </h1>
       <div class="header-btns">
         <button class="btn" id="btn-lang" title="Changer de langue"></button>
         <button class="btn" id="btn-retour"></button>
@@ -366,19 +369,10 @@
     </header>
 
     <main>
-      <div
-        id="access-denied"
-        style="display: none; text-align: center; padding: 60px; color: #e08080"
-      >
+      <div id="access-denied" style="display: none; text-align: center; padding: 60px; color: #e08080">
         <div style="font-size: 48px; margin-bottom: 16px">🚫</div>
-        <div
-          style="font-family: 'Cinzel', serif; font-size: 18px"
-          id="lbl-acces-refuse"
-        ></div>
-        <div
-          style="color: var(--text-muted); margin-top: 8px"
-          id="lbl-acces-refuse-desc"
-        ></div>
+        <div style="font-family: 'Cinzel', serif; font-size: 18px" id="lbl-acces-refuse"></div>
+        <div style="color: var(--text-muted); margin-top: 8px" id="lbl-acces-refuse-desc"></div>
       </div>
 
       <div id="admin-content" style="display: none">
@@ -410,7 +404,10 @@
 
         <div>
           <p class="section-title">
-            <span id="lbl-users-title"></span> (<span id="nb-users">0</span>)
+            <span id="lbl-users-title"></span>
+            (
+            <span id="nb-users">0</span>
+            )
           </p>
           <div id="liste-users">
             <div class="empty-state" id="lbl-users-loading"></div>
@@ -419,8 +416,10 @@
 
         <div>
           <p class="section-title">
-            <span id="lbl-shared-title"></span> (<span id="nb-partages">0</span
-            >)
+            <span id="lbl-shared-title"></span>
+            (
+            <span id="nb-partages">0</span>
+            )
           </p>
 
           <div class="upload-zone" id="upload-zone">
@@ -459,54 +458,31 @@
 
       const btnLang = document.getElementById('btn-lang');
       btnLang.textContent = lang === 'fr' ? '🇬🇧' : '🇫🇷';
-      btnLang.title =
-        lang === 'fr' ? 'Switch to English' : 'Passer en français';
-      btnLang.addEventListener('click', () =>
-        setLang(lang === 'fr' ? 'en' : 'fr')
-      );
+      btnLang.title = lang === 'fr' ? 'Switch to English' : 'Passer en français';
+      btnLang.addEventListener('click', () => setLang(lang === 'fr' ? 'en' : 'fr'));
 
       document.title = t('admin_page_titre');
       document.getElementById('lbl-admin-titre').textContent = t('admin_titre');
       document.getElementById('btn-retour').textContent = t('admin_retour');
       document.getElementById('btn-logout').textContent = t('header_quitter');
 
-      document.getElementById('lbl-acces-refuse').textContent =
-        t('admin_acces_refuse');
-      document.getElementById('lbl-acces-refuse-desc').textContent = t(
-        'admin_acces_refuse_desc'
-      );
+      document.getElementById('lbl-acces-refuse').textContent = t('admin_acces_refuse');
+      document.getElementById('lbl-acces-refuse-desc').textContent = t('admin_acces_refuse_desc');
 
-      document.getElementById('lbl-vue-ensemble').textContent =
-        t('admin_vue_ensemble');
-      document.getElementById('lbl-stat-users').textContent = t(
-        'admin_stats_utilisateurs'
-      );
-      document.getElementById('lbl-stat-sgf-total').textContent = t(
-        'admin_stats_sgf_total'
-      );
-      document.getElementById('lbl-stat-sgf-shared').textContent = t(
-        'admin_stats_sgf_partages'
-      );
-      document.getElementById('lbl-stat-sequences').textContent = t(
-        'admin_stats_sequences'
-      );
+      document.getElementById('lbl-vue-ensemble').textContent = t('admin_vue_ensemble');
+      document.getElementById('lbl-stat-users').textContent = t('admin_stats_utilisateurs');
+      document.getElementById('lbl-stat-sgf-total').textContent = t('admin_stats_sgf_total');
+      document.getElementById('lbl-stat-sgf-shared').textContent = t('admin_stats_sgf_partages');
+      document.getElementById('lbl-stat-sequences').textContent = t('admin_stats_sequences');
 
-      document.getElementById('lbl-users-title').textContent =
-        t('admin_users_titre');
-      document.getElementById('lbl-shared-title').textContent = t(
-        'admin_sgf_partages_titre'
-      );
+      document.getElementById('lbl-users-title').textContent = t('admin_users_titre');
+      document.getElementById('lbl-shared-title').textContent = t('admin_sgf_partages_titre');
 
-      document.getElementById('lbl-users-loading').textContent =
-        t('admin_chargement');
-      document.getElementById('lbl-shared-loading').textContent =
-        t('admin_chargement');
+      document.getElementById('lbl-users-loading').textContent = t('admin_chargement');
+      document.getElementById('lbl-shared-loading').textContent = t('admin_chargement');
 
-      document.getElementById('lbl-upload-instruction').textContent = t(
-        'admin_upload_instruction'
-      );
-      document.getElementById('lbl-upload-desc').textContent =
-        t('admin_upload_desc');
+      document.getElementById('lbl-upload-instruction').textContent = t('admin_upload_instruction');
+      document.getElementById('lbl-upload-desc').textContent = t('admin_upload_desc');
 
       // ── Auth + admin check ──
       const {
@@ -525,18 +501,11 @@
       }
 
       // ── Navigation ──
-      document
-        .getElementById('btn-retour')
-        .addEventListener(
-          'click',
-          () => (window.location.href = './index.html')
-        );
-      document
-        .getElementById('btn-logout')
-        .addEventListener('click', async () => {
-          await supabase.auth.signOut();
-          window.location.href = './index.html';
-        });
+      document.getElementById('btn-retour').addEventListener('click', () => (window.location.href = './index.html'));
+      document.getElementById('btn-logout').addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        window.location.href = './index.html';
+      });
 
       // ── Toast ──
       function toast(msg, type = 'success') {
@@ -548,19 +517,13 @@
 
       // ── Chargement global ──
       async function chargerDonnees() {
-        await Promise.all([
-          chargerStats(),
-          chargerListeUsers(),
-          chargerListePartages(),
-        ]);
+        await Promise.all([chargerStats(), chargerListeUsers(), chargerListePartages()]);
       }
 
       // ── Stats globales ──
       async function chargerStats() {
         const { data: users } = await supabase.rpc('get_users_admin');
-        const { data: sgfs } = await supabase
-          .from('sgf_files')
-          .select('id, is_shared');
+        const { data: sgfs } = await supabase.from('sgf_files').select('id, is_shared');
 
         /* NOUVEAU : On supprime l'appel à variation_progress !
            On calcule le total global en additionnant les séquences de chaque joueur */
@@ -569,12 +532,9 @@
         }, 0);
 
         document.getElementById('stat-users').textContent = users?.length ?? 0;
-        document.getElementById('stat-sgf-total').textContent =
-          sgfs?.length ?? 0;
-        document.getElementById('stat-sgf-shared').textContent =
-          sgfs?.filter((s) => s.is_shared).length ?? 0;
-        document.getElementById('stat-variations').textContent =
-          totalSequences; /* 👈 Le vrai total est injecté ici */
+        document.getElementById('stat-sgf-total').textContent = sgfs?.length ?? 0;
+        document.getElementById('stat-sgf-shared').textContent = sgfs?.filter((s) => s.is_shared).length ?? 0;
+        document.getElementById('stat-variations').textContent = totalSequences; /* 👈 Le vrai total est injecté ici */
       }
 
       // ── Liste utilisateurs ──
@@ -625,9 +585,7 @@
 
         for (const user of users) {
           const tr = document.createElement('tr');
-          const date = new Date(user.created_at).toLocaleDateString(
-            lang === 'fr' ? 'fr-FR' : 'en-US'
-          );
+          const date = new Date(user.created_at).toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-US');
 
           /* Extraction sécurisée du pseudo depuis les métadonnées de Supabase */
           const meta = user.raw_user_meta_data || user.user_metadata || {};
@@ -728,16 +686,12 @@
       const uploadZone = document.getElementById('upload-zone');
       const uploadStatus = document.getElementById('upload-status');
 
-      uploadInput.addEventListener('change', () =>
-        traiterFichiers(uploadInput.files)
-      );
+      uploadInput.addEventListener('change', () => traiterFichiers(uploadInput.files));
       uploadZone.addEventListener('dragover', (e) => {
         e.preventDefault();
         uploadZone.classList.add('dragover');
       });
-      uploadZone.addEventListener('dragleave', () =>
-        uploadZone.classList.remove('dragover')
-      );
+      uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
       uploadZone.addEventListener('drop', (e) => {
         e.preventDefault();
         uploadZone.classList.remove('dragover');
@@ -813,9 +767,7 @@
 
         for (const sgf of partages) {
           const tr = document.createElement('tr');
-          const date = new Date(sgf.created_at).toLocaleDateString(
-            lang === 'fr' ? 'fr-FR' : 'en-US'
-          );
+          const date = new Date(sgf.created_at).toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-US');
 
           /* Ajout du badge et du bouton de rôle */
           tr.innerHTML = `

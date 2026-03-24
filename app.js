@@ -11,16 +11,11 @@
 ============================================= */
 function calculerTailleGoban() {
   if (document.body.classList.contains('mode-presentation')) {
-    return Math.floor(
-      Math.min(window.innerHeight * 0.92, window.innerWidth * 0.95)
-    );
+    return Math.floor(Math.min(window.innerHeight * 0.92, window.innerWidth * 0.95));
   }
   if (window.innerWidth < 900) {
     // Mobile/tablette : toute la largeur dispo, hauteur limitée à 60% du viewport
-    return Math.min(
-      window.innerWidth - 28,
-      Math.floor(window.innerHeight * 0.6)
-    );
+    return Math.min(window.innerWidth - 28, Math.floor(window.innerHeight * 0.6));
   }
   // Desktop : sidebar = 320px + gap 18px + paddings 36px = ~374px
   const largeurDispo = window.innerWidth - 374;
@@ -48,8 +43,7 @@ let audioCtx = null;
 let sonActif = localStorage.getItem('fuseki_son') !== 'off';
 
 function getAudioCtx() {
-  if (!audioCtx)
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   return audioCtx;
 }
 
@@ -94,9 +88,7 @@ function jouerSonPierre(couleur) {
 ============================================= */
 const fileInput = document.getElementById('sgf-file');
 const btnModePresentation = document.getElementById('btn-mode-presentation');
-const btnQuitterPresentation = document.getElementById(
-  'btn-quitter-presentation'
-);
+const btnQuitterPresentation = document.getElementById('btn-quitter-presentation');
 const btnSolution = document.getElementById('btn-solution');
 const btnReset = document.getElementById('btn-reset');
 const selectEl = document.getElementById('select-couleur-joueur');
@@ -119,12 +111,34 @@ const btnSuivante = document.getElementById('btn-suivante');
 const fileNameDisplay = document.getElementById('file-name-display');
 const btnModeExploration = document.getElementById('btn-mode-exploration');
 const btnExplorationRetour = document.getElementById('btn-exploration-retour');
-const btnExplorationQuitter = document.getElementById(
-  'btn-exploration-quitter'
-);
+const btnExplorationQuitter = document.getElementById('btn-exploration-quitter');
 let modeExplorationActif = false;
-let marqueursExploration =
-  []; /* Pour garder la trace des lettres (A, B, C...) sur le goban */
+let marqueursExploration = []; /* Pour garder la trace des lettres (A, B, C...) sur le goban */
+const btnModeBot = document.getElementById('btn-mode-bot');
+const btnModeBotAccueil = document.getElementById('btn-mode-bot-accueil');
+const btnBotPass = document.getElementById('btn-bot-pass');
+const btnBotResign = document.getElementById('btn-bot-resign');
+const btnBotQuitter = document.getElementById('btn-bot-quitter');
+
+const modalSetupBot = document.getElementById('modal-setup-bot');
+const btnCloseSetupBot = document.getElementById('btn-close-setup-bot');
+const btnStartBotGame = document.getElementById('btn-start-bot-game');
+/* --- CHANGEMENT DYNAMIQUE DU KOMI SELON LE HANDICAP --- */
+const botHandicapSelect = document.getElementById('bot-handicap');
+const botKomiInput = document.getElementById('bot-komi');
+
+if (botHandicapSelect && botKomiInput) {
+  botHandicapSelect.addEventListener('change', (e) => {
+    const handicapValue = parseInt(e.target.value, 10);
+
+    /* Si handicap > 0, on force à 0.5, sinon on remet le standard 6.5 */
+    if (handicapValue > 0) {
+      botKomiInput.value = '0.5';
+    } else {
+      botKomiInput.value = '6.5';
+    }
+  });
+}
 
 /* =============================================
    ÉTAT GLOBAL
@@ -153,6 +167,7 @@ let indexVariationActuelle = 0;
 let indexCoupActuel = 0;
 let timerOrdi = null;
 let filtreStatutActif = null;
+let modeBotActif = false;
 
 /* =============================================
    MOTEUR DE JEU + MARQUEUR CR
@@ -178,8 +193,7 @@ function jouerCoupAvecCaptures(x, y, couleur) {
     goban.addObject({ x, y, c: couleur });
   } else {
     goban.addObject({ x, y, c: couleur });
-    if (resultat && resultat.length > 0)
-      for (const cap of resultat) goban.removeObjectsAt(cap.x, cap.y);
+    if (resultat && resultat.length > 0) for (const cap of resultat) goban.removeObjectsAt(cap.x, cap.y);
   }
   if (!enModeSolution) {
     dernierMarqueurCR = { type: 'CR', x, y };
@@ -248,8 +262,7 @@ function afficherCommentaire(noeud) {
 ============================================= */
 function genererSignature(variation) {
   let sig = '';
-  for (const n of variation)
-    if (n.move) sig += n.move.c + ':' + n.move.x + ',' + n.move.y + '|';
+  for (const n of variation) if (n.move) sig += n.move.c + ':' + n.move.x + ',' + n.move.y + '|';
   return sig;
 }
 
@@ -294,30 +307,20 @@ function mettreAJourStatistiques() {
     else if (s === 'Echec') nbRouge++;
     else nbGris++;
   }
-  document.getElementById('stat-gris').innerText =
-    Math.round((nbGris / total) * 100) + '%';
-  document.getElementById('stat-orange').innerText =
-    Math.round((nbOrange / total) * 100) + '%';
-  document.getElementById('stat-rouge').innerText =
-    Math.round((nbRouge / total) * 100) + '%';
-  document.getElementById('stat-vert').innerText =
-    Math.round((nbVert / total) * 100) + '%';
-  document.getElementById('prog-vert').style.width =
-    (nbVert / total) * 100 + '%';
-  document.getElementById('prog-orange').style.width =
-    (nbOrange / total) * 100 + '%';
-  document.getElementById('prog-rouge').style.width =
-    (nbRouge / total) * 100 + '%';
+  document.getElementById('stat-gris').innerText = Math.round((nbGris / total) * 100) + '%';
+  document.getElementById('stat-orange').innerText = Math.round((nbOrange / total) * 100) + '%';
+  document.getElementById('stat-rouge').innerText = Math.round((nbRouge / total) * 100) + '%';
+  document.getElementById('stat-vert').innerText = Math.round((nbVert / total) * 100) + '%';
+  document.getElementById('prog-vert').style.width = (nbVert / total) * 100 + '%';
+  document.getElementById('prog-orange').style.width = (nbOrange / total) * 100 + '%';
+  document.getElementById('prog-rouge').style.width = (nbRouge / total) * 100 + '%';
 }
 
 function afficherTableau() {
   const tbody = document.querySelector('#table-variations tbody');
   tbody.innerHTML = '';
-  document.getElementById('nb-variations').innerText =
-    toutesLesVariations.length + ' séquences';
-  const sigCourante = variationCourante
-    ? genererSignature(variationCourante)
-    : null;
+  document.getElementById('nb-variations').innerText = toutesLesVariations.length + ' séquences';
+  const sigCourante = variationCourante ? genererSignature(variationCourante) : null;
 
   for (let i = 0; i < toutesLesVariations.length; i++) {
     const variation = toutesLesVariations[i];
@@ -372,8 +375,7 @@ function afficherTableau() {
 
     const tdVisu = document.createElement('td');
     tdVisu.className = 'td-visu';
-    tdVisu.style.whiteSpace =
-      'nowrap'; /* Empêche les deux boutons de s'empiler */
+    tdVisu.style.whiteSpace = 'nowrap'; /* Empêche les deux boutons de s'empiler */
 
     /* 1. Le nouveau bouton Play (Entraînement forcé) */
     const btnPlay = document.createElement('button');
@@ -381,9 +383,7 @@ function afficherTableau() {
     btnPlay.title = "S'entraîner sur cette séquence";
     btnPlay.className = 'btn-visu'; /* On recycle ton style CSS existant ! */
     btnPlay.style.marginRight = '6px';
-    btnPlay.addEventListener('click', () =>
-      forcerEntrainementVariation(variation)
-    );
+    btnPlay.addEventListener('click', () => forcerEntrainementVariation(variation));
     tdVisu.appendChild(btnPlay);
 
     /* 2. Le bouton Visu existant (Oeil) */
@@ -426,6 +426,7 @@ function arreterTout() {
   commentaireSgf.style.display = 'none';
   gobanWrapper.classList.remove('ordi-pense');
   modeExplorationActif = false;
+  modeBotActif = false;
   btnExplorationRetour.style.display = 'none';
   btnExplorationQuitter.style.display = 'none';
 
@@ -434,6 +435,10 @@ function arreterTout() {
   btnModeExploration.style.borderColor = '';
   btnModeExploration.style.background = '';
   btnModeExploration.style.color = '';
+
+  if (btnBotPass) btnBotPass.style.display = 'none';
+  if (btnBotResign) btnBotResign.style.display = 'none';
+  if (btnBotQuitter) btnBotQuitter.style.display = 'none';
 }
 
 function extraireVariations(noeud, chemin) {
@@ -447,6 +452,191 @@ function extraireVariations(noeud, chemin) {
 }
 
 /* =============================================
+   MODE INTELLIGENCE ARTIFICIELLE (NAS)
+============================================= */
+
+function wgoToGtp(x, y) {
+  const letters = 'ABCDEFGHJKLMNOPQRST';
+  const num = 19 - y;
+  return letters[x] + num;
+}
+
+function gtpToWgo(gtpMove) {
+  if (!gtpMove || gtpMove.toLowerCase() === 'pass' || gtpMove.toLowerCase() === 'resign') return null;
+  const letters = 'ABCDEFGHJKLMNOPQRST';
+  const letter = gtpMove.charAt(0).toUpperCase();
+  const num = parseInt(gtpMove.substring(1));
+  const x = letters.indexOf(letter);
+  const y = 19 - num;
+  return { x, y };
+}
+
+/* --- GESTION DE LA MODALE IA --- */
+function ouvrirModalSetupBot() {
+  if (modalSetupBot) modalSetupBot.classList.add('open');
+}
+
+if (btnModeBotAccueil) btnModeBotAccueil.addEventListener('click', ouvrirModalSetupBot);
+if (btnModeBot) btnModeBot.addEventListener('click', ouvrirModalSetupBot);
+if (btnCloseSetupBot) btnCloseSetupBot.addEventListener('click', () => modalSetupBot.classList.remove('open'));
+
+if (btnStartBotGame)
+  btnStartBotGame.addEventListener('click', async () => {
+    const userColor = document.getElementById('bot-player-color-select').value;
+    const handicap = document.getElementById('bot-handicap').value;
+    const komi = document.getElementById('bot-komi').value;
+
+    modalSetupBot.classList.remove('open');
+    await lancerPartieBot(userColor, handicap, komi);
+  });
+
+/* --- LANCEMENT DE LA PARTIE --- */
+async function lancerPartieBot(userColor, handicap, komi) {
+  arreterTout();
+  document.body.classList.remove('mode-presentation');
+
+  /* Isolation de l'arène */
+  document.getElementById('message-accueil').style.display = 'none';
+  document.getElementById('colonne-droite').style.display = 'none';
+  document.getElementById('goban-wrapper').style.display = 'flex';
+
+  redimensionnerGoban(calculerTailleGoban());
+  reinitialiserMoteur();
+  goban.removeAllObjects();
+
+  modeBotActif = true;
+  infoVariation.style.display = 'block';
+  infoNom.innerText = '🤖 Défier GNU Go';
+  infoComment.innerText = 'Configuration du plateau en cours...';
+
+  actionsExercice.style.display = 'block';
+  document.getElementById('compteur-vies').style.display = 'none';
+  if (btnSolution) btnSolution.style.display = 'none';
+
+  if (document.getElementById('camp-label')) document.getElementById('camp-label').style.display = 'none';
+  if (document.getElementById('select-couleur-joueur'))
+    document.getElementById('select-couleur-joueur').style.display = 'none';
+
+  if (btnBotPass) btnBotPass.style.display = 'inline-block';
+  if (btnBotResign) btnBotResign.style.display = 'inline-block';
+  if (btnBotQuitter) btnBotQuitter.style.display = 'inline-block';
+
+  /* Attribution des couleurs */
+  if (userColor === 'W') {
+    couleurJoueur = -1; // Blanc
+    couleurOrdi = 1; // Noir
+  } else {
+    couleurJoueur = 1; // Noir
+    couleurOrdi = -1; // Blanc
+  }
+
+  try {
+    const reponseServeur = await fetch('https://bot.migaki.fr/api/reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        handicap: parseInt(handicap, 10) || 0,
+        komi: parseFloat(komi) || 6.5,
+      }),
+    });
+
+    const dataReset = await reponseServeur.json();
+    afficherToast("L'IA est prête !", 'correct');
+
+    /* S'il y a du handicap, on place les pierres Noires sur le Goban */
+    if (dataReset.handicapStones && dataReset.handicapStones.length > 0) {
+      dataReset.handicapStones.forEach((coupGtp) => {
+        const coords = gtpToWgo(coupGtp);
+        if (coords) placerPierreSetup(coords.x, coords.y, 1);
+      });
+    }
+
+    /* Gestion du premier tour */
+    const valHandicap = parseInt(handicap, 10) || 0;
+    const botJoueEnPremier = (userColor === 'W' && valHandicap < 2) || (userColor === 'B' && valHandicap >= 2);
+
+    if (botJoueEnPremier) {
+      infoComment.innerText = 'GNU Go réfléchit à son premier coup...';
+      executerCoupContreIA('pass');
+    } else {
+      infoComment.innerText = `Le bot est prêt. Tu as les ${userColor === 'B' ? 'Noirs' : 'Blancs'}, à toi de jouer !`;
+    }
+  } catch (e) {
+    /* Le fameux console.error qui nous a manqué ! */
+    console.error('Erreur critique IA (lancement) :', e);
+    infoComment.innerText = 'Erreur de communication avec le NAS.';
+    afficherToast('Le serveur NAS est inaccessible', 'erreur');
+  }
+}
+
+/* --- LE CERVEAU RETROUVÉ --- */
+function executerCoupContreIA(moveGtp) {
+  gobanWrapper.classList.add('ordi-pense');
+
+  fetch('https://bot.migaki.fr/api/play', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      couleurJoueur: couleurJoueur === 1 ? 'B' : 'W',
+      coupJoueur: moveGtp,
+    }),
+  })
+    .then((reponse) => reponse.json())
+    .then((data) => {
+      if (data.coup && data.coup.toLowerCase() !== 'pass' && data.coup.toLowerCase() !== 'resign') {
+        const botCoords = gtpToWgo(data.coup);
+        if (botCoords) jouerCoupAvecCaptures(botCoords.x, botCoords.y, couleurOrdi);
+      } else if (data.coup && data.coup.toLowerCase() === 'resign') {
+        afficherToast("L'ordinateur abandonne ! Tu as gagné !", 'correct');
+      } else {
+        afficherToast("L'ordinateur passe son tour.", 'correct');
+      }
+
+      /* On remet le texte d'attente pour le joueur */
+      infoComment.innerText = 'À toi de jouer !';
+    })
+    .catch((err) => {
+      console.error('Erreur Fetch IA (en cours de jeu) :', err);
+      afficherToast("L'IA ne répond plus...", 'erreur');
+    })
+    .finally(() => gobanWrapper.classList.remove('ordi-pense'));
+}
+
+/* --- CONTRÔLES EN JEU --- */
+if (btnBotPass)
+  btnBotPass.addEventListener('click', () => {
+    if (!modeBotActif) return;
+    afficherToast('Tu as passé ton tour.', 'warn');
+    infoComment.innerText = 'Tu as passé. GNU Go réfléchit...';
+    executerCoupContreIA('pass');
+  });
+
+if (btnBotResign)
+  btnBotResign.addEventListener('click', () => {
+    if (!modeBotActif) return;
+    afficherToast('Tu as abandonné la partie.', 'erreur');
+    infoComment.innerText = 'Tu as abandonné. GNU Go a gagné la partie.';
+
+    /* On fige le goban (on arrête le mode bot) */
+    modeBotActif = false;
+    document.getElementById('colonne-droite').style.display = 'flex'; /* On rend la main à l'interface */
+  });
+
+if (btnBotQuitter)
+  btnBotQuitter.addEventListener('click', () => {
+    arreterTout();
+    document.getElementById('colonne-droite').style.display = 'flex'; /* On restaure la liste SGF */
+
+    if (window._sgfActifId) {
+      lancerExercice();
+    } else {
+      document.getElementById('goban-wrapper').style.display = 'none';
+      infoVariation.style.display = 'none';
+      document.getElementById('message-accueil').style.display = 'block';
+    }
+  });
+
+/* =============================================
    ALGORITHME 80 / 15 / 5
 ============================================= */
 function choisirVariation() {
@@ -454,22 +644,17 @@ function choisirVariation() {
   if (filtreStatutActif) {
     const poolFiltre = [];
     for (let i = 0; i < toutesLesVariations.length; i++) {
-      const s =
-        donneesSauvegardees[genererSignature(toutesLesVariations[i])].statut;
+      const s = donneesSauvegardees[genererSignature(toutesLesVariations[i])].statut;
       if (s === filtreStatutActif) poolFiltre.push(i);
     }
 
     if (poolFiltre.length > 0) {
       /* Si on a des séquences, on pioche aléatoirement dans ce filtre uniquement */
-      return toutesLesVariations[
-        poolFiltre[Math.floor(Math.random() * poolFiltre.length)]
-      ];
+      return toutesLesVariations[poolFiltre[Math.floor(Math.random() * poolFiltre.length)]];
     } else {
       /* Sécurité : si la catégorie s'est vidée entre temps, on annule le filtre */
       filtreStatutActif = null;
-      document
-        .querySelectorAll('.stat-card')
-        .forEach((c) => c.classList.remove('dimmed'));
+      document.querySelectorAll('.stat-card').forEach((c) => c.classList.remove('dimmed'));
     }
   }
 
@@ -478,8 +663,7 @@ function choisirVariation() {
     poolOrangeRouge = [],
     poolVert = [];
   for (let i = 0; i < toutesLesVariations.length; i++) {
-    const s =
-      donneesSauvegardees[genererSignature(toutesLesVariations[i])].statut;
+    const s = donneesSauvegardees[genererSignature(toutesLesVariations[i])].statut;
     if (s === 'Non exploré') poolGris.push(i);
     else if (s === 'Erreurs' || s === 'Echec') poolOrangeRouge.push(i);
     else if (s === 'Parfait') poolVert.push(i);
@@ -509,8 +693,7 @@ function animerProchainCoup() {
     infoComment.innerText = data.commentaire ? `« ${data.commentaire} »` : '';
     infoNom.setAttribute('data-sig', sig);
     reinitialiserMoteur();
-    if (kifu.root.setup)
-      for (const s of kifu.root.setup) placerPierreSetup(s.x, s.y, s.c);
+    if (kifu.root.setup) for (const s of kifu.root.setup) placerPierreSetup(s.x, s.y, s.c);
   }
   if (indexCoupActuel < variation.length) {
     const noeud = variation[indexCoupActuel];
@@ -574,9 +757,7 @@ function lancerExploration() {
   infoVariation.style.display = 'block';
   commentaireSgf.style.display = 'none';
 
-  infoNom.innerText = window.t
-    ? window.t('exploration_titre')
-    : 'Exploration Libre';
+  infoNom.innerText = window.t ? window.t('exploration_titre') : 'Exploration Libre';
   infoComment.innerText = window.t
     ? window.t('exploration_desc')
     : 'Cliquez sur les lettres pour naviguer dans les branches.';
@@ -634,8 +815,7 @@ function retourExploration() {
   }
 
   for (const noeud of chemin) {
-    if (noeud.move)
-      jouerCoupAvecCaptures(noeud.move.x, noeud.move.y, noeud.move.c);
+    if (noeud.move) jouerCoupAvecCaptures(noeud.move.x, noeud.move.y, noeud.move.c);
   }
 
   noeudCourant = cible;
@@ -658,9 +838,7 @@ function lancerPresentation() {
   if (toutesLesVariations.length === 0) return; /* Sécurité anti-écran noir */
   arreterTout();
   document.body.classList.add('mode-presentation');
-  redimensionnerGoban(
-    Math.floor(Math.min(window.innerHeight * 0.9, window.innerWidth * 0.95))
-  );
+  redimensionnerGoban(Math.floor(Math.min(window.innerHeight * 0.9, window.innerWidth * 0.95)));
   infoVariation.style.display = 'block';
   modePresentationActif = true;
   if (toutesLesVariations.length > 0) {
@@ -690,12 +868,8 @@ function relancerSequence(variationForcee = null) {
   commentaireSgf.style.display = 'none';
   gobanWrapper.classList.remove('ordi-pense');
 
-  infoNom.innerText = window.t
-    ? window.t('sequence_en_cours')
-    : 'Séquence en cours...';
-  infoComment.innerText = window.t
-    ? window.t('joue_pour_decouvrir')
-    : 'Joue pour découvrir la suite !';
+  infoNom.innerText = window.t ? window.t('sequence_en_cours') : 'Séquence en cours...';
+  infoComment.innerText = window.t ? window.t('joue_pour_decouvrir') : 'Joue pour découvrir la suite !';
   infoNom.setAttribute('data-sig', '');
 
   document.getElementById('compteur-vies').style.display = 'flex';
@@ -714,8 +888,7 @@ function relancerSequence(variationForcee = null) {
   /* ------------------------ */
 
   reinitialiserMoteur();
-  if (kifu.root.setup)
-    for (const s of kifu.root.setup) placerPierreSetup(s.x, s.y, s.c);
+  if (kifu.root.setup) for (const s of kifu.root.setup) placerPierreSetup(s.x, s.y, s.c);
 
   noeudCourant = kifu.root;
   modeExerciceActif = true;
@@ -736,8 +909,7 @@ function forcerEntrainementVariation(variation) {
 }
 
 function verifierTourOrdi() {
-  if (!modeExerciceActif || !noeudCourant || noeudCourant.children.length === 0)
-    return;
+  if (!modeExerciceActif || !noeudCourant || noeudCourant.children.length === 0) return;
 
   if (noeudCourant.children[0].move.c === couleurOrdi) {
     gobanWrapper.classList.add('ordi-pense');
@@ -761,19 +933,13 @@ function verifierTourOrdi() {
 }
 
 function jouerCoupOrdi() {
-  if (!modeExerciceActif || !noeudCourant || noeudCourant.children.length === 0)
-    return;
+  if (!modeExerciceActif || !noeudCourant || noeudCourant.children.length === 0) return;
   gobanWrapper.classList.remove('ordi-pense');
   let enfantChoisi = variationCourante
     ? variationCourante.find((n) => noeudCourant.children.includes(n)) || null
     : null;
   if (!enfantChoisi) enfantChoisi = noeudCourant.children[0];
-  if (enfantChoisi.move)
-    jouerCoupAvecCaptures(
-      enfantChoisi.move.x,
-      enfantChoisi.move.y,
-      couleurOrdi
-    );
+  if (enfantChoisi.move) jouerCoupAvecCaptures(enfantChoisi.move.x, enfantChoisi.move.y, couleurOrdi);
   noeudCourant = enfantChoisi;
   afficherCommentaire(noeudCourant);
   if (noeudCourant.children.length === 0) terminerVariation();
@@ -790,22 +956,13 @@ function terminerVariation() {
   if (abandonSequence) {
     messageFin.className = 'fin-echec';
     finIcone.innerText = '🚨';
-    titreFin.innerText = window.t
-      ? window.t('fin_echec_titre')
-      : 'Séquence ratée';
-    sousTitreFin.innerText = window.t
-      ? window.t('fin_echec_sous')
-      : 'Mieux la prochaine fois';
-    afficherToast(
-      window.t ? window.t('fin_echec_titre') : 'Séquence ratée',
-      'erreur'
-    );
+    titreFin.innerText = window.t ? window.t('fin_echec_titre') : 'Séquence ratée';
+    sousTitreFin.innerText = window.t ? window.t('fin_echec_sous') : 'Mieux la prochaine fois';
+    afficherToast(window.t ? window.t('fin_echec_titre') : 'Séquence ratée', 'erreur');
   } else if (compteurErreurs > 0) {
     messageFin.className = 'fin-erreurs';
     finIcone.innerText = '😅';
-    titreFin.innerText = window.t
-      ? window.t('fin_erreurs_titre')
-      : 'Terminée avec erreurs';
+    titreFin.innerText = window.t ? window.t('fin_erreurs_titre') : 'Terminée avec erreurs';
 
     /* Gestion du pluriel pour les erreurs */
     sousTitreFin.innerText =
@@ -831,13 +988,8 @@ function terminerVariation() {
     messageFin.className = 'fin-parfaite';
     finIcone.innerText = '🎉';
     titreFin.innerText = window.t ? window.t('fin_parfait_titre') : 'Perfect !';
-    sousTitreFin.innerText = window.t
-      ? window.t('fin_parfait_sous')
-      : 'Aucune erreur — bien joué';
-    afficherToast(
-      window.t ? window.t('fin_parfait_titre') : 'Perfect !',
-      'correct'
-    );
+    sousTitreFin.innerText = window.t ? window.t('fin_parfait_sous') : 'Aucune erreur — bien joué';
+    afficherToast(window.t ? window.t('fin_parfait_titre') : 'Perfect !', 'correct');
   }
   messageFin.style.display = 'block';
 
@@ -854,11 +1006,8 @@ function terminerVariation() {
     sauvegarderDonnees();
     afficherTableau();
     requestAnimationFrame(() => {
-      const activeRow = document.querySelector(
-        '#table-variations tbody tr.active-row'
-      );
-      if (activeRow)
-        activeRow.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      const activeRow = document.querySelector('#table-variations tbody tr.active-row');
+      if (activeRow) activeRow.scrollIntoView({ block: 'center', behavior: 'smooth' });
     });
     mettreAJourStatistiques();
     const data = donneesSauvegardees[sig];
@@ -897,9 +1046,7 @@ function terminerVariation() {
 goban.addEventListener('click', function (x, y) {
   if (modeExplorationActif) {
     /* On cherche si le clic correspond à un enfant possible (une lettre) */
-    const enfantChoisi = noeudCourant.children.find(
-      (e) => e.move && e.move.x === x && e.move.y === y
-    );
+    const enfantChoisi = noeudCourant.children.find((e) => e.move && e.move.x === x && e.move.y === y);
     if (enfantChoisi) {
       jouerCoupAvecCaptures(x, y, enfantChoisi.move.c);
       noeudCourant = enfantChoisi;
@@ -908,12 +1055,19 @@ goban.addEventListener('click', function (x, y) {
     }
     return; /* On s'arrête là pour ce clic ! */
   }
-  if (!modeExerciceActif || !noeudCourant) return;
-  if (
-    noeudCourant.children.length > 0 &&
-    noeudCourant.children[0].move.c !== couleurJoueur
-  )
+  /* --- INTERCEPTION DU MODE BOT --- */
+  if (modeBotActif) {
+    if (gobanWrapper.classList.contains('ordi-pense')) return;
+
+    if (moteurJeu && moteurJeu.position.get(x, y) !== 0) return;
+    jouerCoupAvecCaptures(x, y, couleurJoueur);
+    executerCoupContreIA(wgoToGtp(x, y));
     return;
+  }
+  /* ------------------------------------------ */
+  /* ------------------------------------------ */
+  if (!modeExerciceActif || !noeudCourant) return;
+  if (noeudCourant.children.length > 0 && noeudCourant.children[0].move.c !== couleurJoueur) return;
 
   /* Si la case est déjà occupée par une pierre (état différent de 0), on ignore le clic ! */
   if (moteurJeu && moteurJeu.position.get(x, y) !== 0) {
@@ -921,8 +1075,7 @@ goban.addEventListener('click', function (x, y) {
   }
 
   const coupValide = noeudCourant.children.find(
-    (e) =>
-      e.move && e.move.x === x && e.move.y === y && e.move.c === couleurJoueur
+    (e) => e.move && e.move.x === x && e.move.y === y && e.move.c === couleurJoueur
   );
 
   if (coupValide) {
@@ -933,15 +1086,10 @@ goban.addEventListener('click', function (x, y) {
     /* Si le coup joué ne fait pas partie de la variation prévue, 
        on met à jour la variation courante pour suivre le choix du joueur ! */
     if (!variationCourante || !variationCourante.includes(noeudCourant)) {
-      const variationsPossibles = toutesLesVariations.filter((v) =>
-        v.includes(noeudCourant)
-      );
+      const variationsPossibles = toutesLesVariations.filter((v) => v.includes(noeudCourant));
       if (variationsPossibles.length > 0) {
         // On recible l'exercice sur l'une des variations qui passe par ce nouveau chemin
-        variationCourante =
-          variationsPossibles[
-            Math.floor(Math.random() * variationsPossibles.length)
-          ];
+        variationCourante = variationsPossibles[Math.floor(Math.random() * variationsPossibles.length)];
       }
     }
     /* ---------------------------------------- */
@@ -955,9 +1103,7 @@ goban.addEventListener('click', function (x, y) {
     mettreAJourVies();
     /* Toast du compteur d'erreurs */
     afficherToast(
-      window.t
-        ? window.t('toast_erreur_compteur', { count: compteurErreurs })
-        : `Erreur ${compteurErreurs}/3`,
+      window.t ? window.t('toast_erreur_compteur', { count: compteurErreurs }) : `Erreur ${compteurErreurs}/3`,
       'erreur'
     );
     const m = { x, y, type: 'MA' };
@@ -989,9 +1135,7 @@ function montrerSolution() {
 
 function animerSolution() {
   if (noeudCourant && noeudCourant.children.length > 0) {
-    let p = variationCourante
-      ? variationCourante.find((n) => noeudCourant.children.includes(n))
-      : null;
+    let p = variationCourante ? variationCourante.find((n) => noeudCourant.children.includes(n)) : null;
     if (!p) p = noeudCourant.children[0];
     if (p.move) {
       jouerCoupAvecCaptures(p.move.x, p.move.y, p.move.c);
@@ -1017,8 +1161,7 @@ function visualiserVariation(variation) {
   arreterTout();
   goban.removeAllObjects();
   reinitialiserMoteur();
-  if (kifu.root.setup)
-    for (const s of kifu.root.setup) placerPierreSetup(s.x, s.y, s.c);
+  if (kifu.root.setup) for (const s of kifu.root.setup) placerPierreSetup(s.x, s.y, s.c);
 
   const sig = genererSignature(variation);
   const data = donneesSauvegardees[sig];
@@ -1052,9 +1195,7 @@ function visualiserVariation(variation) {
       timerPresentation = setTimeout(animer, 550);
     } else {
       finIcone.innerText = '👁';
-      titreFin.innerText = window.t
-        ? window.t('visualisation_titre')
-        : 'Visualisation terminée';
+      titreFin.innerText = window.t ? window.t('visualisation_titre') : 'Visualisation terminée';
       sousTitreFin.innerText = data.nom;
       messageFin.className = 'fin-visu';
       messageFin.style.display = 'block';
@@ -1112,14 +1253,11 @@ document.addEventListener('DOMContentLoaded', () => {
     opt.addEventListener('click', (e) => {
       e.stopPropagation();
       const val = parseInt(opt.dataset.value);
-      sel
-        .querySelectorAll('.custom-option')
-        .forEach((o) => o.classList.remove('selected'));
+      sel.querySelectorAll('.custom-option').forEach((o) => o.classList.remove('selected'));
       opt.classList.add('selected');
       sel.dataset.value = opt.dataset.value;
       const isNoir = val === 1;
-      sel.querySelector('.stone-icon').className =
-        'stone-icon ' + (isNoir ? 'stone-noir' : 'stone-blanc');
+      sel.querySelector('.stone-icon').className = 'stone-icon ' + (isNoir ? 'stone-noir' : 'stone-blanc');
       sel.querySelector('.stone-label').textContent = isNoir ? 'Noir' : 'Blanc';
       sel.classList.remove('open');
       couleurJoueur = val;
@@ -1134,8 +1272,7 @@ fileInput.addEventListener('change', function () {
   if (this.files.length === 0) return;
   fileNameDisplay.innerText = this.files[0].name;
   const reader = new FileReader();
-  reader.onload = (e) =>
-    chargerContenuSgf(e.target.result, this.files[0].name, null, null);
+  reader.onload = (e) => chargerContenuSgf(e.target.result, this.files[0].name, null, null);
   reader.readAsText(this.files[0]);
 });
 
@@ -1166,11 +1303,9 @@ function chargerContenuSgf(contenu, nom, sgfId, progressionServeur) {
   if (progressionServeur) {
     for (const [sig, data] of Object.entries(progressionServeur)) {
       if (donneesSauvegardees[sig]) {
-        donneesSauvegardees[sig].statut =
-          data.statut || donneesSauvegardees[sig].statut;
+        donneesSauvegardees[sig].statut = data.statut || donneesSauvegardees[sig].statut;
         if (data.nom) donneesSauvegardees[sig].nom = data.nom;
-        if (data.commentaire)
-          donneesSauvegardees[sig].commentaire = data.commentaire;
+        if (data.commentaire) donneesSauvegardees[sig].commentaire = data.commentaire;
       }
     }
   }
@@ -1198,9 +1333,7 @@ btnSuivante.addEventListener('click', relancerSequence);
 btnSolution.addEventListener('click', montrerSolution);
 
 btnReset.addEventListener('click', () => {
-  const messageConfirm = window.t
-    ? window.t('confirm_reset')
-    : 'Réinitialiser tous les statuts ?';
+  const messageConfirm = window.t ? window.t('confirm_reset') : 'Réinitialiser tous les statuts ?';
   if (confirm(messageConfirm)) {
     toutesLesVariations.forEach((v) => {
       donneesSauvegardees[genererSignature(v)].statut = 'Non exploré';
@@ -1226,9 +1359,7 @@ document.querySelectorAll('.stat-card').forEach((card) => {
     if (filtreStatutActif === statusCible) {
       /* Si on clique sur le filtre déjà actif, on le désactive */
       filtreStatutActif = null;
-      document
-        .querySelectorAll('.stat-card')
-        .forEach((c) => c.classList.remove('dimmed'));
+      document.querySelectorAll('.stat-card').forEach((c) => c.classList.remove('dimmed'));
       afficherToast('Filtre désactivé', 'correct');
     } else {
       /* On vérifie d'abord que la catégorie n'est pas vide ! */

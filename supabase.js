@@ -49,9 +49,7 @@ export async function listerSgf() {
     query = query.or(`owner_id.eq.${user.id},is_shared.eq.true`);
   } else {
     // L'utilisateur normal voit ses SGF et les partagés NON club
-    query = query.or(
-      `owner_id.eq.${user.id},and(is_shared.eq.true,is_club.eq.false)`
-    );
+    query = query.or(`owner_id.eq.${user.id},and(is_shared.eq.true,is_club.eq.false)`);
   }
 
   query = query.order('updated_at', { ascending: false });
@@ -71,9 +69,7 @@ export async function uploaderSgf(file) {
   const path = `${user.id}/${file.name}`;
 
   // Upload dans Storage
-  const { error: storageError } = await supabase.storage
-    .from('sgf-files')
-    .upload(path, file, { upsert: true });
+  const { error: storageError } = await supabase.storage.from('sgf-files').upload(path, file, { upsert: true });
   if (storageError) {
     console.error(storageError);
     return null;
@@ -118,9 +114,7 @@ export async function telechargerSgf(storagePath) {
 
   if (!user) {
     // Invité : URL signée temporaire (1 heure)
-    const { data, error } = await supabase.storage
-      .from('sgf-files')
-      .createSignedUrl(storagePath, 3600);
+    const { data, error } = await supabase.storage.from('sgf-files').createSignedUrl(storagePath, 3600);
     if (error) {
       console.error(error);
       return null;
@@ -130,9 +124,7 @@ export async function telechargerSgf(storagePath) {
   }
 
   // Connecté : téléchargement direct
-  const { data, error } = await supabase.storage
-    .from('sgf-files')
-    .download(storagePath);
+  const { data, error } = await supabase.storage.from('sgf-files').download(storagePath);
   if (error) {
     console.error(error);
     return null;
@@ -169,13 +161,7 @@ export async function chargerProgression(sgfId) {
   return result;
 }
 
-export async function sauvegarderVariation(
-  sgfId,
-  sig,
-  statut,
-  nom,
-  commentaire
-) {
+export async function sauvegarderVariation(sgfId, sig, statut, nom, commentaire) {
   const user = await getUser();
   if (!user) return;
   await supabase.from('variation_progress').upsert(
@@ -202,9 +188,7 @@ export async function isAdmin() {
 export async function uploaderSgfPartage(file) {
   const path = `shared/${file.name}`;
 
-  const { error: storageError } = await supabase.storage
-    .from('sgf-files')
-    .upload(path, file, { upsert: true });
+  const { error: storageError } = await supabase.storage.from('sgf-files').upload(path, file, { upsert: true });
   if (storageError) {
     console.error(storageError);
     return null;
@@ -218,10 +202,7 @@ export async function uploaderSgfPartage(file) {
     .single();
 
   if (existing) {
-    await supabase
-      .from('sgf_files')
-      .update({ updated_at: new Date().toISOString() })
-      .eq('id', existing.id);
+    await supabase.from('sgf_files').update({ updated_at: new Date().toISOString() }).eq('id', existing.id);
     return existing.id;
   } else {
     const { data, error } = await supabase
@@ -257,21 +238,12 @@ export async function setClubRole(userId, isClub) {
 }
 
 export async function toggleSgfClubStatus(sgfId, isClub) {
-  const { error } = await supabase
-    .from('sgf_files')
-    .update({ is_club: isClub })
-    .eq('id', sgfId);
+  const { error } = await supabase.from('sgf_files').update({ is_club: isClub }).eq('id', sgfId);
   return !error;
 }
 
 /* ─── Statistiques Quotidiennes (Calendrier) ───────────── */
-export async function ajouterActivite(
-  jouees = 0,
-  vues = 0,
-  parfaits = 0,
-  oranges = 0,
-  rouges = 0
-) {
+export async function ajouterActivite(jouees = 0, vues = 0, parfaits = 0, oranges = 0, rouges = 0) {
   const user = await getUser();
   if (!user) return;
 
@@ -319,10 +291,7 @@ export async function chargerStatsGlobales() {
 }
 
 export async function mettreAJourDescriptionSgf(sgfId, description) {
-  const { error } = await supabase
-    .from('sgf_files')
-    .update({ description })
-    .eq('id', sgfId);
+  const { error } = await supabase.from('sgf_files').update({ description }).eq('id', sgfId);
   if (error) {
     console.error('Erreur update description:', error);
     throw error;
